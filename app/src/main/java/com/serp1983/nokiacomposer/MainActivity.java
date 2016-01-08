@@ -24,6 +24,8 @@ import com.com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
 import com.com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.com.serp1983.nokiacomposer.lib.ShortArrayList;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.intervigil.wave.WaveWriter;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
 
@@ -101,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
                 save();
             }
         });
+
+        AdView adView = (AdView) this.findViewById(R.id.adView);
+        AdRequest.Builder adBuilder = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(Constants.testDeviceId);
+        adView.loadAd(adBuilder.build());
     }
 
     @Override
@@ -170,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
             TransitionManager.beginDelayedTransition(_root);
         }
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) _fabPlayOff.getLayoutParams();
-        params.bottomMargin = this.getResources().getDimensionPixelSize(on ? R.dimen.fabAddon_margin : R.dimen.fab_margin);
+        params.bottomMargin = this.getResources().getDimensionPixelSize(R.dimen.fab_marginBottom) +
+                (on ? this.getResources().getDimensionPixelSize(R.dimen.fabAddon_margin) : 0);
         _fabPlayOff.setLayoutParams(params);
     }
 
@@ -179,7 +188,8 @@ public class MainActivity extends AppCompatActivity {
             TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.root));
         }
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) _fabSave.getLayoutParams();
-        params.rightMargin = this.getResources().getDimensionPixelSize(on ? R.dimen.fabAddon_margin : R.dimen.fab_margin);;
+        params.rightMargin = this.getResources().getDimensionPixelSize(R.dimen.fab_marginRight) +
+                (on ? this.getResources().getDimensionPixelSize(R.dimen.fabAddon_margin) : 0);
         _fabSave.setLayoutParams(params);
     }
 

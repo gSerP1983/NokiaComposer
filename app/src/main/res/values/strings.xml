@@ -2,7 +2,7 @@
     <string name="app_name">2015 Nokia Composer</string>
     <string name="action_save">Save</string>
     <string name="action_open">Open</string>
-    <string name="action_share">Share</string>
+    <string name="action_share">Share text</string>
     <string name="action_new">New</string>
     <string name="action_delete">Delete</string>
     <string name="action_share_wav">Share *.wav</string>
