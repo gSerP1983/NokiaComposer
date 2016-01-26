@@ -127,9 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_open) {
@@ -156,17 +153,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_share) {
-            share(getCurrentRingtone());
-            return true;
-        }
-
-        if (id == R.id.action_share_wav) {
-            shareWav(getCurrentRingtone());
-            return true;
-        }
-
-        if (id == R.id.action_share_mp3) {
-            shareMp3(getCurrentRingtone());
+            final AppCompatActivity activity = this;
+            DialogHelper.shareDialog(this, new DialogHelper.Callback<String>() {
+                @Override
+                public void onComplete(String input) {
+                    if (input == activity.getString(R.string.action_share_text))
+                        shareText(getCurrentRingtone());
+                    if (input == activity.getString(R.string.action_share_wav))
+                        shareWav(getCurrentRingtone());
+                    if (input == activity.getString(R.string.action_share_mp3))
+                        shareMp3(getCurrentRingtone());
+                }
+            });
             return true;
         }
 
@@ -307,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void share(RingtoneVM ringtone){
+    public void shareText(RingtoneVM ringtone){
         if (ringtone == null) return;
         try{
             Intent intentSend = new Intent(Intent.ACTION_SEND);

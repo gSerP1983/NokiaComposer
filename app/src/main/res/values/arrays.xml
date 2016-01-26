@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="share_array">
+        <item>@string/action_share_text</item>
+        <item>@string/action_share_wav</item>
+        <item>@string/action_share_mp3</item>
+    </string-array>
+</resources>

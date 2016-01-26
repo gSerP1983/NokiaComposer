@@ -100,4 +100,32 @@ public class DialogHelper {
         dialog.show();
     }
 
+    public static <T> void shareDialog(Activity activity, final Callback<T> callback){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.share_list, null);
+        builder.setView(convertView);
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        final AlertDialog dialog = builder.create();
+
+        final ListView listView = (ListView) convertView.findViewById(R.id.listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (callback != null)
+                    callback.onComplete((T) parent.getAdapter().getItem(position));
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 }
