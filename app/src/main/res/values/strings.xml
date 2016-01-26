@@ -8,4 +8,25 @@
     <string name="action_share_text">Share text</string>
     <string name="action_share_wav">Share *.wav</string>
     <string name="action_share_mp3">Share *.mp3</string>
+    <string name="action_save_as">Save As</string>
+
+    <!--
+     File Save dialog
+     -->
+    <string name="file_save_title">Save As:</string>
+    <string name="file_save_button_save">Save</string>
+    <string name="file_save_button_cancel">Cancel</string>
+    <string name="ringtone_name_label">Name:</string>
+    <string name="ringtone_type_label">Type:</string>
+    <string name="type_music">Music</string>
+    <string name="type_alarm">Alarm</string>
+    <string name="type_notification">Notification</string>
+    <string name="type_ringtone">Ringtone</string>
+    <string name="no_unique_filename">Unable to find unique filename</string>
+    <string name="alert_title_success">Success</string>
+    <string name="alert_ok_button">OK</string>
+    <string name="save_success_message">Saved!</string>
+    <string name="set_default_notification">Saved!  Make this your default notification?</string>
+    <string name="alert_yes_button">Yes.</string>
+    <string name="alert_no_button">No.</string>
 </resources>

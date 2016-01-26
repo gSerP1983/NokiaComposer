@@ -1,10 +1,17 @@
 package com.serp1983.nokiacomposer;
 
+import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
+import com.com.serp1983.nokiacomposer.lib.FileUtils;
 import com.com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.google.android.gms.ads.AdRequest;
@@ -30,6 +38,7 @@ import com.intervigil.wave.WaveWriter;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     EditText _editTextTempo;
@@ -152,6 +161,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_save_as) {
+            saveAs();
+            return true;
+        }
+
         if (id == R.id.action_share) {
             final AppCompatActivity activity = this;
             DialogHelper.shareDialog(this, new DialogHelper.Callback<String>() {
@@ -169,6 +183,136 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveAs(){
+        final RingtoneVM ringtone = getCurrentRingtone();
+        if (ringtone == null) return;
+        final Handler handler = new Handler() {
+            public void handleMessage(Message response) {
+                CharSequence newTitle = (CharSequence)response.obj;
+                saveRingtone(newTitle, response.arg1);
+            }
+        };
+        Message message = Message.obtain(handler);
+        FileSaveDialog dlg = new FileSaveDialog(this, getResources(), ringtone.Name, message);
+        dlg.show();
+    }
+
+    private void saveRingtone(final CharSequence title, int fileKind) {
+        final RingtoneVM ringtone = getCurrentRingtone();
+        if (ringtone == null) return;
+
+        final String outPath = RingtoneSaver.makeRingtoneFilename(title, ".mp3", fileKind);
+        if (outPath == null) {
+            showFinalAlert(getString(R.string.no_unique_filename));
+            return;
+        }
+
+        final File outFile = new File(outPath);
+        try {
+            final File fileWav = new File(getExternalCacheDir().getPath(), "2015nokiacomposer.wav");
+            final File fileMp3 = new File(getExternalCacheDir().getPath(), "2015nokiacomposer.mp3");
+            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
+            WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
+            AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
+                @Override
+                public void onComplete() {
+                    try {
+                        ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
+                        FileUtils.copy(fileMp3, outFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            afterSavingRingtone(title, outFile, fileKind);
+        }
+        catch(Exception x){
+            x.printStackTrace();
+        }
+    }
+
+    private void afterSavingRingtone(CharSequence title, File outFile, int fileKind) {
+        long fileSize = outFile.length();
+        String mimeType = "audio/mpeg";
+
+        String artist = "" + getResources().getText(R.string.app_name);
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DATA, outFile.getAbsolutePath());
+        values.put(MediaStore.MediaColumns.TITLE, title.toString());
+        values.put(MediaStore.MediaColumns.SIZE, fileSize);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
+
+        values.put(MediaStore.Audio.Media.ARTIST, artist);
+        values.put(MediaStore.Audio.Media.DURATION, 44100);
+
+        values.put(MediaStore.Audio.Media.IS_RINGTONE,
+                fileKind == FileSaveDialog.FILE_KIND_RINGTONE);
+        values.put(MediaStore.Audio.Media.IS_NOTIFICATION,
+                fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION);
+        values.put(MediaStore.Audio.Media.IS_ALARM,
+                fileKind == FileSaveDialog.FILE_KIND_ALARM);
+        values.put(MediaStore.Audio.Media.IS_MUSIC,
+                fileKind == FileSaveDialog.FILE_KIND_MUSIC);
+
+        // Insert it into the database
+        Uri uri = MediaStore.Audio.Media.getContentUriForPath(outFile.getAbsolutePath());
+        final Uri newUri = getContentResolver().insert(uri, values);
+        setResult(RESULT_OK, new Intent().setData(newUri));
+
+        // There's nothing more to do with music or an alarm.  Show a
+        // success message and then quit.
+        if (fileKind == FileSaveDialog.FILE_KIND_MUSIC ||
+                fileKind == FileSaveDialog.FILE_KIND_ALARM) {
+            Toast.makeText(this, R.string.save_success_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // If it's a notification, give the user the option of making
+        // this their default notification.  If they say no, we're finished.
+        if (fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle(R.string.alert_title_success)
+                    .setMessage(R.string.set_default_notification)
+                    .setPositiveButton(R.string.alert_yes_button,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    RingtoneManager.setActualDefaultRingtoneUri(
+                                            MainActivity.this,
+                                            RingtoneManager.TYPE_NOTIFICATION,
+                                            newUri);
+                                }
+                            })
+                    .setNegativeButton(R.string.alert_no_button, null)
+                    .setCancelable(false)
+                    .show();
+            return;
+        }
+
+        // If we get here, that means the type is a ringtone.  There are
+        // three choices: make this your default ringtone, assign it to a
+        // contact, or do nothing.
+    }
+
+    private void showFinalAlert(CharSequence message) {
+        CharSequence title = getResources().getText(R.string.alert_title_success);
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(
+                        R.string.alert_ok_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                finish();
+                            }
+                        })
+                .setCancelable(false)
+                .show();
     }
 
     private void animatePlayOff(Boolean on){
@@ -328,7 +472,6 @@ public class MainActivity extends AppCompatActivity {
 
         try{
             File file = new File(getExternalCacheDir().getPath(), "2015nokiacomposer.wav");
-            ConvertActivity.nativeEncodeMP3(file.getAbsolutePath(), 44100, 0);
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
             WaveWriter writer = new WaveWriter(file, 44100, 1, 16);
@@ -360,7 +503,7 @@ public class MainActivity extends AppCompatActivity {
             AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
                 @Override
                 public void onComplete() {
-                    ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44000, 1);
+                    ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
                 }
             });
 
