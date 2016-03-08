@@ -172,11 +172,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(String input) {
                     if (input == activity.getString(R.string.action_share_text))
-                        shareText(getCurrentRingtone());
+                        ShareHelper.shareText(activity, getCurrentRingtone());
                     if (input == activity.getString(R.string.action_share_wav))
-                        shareWav(getCurrentRingtone());
+                        ShareHelper.shareWav(activity, getCurrentRingtone());
                     if (input == activity.getString(R.string.action_share_mp3))
-                        shareMp3(getCurrentRingtone());
+                        ShareHelper.shareMp3(activity, getCurrentRingtone());
                 }
             });
             return true;
@@ -263,39 +263,54 @@ public class MainActivity extends AppCompatActivity {
         final Uri newUri = getContentResolver().insert(uri, values);
         setResult(RESULT_OK, new Intent().setData(newUri));
 
-        // There's nothing more to do with music or an alarm.  Show a
+        // There's nothing more to do with music. Show a
         // success message and then quit.
-        if (fileKind == FileSaveDialog.FILE_KIND_MUSIC ||
-                fileKind == FileSaveDialog.FILE_KIND_ALARM) {
+        if (fileKind == FileSaveDialog.FILE_KIND_MUSIC) {
             Toast.makeText(this, R.string.save_success_message, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // alarm
+        if (fileKind == FileSaveDialog.FILE_KIND_ALARM) {
+            askSetDefault(RingtoneManager.TYPE_ALARM, R.string.set_default_alarm,
+                    R.string.default_alarm_success_message, newUri);
             return;
         }
 
         // If it's a notification, give the user the option of making
         // this their default notification.  If they say no, we're finished.
         if (fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle(R.string.alert_title_success)
-                    .setMessage(R.string.set_default_notification)
-                    .setPositiveButton(R.string.alert_yes_button,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int whichButton) {
-                                    RingtoneManager.setActualDefaultRingtoneUri(
-                                            MainActivity.this,
-                                            RingtoneManager.TYPE_NOTIFICATION,
-                                            newUri);
-                                }
-                            })
-                    .setNegativeButton(R.string.alert_no_button, null)
-                    .setCancelable(false)
-                    .show();
+            askSetDefault(RingtoneManager.TYPE_NOTIFICATION, R.string.set_default_notification,
+                    R.string.default_notification_success_message, newUri);
             return;
         }
 
-        // If we get here, that means the type is a ringtone.  There are
-        // three choices: make this your default ringtone, assign it to a
-        // contact, or do nothing.
+        // If we get here, that means the type is a ringtone.
+        if (fileKind == FileSaveDialog.FILE_KIND_RINGTONE) {
+            askSetDefault(RingtoneManager.TYPE_RINGTONE, R.string.set_default_ringtone,
+                    R.string.default_ringtone_success_message, newUri);
+            return;
+        }
+    }
+
+    private void askSetDefault(final int type, final int questionId,
+                                  final int successMsgId, final Uri newUri){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.alert_title_success)
+                .setMessage(questionId)
+                .setPositiveButton(R.string.alert_yes_button,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                RingtoneManager.setActualDefaultRingtoneUri(MainActivity.this,
+                                        type,newUri);
+                                Toast.makeText(MainActivity.this, successMsgId, Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        })
+                .setNegativeButton(R.string.alert_no_button, null)
+                .setCancelable(false)
+                .show();
     }
 
     private void showFinalAlert(CharSequence message) {
@@ -447,79 +462,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public void shareText(RingtoneVM ringtone){
-        if (ringtone == null) return;
-        try{
-            Intent intentSend = new Intent(Intent.ACTION_SEND);
-            intentSend.setType("text/plain");
-            intentSend.putExtra(Intent.EXTRA_TEXT, ringtone.Name + ", tempo=" + ringtone.Tempo + ", " + ringtone.Code);
-            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
-
-            Intent intentChooser = Intent.createChooser(intentSend, "Share");
-            intentChooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            this.startActivity(intentChooser);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void shareWav(RingtoneVM ringtone){
-        if (ringtone == null) return;
-
-        try{
-            File file = new File(getExternalCacheDir().getPath(), "2015nokiacomposer.wav");
-
-            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
-            WaveWriter writer = new WaveWriter(file, 44100, 1, 16);
-            AsyncWaveWriter.execute(writer, pcm.toArray(), null, null);
-
-            Intent intentSend = new Intent(Intent.ACTION_SEND);
-            intentSend.setType("sound/wav");
-            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
-            intentSend.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-
-            Intent intentChooser = Intent.createChooser(intentSend, "Share *.wav");
-            intentChooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            this.startActivity(intentChooser);
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    public void shareMp3(RingtoneVM ringtone){
-        if (ringtone == null) return;
-
-        try{
-            final File fileWav = new File(getExternalCacheDir().getPath(), "2015nokiacomposer.wav");
-
-            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
-            WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
-            AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
-                @Override
-                public void onComplete() {
-                    ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
-                }
-            });
-
-            final File fileMp3 = new File(getExternalCacheDir().getPath(), "2015nokiacomposer.mp3");
-            Intent intentSend = new Intent(Intent.ACTION_SEND);
-            intentSend.setType("sound/mp3");
-            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
-            intentSend.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileMp3));
-
-            Intent intentChooser = Intent.createChooser(intentSend, "Share *.mp3");
-            intentChooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            this.startActivity(intentChooser);
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
     }
 }

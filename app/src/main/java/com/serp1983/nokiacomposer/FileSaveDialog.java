@@ -29,26 +29,6 @@ public class FileSaveDialog extends Dialog {
     private ArrayList<String> mTypeArray;
     private int mPreviousSelection;
 
-    /**
-     * Return a human-readable name for a kind (music, alarm, ringtone, ...).
-     * These won't be displayed on-screen (just in logs) so they shouldn't
-     * be translated.
-     */
-    public static String KindToName(int kind) {
-        switch(kind) {
-            default:
-                return "Unknown";
-            case FILE_KIND_MUSIC:
-                return "Music";
-            case FILE_KIND_ALARM:
-                return "Alarm";
-            case FILE_KIND_NOTIFICATION:
-                return "Notification";
-            case FILE_KIND_RINGTONE:
-                return "Ringtone";
-        }
-    }
-
     public FileSaveDialog(Context context,
                           Resources resources,
                           String originalName,
