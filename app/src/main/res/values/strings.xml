@@ -8,7 +8,7 @@
     <string name="action_share_text">Share text</string>
     <string name="action_share_wav">Share *.wav</string>
     <string name="action_share_mp3">Share *.mp3</string>
-    <string name="action_save_as">Save As</string>
+    <string name="action_save_as">Save As Ringtone</string>
 
     <!--
      File Save dialog
@@ -22,7 +22,7 @@
     <string name="type_alarm">Alarm</string>
     <string name="type_notification">Notification</string>
     <string name="type_ringtone">Ringtone</string>
-    <string name="no_unique_filename">Unable to find unique filename</string>
+    <string name="no_unique_filename">Unable to find unique filename!</string>
     <string name="alert_title_success">Success</string>
     <string name="alert_ok_button">OK</string>
     <string name="save_success_message">Saved!</string>
@@ -34,4 +34,5 @@
     <string name="default_ringtone_success_message">Changed default ringtone</string>
     <string name="default_notification_success_message">Changed default notification</string>
     <string name="default_alarm_success_message">Changed default alarm</string>
+    <string name="already_ringtone_exists">Already ringtone with same name exists!</string>
 </resources>

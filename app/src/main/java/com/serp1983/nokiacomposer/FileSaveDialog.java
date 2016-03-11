@@ -67,6 +67,7 @@ public class FileSaveDialog extends Dialog {
                                        long id) {
                 setFilenameEditBoxFromName(true);
             }
+
             public void onNothingSelected(AdapterView parent) {
             }
         });

@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -209,6 +210,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (findRingtone(MediaStore.Audio.Media.INTERNAL_CONTENT_URI, title) ||
+            findRingtone(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, title)){
+            showFinalAlert(getString(R.string.already_ringtone_exists));
+            return;
+        }
+
         final File outFile = new File(outPath);
         try {
             final File fileWav = new File(getExternalCacheDir().getPath(), "2015nokiacomposer.wav");
@@ -233,6 +240,25 @@ public class MainActivity extends AppCompatActivity {
             x.printStackTrace();
         }
     }
+
+    private Boolean findRingtone(Uri uri, CharSequence title){
+        Cursor c = this.getContentResolver().query(
+                uri,
+                new String[] { MediaStore.Audio.Media.TITLE},
+                null, null, null);
+
+        StringBuilder sb = new StringBuilder(title.length());
+        sb.append(title);
+        String titleString = sb.toString();
+
+        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+            if (titleString.equals(c.getString(0)))
+                return true;
+        }
+        c.close();
+        return false;
+    }
+
 
     private void afterSavingRingtone(CharSequence title, File outFile, int fileKind) {
         long fileSize = outFile.length();
@@ -303,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
                                 RingtoneManager.setActualDefaultRingtoneUri(MainActivity.this,
-                                        type,newUri);
+                                        type, newUri);
                                 Toast.makeText(MainActivity.this, successMsgId, Toast.LENGTH_SHORT)
                                         .show();
                             }
@@ -318,14 +344,7 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(
-                        R.string.alert_ok_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int whichButton) {
-                                finish();
-                            }
-                        })
+                .setPositiveButton(R.string.alert_ok_button, null)
                 .setCancelable(false)
                 .show();
     }
