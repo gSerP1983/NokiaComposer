@@ -242,20 +242,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Boolean findRingtone(Uri uri, CharSequence title){
-        Cursor c = this.getContentResolver().query(
-                uri,
-                new String[] { MediaStore.Audio.Media.TITLE},
-                null, null, null);
+        try {
+            Cursor c = this.getContentResolver().query(
+                    uri,
+                    new String[]{MediaStore.Audio.Media.TITLE},
+                    null, null, null);
 
-        StringBuilder sb = new StringBuilder(title.length());
-        sb.append(title);
-        String titleString = sb.toString();
+            StringBuilder sb = new StringBuilder(title.length());
+            sb.append(title);
+            String titleString = sb.toString();
 
-        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            if (titleString.equals(c.getString(0)))
-                return true;
+            for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+                if (titleString.equals(c.getString(0)))
+                    return true;
+            }
+            c.close();
         }
-        c.close();
+        catch(Exception e){
+            e.printStackTrace();
+        }
         return false;
     }
 
