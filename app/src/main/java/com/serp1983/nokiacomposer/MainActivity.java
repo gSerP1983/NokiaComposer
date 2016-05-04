@@ -399,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
         String codeStr = _editTextCode.getText().toString();
         String tempoStr = _editTextTempo.getText().toString();
 
-        if (codeStr.isEmpty() || tempoStr.isEmpty())
+        if (codeStr.isEmpty() || tempoStr.isEmpty() || tempoStr.length() > 4)
             return false;
 
         int tempo = Integer.parseInt(tempoStr);
