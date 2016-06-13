@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -333,6 +334,18 @@ public class MainActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
+
+                                // java.lang.SecurityException: com.serp1983.nokiacomposer
+                                // was not granted  this permission: android.permission.WRITE_SETTINGS
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    if (!Settings.System.canWrite(MainActivity.this)){
+                                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                                        intent.setData(Uri.parse("package:" + MainActivity.this.getPackageName()));
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
+                                }
+
                                 RingtoneManager.setActualDefaultRingtoneUri(MainActivity.this,
                                         type, newUri);
                                 Toast.makeText(MainActivity.this, successMsgId, Toast.LENGTH_SHORT)
