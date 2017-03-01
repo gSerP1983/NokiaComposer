@@ -16,16 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-/**
- * Created by Serp on 12.11.15.
- */
-public class DataService {
+class DataService {
     private static DataService ourInstance;
-    public static DataService getInstance() {
+    static DataService getInstance() {
         return ourInstance;
     }
 
-    public static void initialize(ContextWrapper context){
+    static void initialize(ContextWrapper context){
         ourInstance = new DataService(context);
     }
 
@@ -63,7 +60,7 @@ public class DataService {
         return allRingtones;
     }
 
-    public Boolean deleteMyRingtone(RingtoneVM ringtone){
+    Boolean deleteMyRingtone(RingtoneVM ringtone){
         if (ringtone.IsMy == null || !ringtone.IsMy) return false;
         try {
             RingtoneVM[] rigtones = delete(myRingtones, ringtone);
@@ -77,7 +74,7 @@ public class DataService {
         return true;
     }
 
-    public Boolean saveMyRingtone(RingtoneVM ringtone){
+    Boolean saveMyRingtone(RingtoneVM ringtone){
         try{
             RingtoneVM[] rigtones = append(myRingtones, ringtone);
             saveMyRingtones(rigtones);
@@ -102,9 +99,12 @@ public class DataService {
 
     private static File getMyRingtonesFile(Context context) throws IOException {
         File outputDir = context.getExternalCacheDir();
+        if (outputDir == null)
+            return null;
         return new File(outputDir.getPath(), "ringtones.json");
     }
 
+    @SafeVarargs
     private static <T> T[] concat(T[]... arrays) {
         ArrayList<T> al = new ArrayList<>();
         for (T[] one : arrays)

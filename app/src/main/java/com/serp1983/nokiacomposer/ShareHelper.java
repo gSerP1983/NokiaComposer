@@ -12,12 +12,9 @@ import com.singlecellsoftware.mp3convert.ConvertActivity;
 
 import java.io.File;
 
-/**
- * Created by Serp on 09.03.2016.
- */
-public class ShareHelper {
+class ShareHelper {
 
-    public static void shareText(Activity activity, RingtoneVM ringtone){
+    static void shareText(Activity activity, RingtoneVM ringtone){
         if (ringtone == null) return;
         try{
             Intent intentSend = new Intent(Intent.ACTION_SEND);
@@ -35,11 +32,11 @@ public class ShareHelper {
         }
     }
 
-    public static void shareWav(Activity activity, RingtoneVM ringtone){
+    static void shareWav(Activity activity, RingtoneVM ringtone){
         if (ringtone == null) return;
 
         try{
-            File file = new File(activity.getExternalCacheDir().getPath(), "2015nokiacomposer.wav");
+            File file = new File(activity.getExternalCacheDir().getPath(), "nokiacomposer.wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
             WaveWriter writer = new WaveWriter(file, 44100, 1, 16);
@@ -60,11 +57,11 @@ public class ShareHelper {
         }
     }
 
-    public static void shareMp3(Activity activity, RingtoneVM ringtone){
+    static void shareMp3(Activity activity, RingtoneVM ringtone){
         if (ringtone == null) return;
 
         try{
-            final File fileWav = new File(activity.getExternalCacheDir().getPath(), "2015nokiacomposer.wav");
+            final File fileWav = new File(activity.getExternalCacheDir().getPath(), "nokiacomposer.wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
             WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
@@ -75,7 +72,7 @@ public class ShareHelper {
                 }
             });
 
-            final File fileMp3 = new File(activity.getExternalCacheDir().getPath(), "2015nokiacomposer.mp3");
+            final File fileMp3 = new File(activity.getExternalCacheDir().getPath(), "nokiacomposer.mp3");
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("sound/mp3");
             intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);

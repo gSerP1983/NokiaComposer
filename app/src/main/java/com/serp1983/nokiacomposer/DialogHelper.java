@@ -15,14 +15,11 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-/**
- * Created by Serp on 09.11.2015.
- */
-public class DialogHelper {
-    public interface Callback<T> {
+class DialogHelper {
+    interface Callback<T> {
         void onComplete(T input);
     }
-    public static void inputDialog(Context context, String title, String hint, String defValue,
+    static void inputDialog(Context context, String title, String hint, String defValue,
                                    final Callback callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (!title.isEmpty()) builder.setTitle(title);
@@ -50,7 +47,7 @@ public class DialogHelper {
         builder.show();
     }
 
-    public static <T> void selectRingtoneDialog(Activity activity, T[] ringtones, final Callback<T> callback){
+    static <T> void selectRingtoneDialog(Activity activity, T[] ringtones, final Callback<T> callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Select ringtone:");
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -100,7 +97,7 @@ public class DialogHelper {
         dialog.show();
     }
 
-    public static <T> void shareDialog(Activity activity, final Callback<T> callback){
+    static <T> void shareDialog(Activity activity, final Callback<T> callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.share_list, null);

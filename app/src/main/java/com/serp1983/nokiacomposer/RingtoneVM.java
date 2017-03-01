@@ -3,16 +3,13 @@ package com.serp1983.nokiacomposer;
 import java.util.Arrays;
 import java.util.Comparator;
 
-/**
- * Created by Serp on 08.11.2015.
- */
-public class RingtoneVM {
-    public String Name;
-    public String Code;
-    public int Tempo;
-    public Boolean IsMy = false;
+class RingtoneVM {
+    String Name;
+    String Code;
+    int Tempo;
+    Boolean IsMy = false;
 
-    public RingtoneVM(String name, int tempo, String code){
+    RingtoneVM(String name, int tempo, String code){
         this.Name = name;
         this.Code = code;
         this.Tempo = tempo;
@@ -23,7 +20,7 @@ public class RingtoneVM {
         return Name;
     }
 
-    public static void sort(RingtoneVM[] ringtones){
+    static void sort(RingtoneVM[] ringtones){
         Arrays.sort(ringtones, new Comparator<RingtoneVM>() {
             @Override
             public int compare(RingtoneVM obj1, RingtoneVM obj2) {

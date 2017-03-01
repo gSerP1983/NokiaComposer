@@ -15,7 +15,7 @@
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.AppCompatSpinner
-        android:hint="Type:"
+        android:hint="@string/ringtone_type_label"
         android:layout_marginTop="9dip"
         android:layout_marginLeft="10dip"
         android:layout_width="match_parent"
@@ -23,14 +23,14 @@
         android:id="@+id/ringtone_type"/>
 
     <android.support.design.widget.TextInputLayout
-        android:hint="Name:"
+        android:hint="@string/ringtone_name_label"
         android:layout_marginTop="20dip"
         android:layout_marginLeft="10dip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textInputLayoutFileName">
         <android.support.v7.widget.AppCompatEditText
-            android:hint="Name:"
+            android:hint="@string/ringtone_name_label"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/filename"/>

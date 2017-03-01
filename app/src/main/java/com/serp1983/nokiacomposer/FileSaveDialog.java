@@ -13,14 +13,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import java.util.ArrayList;
 
-public class FileSaveDialog extends Dialog {
+class FileSaveDialog extends Dialog {
 
     // File kinds - these should correspond to the order in which
     // they're presented in the spinner control
-    public static final int FILE_KIND_MUSIC = 0;
-    public static final int FILE_KIND_ALARM = 1;
-    public static final int FILE_KIND_NOTIFICATION = 2;
-    public static final int FILE_KIND_RINGTONE = 3;
+    static final int FILE_KIND_MUSIC = 0;
+    static final int FILE_KIND_ALARM = 1;
+    static final int FILE_KIND_NOTIFICATION = 2;
+    static final int FILE_KIND_RINGTONE = 3;
 
     private Spinner mTypeSpinner;
     private EditText mFilename;
@@ -29,7 +29,7 @@ public class FileSaveDialog extends Dialog {
     private ArrayList<String> mTypeArray;
     private int mPreviousSelection;
 
-    public FileSaveDialog(Context context,
+    FileSaveDialog(Context context,
                           Resources resources,
                           String originalName,
                           Message response) {
@@ -73,8 +73,21 @@ public class FileSaveDialog extends Dialog {
         });
 
         Button save = (Button)findViewById(R.id.save);
+        View.OnClickListener saveListener = new View.OnClickListener() {
+            public void onClick(View view) {
+                mResponse.obj = mFilename.getText();
+                mResponse.arg1 = mTypeSpinner.getSelectedItemPosition();
+                mResponse.sendToTarget();
+                dismiss();
+            }
+        };
         save.setOnClickListener(saveListener);
         Button cancel = (Button)findViewById(R.id.cancel);
+        View.OnClickListener cancelListener = new View.OnClickListener() {
+            public void onClick(View view) {
+                dismiss();
+            }
+        };
         cancel.setOnClickListener(cancelListener);
         mResponse = response;
     }
@@ -96,18 +109,4 @@ public class FileSaveDialog extends Dialog {
         mPreviousSelection = mTypeSpinner.getSelectedItemPosition();
     }
 
-    private View.OnClickListener saveListener = new View.OnClickListener() {
-        public void onClick(View view) {
-            mResponse.obj = mFilename.getText();
-            mResponse.arg1 = mTypeSpinner.getSelectedItemPosition();
-            mResponse.sendToTarget();
-            dismiss();
-        }
-    };
-
-    private View.OnClickListener cancelListener = new View.OnClickListener() {
-        public void onClick(View view) {
-            dismiss();
-        }
-    };
 }
