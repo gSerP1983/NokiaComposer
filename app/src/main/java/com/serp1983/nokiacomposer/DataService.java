@@ -41,6 +41,7 @@ class DataService {
             e.printStackTrace();
         }
         if (assetRingtones == null) assetRingtones = new RingtoneVM[]{};
+        RingtoneVM.sort(assetRingtones);
 
         try {
             File file = getMyRingtonesFile(context);
@@ -52,9 +53,18 @@ class DataService {
             e.printStackTrace();
         }
         if (myRingtones == null) myRingtones = new RingtoneVM[]{};
+        RingtoneVM.sort(myRingtones);
     }
 
-    public RingtoneVM[] getAll(){
+    RingtoneVM[] getAssetRingtones(){
+        return assetRingtones;
+    }
+
+    RingtoneVM[] getMyRingtones(){
+        return myRingtones;
+    }
+
+    RingtoneVM[] getAll(){
         RingtoneVM[] allRingtones = concat(assetRingtones, myRingtones);
         RingtoneVM.sort(allRingtones);
         return allRingtones;

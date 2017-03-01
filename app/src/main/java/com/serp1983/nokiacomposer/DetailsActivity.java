@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -57,11 +58,14 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_details);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        DataService.initialize(this);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            // bar.setTitle(getString(R.string.action_help));
+            bar.setDisplayHomeAsUpEnabled(true);
+        }
 
         _root = (ViewGroup) findViewById(R.id.root);
         _sceneRoot = (ViewGroup) findViewById(R.id.scene_root);
@@ -125,7 +129,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_details, menu);
         return true;
     }
 
@@ -139,6 +143,11 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
 
         if (id == R.id.action_open) {
             open();
@@ -252,6 +261,8 @@ public class DetailsActivity extends AppCompatActivity {
                     uri,
                     new String[]{MediaStore.Audio.Media.TITLE},
                     null, null, null);
+            if (c == null)
+                return false;
 
             String titleString = String.valueOf(title);
             for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
