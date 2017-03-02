@@ -1,15 +1,15 @@
-package com.serp1983.nokiacomposer;
+package com.serp1983.nokiacomposer.logic;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-class RingtoneVM {
-    String Name;
-    String Code;
-    int Tempo;
-    Boolean IsMy = false;
+public class RingtoneVM {
+    public String Name;
+    public String Code;
+    public int Tempo;
+    public Boolean IsMy = false;
 
-    RingtoneVM(String name, int tempo, String code){
+    public RingtoneVM(String name, int tempo, String code){
         this.Name = name;
         this.Code = code;
         this.Tempo = tempo;
@@ -20,7 +20,7 @@ class RingtoneVM {
         return Name;
     }
 
-    static void sort(RingtoneVM[] ringtones){
+    public static void sort(RingtoneVM[] ringtones){
         Arrays.sort(ringtones, new Comparator<RingtoneVM>() {
             @Override
             public int compare(RingtoneVM obj1, RingtoneVM obj2) {

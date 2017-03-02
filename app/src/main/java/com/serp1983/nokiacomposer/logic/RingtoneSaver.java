@@ -1,16 +1,9 @@
-package com.serp1983.nokiacomposer;
-
-import android.content.ContentValues;
-import android.net.Uri;
-import android.provider.MediaStore;
+package com.serp1983.nokiacomposer.logic;
 
 import java.io.File;
 import java.io.RandomAccessFile;
 import static com.serp1983.nokiacomposer.FileSaveDialog.*;
 
-/**
- * Created by Serp on 26.01.2016.
- */
 public class RingtoneSaver {
 
     public static String makeRingtoneFilename(CharSequence title, String extension, int fileKind) {

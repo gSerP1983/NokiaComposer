@@ -64,7 +64,7 @@ class DialogHelper {
         final AlertDialog dialog = builder.create();
 
         final ListView listView = (ListView) convertView.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter(activity, android.R.layout.simple_list_item_1, ringtones));
+        listView.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, ringtones));
         listView.setTextFilterEnabled(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

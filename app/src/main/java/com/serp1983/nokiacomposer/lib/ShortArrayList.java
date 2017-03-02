@@ -1,4 +1,4 @@
-package com.com.serp1983.nokiacomposer.lib;
+package com.serp1983.nokiacomposer.lib;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,7 +13,7 @@ public class ShortArrayList implements Serializable {
   private short[] array;
   private int size;
 
-  public static int initialCapacity = 1000;
+  private static int initialCapacity = 1000;
 
   /**
    * Constructs an empty list with an initial capacity.

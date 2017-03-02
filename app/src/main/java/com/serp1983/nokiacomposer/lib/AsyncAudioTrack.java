@@ -1,4 +1,4 @@
-package com.com.serp1983.nokiacomposer.lib;
+package com.serp1983.nokiacomposer.lib;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,8 +11,8 @@ public class AsyncAudioTrack implements Runnable {
 	private static AsyncAudioTrack instance;
 	public static  Boolean isRun;
 
-	byte[] _buffer;
-	AudioTrack _audioTrack;
+	private byte[] _buffer;
+	private AudioTrack _audioTrack;
 	private Callback _callback;
 	public interface Callback {
 		void onComplete();

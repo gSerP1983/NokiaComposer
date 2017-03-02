@@ -13,14 +13,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import java.util.ArrayList;
 
-class FileSaveDialog extends Dialog {
+public class FileSaveDialog extends Dialog {
 
     // File kinds - these should correspond to the order in which
     // they're presented in the spinner control
-    static final int FILE_KIND_MUSIC = 0;
-    static final int FILE_KIND_ALARM = 1;
-    static final int FILE_KIND_NOTIFICATION = 2;
-    static final int FILE_KIND_RINGTONE = 3;
+    public static final int FILE_KIND_MUSIC = 0;
+    public static final int FILE_KIND_ALARM = 1;
+    public static final int FILE_KIND_NOTIFICATION = 2;
+    public static final int FILE_KIND_RINGTONE = 3;
 
     private Spinner mTypeSpinner;
     private EditText mFilename;

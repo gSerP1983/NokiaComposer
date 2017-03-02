@@ -1,8 +1,5 @@
 package com.singlecellsoftware.mp3convert;
 
-/**
- * Created by Serp on 23.11.2015.
- */
 public class ConvertActivity {
     static
     {

@@ -15,6 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.serp1983.nokiacomposer.logic.DataService;
+import com.serp1983.nokiacomposer.logic.RingtoneVM;
+
 
 public class RingtonesFragment extends Fragment {
     private static final String ARG_POSITION = "position";

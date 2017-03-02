@@ -1,4 +1,4 @@
-package com.com.serp1983.nokiacomposer.lib;
+package com.serp1983.nokiacomposer.lib;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -15,9 +15,9 @@ public class AsyncWaveWriter implements Runnable {
         executor.shutdown();
 	}
 
-	WaveWriter _writer;
-	short[] pcm1stChanel;
-	short[] pcm2ndChanel;
+	private WaveWriter _writer;
+	private short[] pcm1stChanel;
+	private short[] pcm2ndChanel;
 	private Callback _callback;
 	public interface Callback {
 		void onComplete();

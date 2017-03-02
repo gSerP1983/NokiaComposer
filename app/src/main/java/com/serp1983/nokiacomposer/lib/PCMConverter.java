@@ -1,8 +1,6 @@
-package com.com.serp1983.nokiacomposer.lib;
+package com.serp1983.nokiacomposer.lib;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -25,8 +23,8 @@ public class PCMConverter {
 		}
 		return array;
 	}
-    
-	Map<String, Float> notes = new HashMap<>();
+
+	private Map<String, Float> notes = new HashMap<>();
 
 	private PCMConverter(){
 		notes.put("-", 0f);
@@ -74,7 +72,7 @@ public class PCMConverter {
 	}
 	
 	@SuppressLint("DefaultLocale")
-	public ShortArrayList convert(String nokiaCodes, float tempo /*120*/, float volume /*1*/){
+	private ShortArrayList convert(String nokiaCodes, float tempo /*120*/, float volume /*1*/){
 		ShortArrayList pcm = new ShortArrayList();		
 		String[] tokens = nokiaCodes.toUpperCase().split(" ");
 		

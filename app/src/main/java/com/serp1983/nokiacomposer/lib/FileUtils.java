@@ -1,4 +1,4 @@
-package com.com.serp1983.nokiacomposer.lib;
+package com.serp1983.nokiacomposer.lib;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Created by Serp on 27.01.2016.
- */
 public class FileUtils {
     public static void copy(File src, File dst) throws IOException {
         InputStream in = new FileInputStream(src);

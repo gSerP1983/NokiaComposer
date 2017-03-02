@@ -1,4 +1,4 @@
-package com.com.serp1983.nokiacomposer.lib;
+package com.serp1983.nokiacomposer.lib;
 
 import android.content.Context;
 

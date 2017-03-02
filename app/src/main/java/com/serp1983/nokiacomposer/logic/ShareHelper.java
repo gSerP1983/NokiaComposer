@@ -1,21 +1,23 @@
-package com.serp1983.nokiacomposer;
+package com.serp1983.nokiacomposer.logic;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
-import com.com.serp1983.nokiacomposer.lib.PCMConverter;
-import com.com.serp1983.nokiacomposer.lib.ShortArrayList;
+import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
+import com.serp1983.nokiacomposer.lib.PCMConverter;
+import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.intervigil.wave.WaveWriter;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
 
 import java.io.File;
 
-class ShareHelper {
+public class ShareHelper {
 
-    static void shareText(Activity activity, RingtoneVM ringtone){
-        if (ringtone == null) return;
+    public static void shareText(Activity activity, RingtoneVM ringtone){
+        if (ringtone == null)
+            return;
+
         try{
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("text/plain");
@@ -32,11 +34,16 @@ class ShareHelper {
         }
     }
 
-    static void shareWav(Activity activity, RingtoneVM ringtone){
-        if (ringtone == null) return;
+    public static void shareWav(Activity activity, RingtoneVM ringtone){
+        if (ringtone == null)
+            return;
+
+        File externalCacheDir = activity.getExternalCacheDir();
+        if (externalCacheDir == null)
+            return;
 
         try{
-            File file = new File(activity.getExternalCacheDir().getPath(), "nokiacomposer.wav");
+            File file = new File(externalCacheDir.getPath(), "nokiacomposer.wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
             WaveWriter writer = new WaveWriter(file, 44100, 1, 16);
@@ -57,11 +64,16 @@ class ShareHelper {
         }
     }
 
-    static void shareMp3(Activity activity, RingtoneVM ringtone){
-        if (ringtone == null) return;
+    public static void shareMp3(Activity activity, RingtoneVM ringtone){
+        if (ringtone == null)
+            return;
+
+        File externalCacheDir = activity.getExternalCacheDir();
+        if (externalCacheDir == null)
+            return;
 
         try{
-            final File fileWav = new File(activity.getExternalCacheDir().getPath(), "nokiacomposer.wav");
+            final File fileWav = new File(externalCacheDir.getPath(), "nokiacomposer.wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
             WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);

@@ -30,14 +30,19 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
-import com.com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
-import com.com.serp1983.nokiacomposer.lib.FileUtils;
-import com.com.serp1983.nokiacomposer.lib.PCMConverter;
-import com.com.serp1983.nokiacomposer.lib.ShortArrayList;
+import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
+import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
+import com.serp1983.nokiacomposer.lib.FileUtils;
+import com.serp1983.nokiacomposer.lib.PCMConverter;
+import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.intervigil.wave.WaveWriter;
+import com.serp1983.nokiacomposer.logic.Constants;
+import com.serp1983.nokiacomposer.logic.DataService;
+import com.serp1983.nokiacomposer.logic.RingtoneSaver;
+import com.serp1983.nokiacomposer.logic.RingtoneVM;
+import com.serp1983.nokiacomposer.logic.ShareHelper;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
 
 import java.io.File;
@@ -160,7 +165,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_delete) {
-            if (DataService.getInstance().deleteMyRingtone(currentRingtone)){
+            if (DataService.getInstance().deleteMyRingtone(DetailsActivity.this, currentRingtone)){
                 Toast.makeText(DetailsActivity.this, currentRingtone.Name + " deleted...", Toast.LENGTH_SHORT).show();
                 currentRingtone.IsMy = false;
             }
@@ -483,7 +488,7 @@ public class DetailsActivity extends AppCompatActivity {
                 if (!input.isEmpty()) {
                     ringtone.IsMy = true;
                     ringtone.Name = input;
-                    if (DataService.getInstance().saveMyRingtone(ringtone))
+                    if (DataService.getInstance().saveMyRingtone(DetailsActivity.this, ringtone))
                         Toast.makeText(DetailsActivity.this, input + " saved...", Toast.LENGTH_SHORT).show();
                 }
             }

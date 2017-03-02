@@ -1,9 +1,10 @@
-package com.serp1983.nokiacomposer;
+package com.serp1983.nokiacomposer.logic;
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.AssetManager;
 import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -16,22 +17,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-class DataService {
+public class DataService {
     private static DataService ourInstance;
-    static DataService getInstance() {
+    public static DataService getInstance() {
         return ourInstance;
     }
 
-    static void initialize(ContextWrapper context){
+    public static void initialize(ContextWrapper context){
         ourInstance = new DataService(context);
     }
 
-    private ContextWrapper context;
     private RingtoneVM[] assetRingtones;
     private RingtoneVM[] myRingtones;
 
     private DataService(ContextWrapper context) {
-        this.context = context;
         try {
             AssetManager assetManager = context.getAssets();
             InputStream ims = assetManager.open("Ringtones.json");
@@ -40,8 +39,10 @@ class DataService {
         }catch(Exception e) {
             e.printStackTrace();
         }
-        if (assetRingtones == null) assetRingtones = new RingtoneVM[]{};
-        RingtoneVM.sort(assetRingtones);
+        if (assetRingtones == null)
+            assetRingtones = new RingtoneVM[]{};
+        else
+            RingtoneVM.sort(assetRingtones);
 
         try {
             File file = getMyRingtonesFile(context);
@@ -52,29 +53,31 @@ class DataService {
         }catch(Exception e) {
             e.printStackTrace();
         }
-        if (myRingtones == null) myRingtones = new RingtoneVM[]{};
-        RingtoneVM.sort(myRingtones);
+        if (myRingtones == null)
+            myRingtones = new RingtoneVM[]{};
+        else
+            RingtoneVM.sort(myRingtones);
     }
 
-    RingtoneVM[] getAssetRingtones(){
+    public RingtoneVM[] getAssetRingtones(){
         return assetRingtones;
     }
 
-    RingtoneVM[] getMyRingtones(){
+    public RingtoneVM[] getMyRingtones(){
         return myRingtones;
     }
 
-    RingtoneVM[] getAll(){
+    public RingtoneVM[] getAll(){
         RingtoneVM[] allRingtones = concat(assetRingtones, myRingtones);
         RingtoneVM.sort(allRingtones);
         return allRingtones;
     }
 
-    Boolean deleteMyRingtone(RingtoneVM ringtone){
+    public Boolean deleteMyRingtone(Context context, RingtoneVM ringtone){
         if (ringtone.IsMy == null || !ringtone.IsMy) return false;
         try {
             RingtoneVM[] rigtones = delete(myRingtones, ringtone);
-            saveMyRingtones(rigtones);
+            saveMyRingtones(context, rigtones);
             myRingtones = rigtones;
         }
         catch(Exception e){
@@ -84,10 +87,10 @@ class DataService {
         return true;
     }
 
-    Boolean saveMyRingtone(RingtoneVM ringtone){
+    public Boolean saveMyRingtone(Context context, RingtoneVM ringtone){
         try{
             RingtoneVM[] rigtones = append(myRingtones, ringtone);
-            saveMyRingtones(rigtones);
+            saveMyRingtones(context, rigtones);
             myRingtones = rigtones;
         }
         catch(Exception e){
@@ -97,7 +100,7 @@ class DataService {
         return true;
     }
 
-    private void saveMyRingtones(RingtoneVM[] rigtones) throws IOException {
+    private void saveMyRingtones(Context context, RingtoneVM[] rigtones) throws IOException {
         File file = getMyRingtonesFile(context);
         if (file == null)
             return;

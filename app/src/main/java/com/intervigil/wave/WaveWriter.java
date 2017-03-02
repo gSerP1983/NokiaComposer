@@ -180,7 +180,6 @@ public class WaveWriter {
         file.writeInt(Integer.reverseBytes(mBytesWritten)); // data subchunk size
 
         file.close();
-        file = null;
     }
 
     private static void writeUnsignedShortLE(BufferedOutputStream stream, short sample)

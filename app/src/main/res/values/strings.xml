@@ -9,7 +9,7 @@
     <string name="action_share_wav">Share *.wav</string>
     <string name="action_share_mp3">Share *.mp3</string>
     <string name="action_save_as">Save As Ringtone</string>
-
+    <string name="action_search">Search</string>
     <!--
      File Save dialog
      -->
