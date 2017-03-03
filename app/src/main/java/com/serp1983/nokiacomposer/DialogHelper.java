@@ -1,24 +1,28 @@
 package com.serp1983.nokiacomposer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.ArrayRes;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
+
+import com.serp1983.nokiacomposer.logic.RingtoneVM;
+import com.serp1983.nokiacomposer.logic.ShareHelper;
 
 class DialogHelper {
     interface Callback<T> {
         void onComplete(T input);
     }
+
+    private final static DialogInterface.OnClickListener nullOnClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+    };
+
     static void inputDialog(Context context, String title, String hint, String defValue,
                                    final Callback callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -47,32 +51,45 @@ class DialogHelper {
         builder.show();
     }
 
-    static <T> void shareDialog(Activity activity, final Callback<T> callback){
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.share_list, null);
-        builder.setView(convertView);
+    private static void showSingleChoice(
+            Context context,
+            String title,
+            @ArrayRes int itemsId,
+            int checkedItem,
+            DialogInterface.OnClickListener choiceOnClickListener,
+            DialogInterface.OnClickListener cancelOnClickListener) {
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        if (choiceOnClickListener == null) choiceOnClickListener = nullOnClickListener;
+        if (cancelOnClickListener == null) cancelOnClickListener = nullOnClickListener;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setSingleChoiceItems(itemsId, checkedItem, choiceOnClickListener)
+                .setNegativeButton(android.R.string.cancel, cancelOnClickListener);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+    static void showShareDialog(final Context context, final RingtoneVM ringtone){
+        String title = context.getString(R.string.action_share) + ":";
+        DialogHelper.showSingleChoice(context, title, R.array.share_array, -1, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        final AlertDialog dialog = builder.create();
-
-        final ListView listView = (ListView) convertView.findViewById(R.id.listView);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (callback != null)
-                    callback.onComplete((T) parent.getAdapter().getItem(position));
+            public void onClick(DialogInterface dialog, int item) {
+                CharSequence[] arr = context.getResources().getTextArray(R.array.share_array);
+                if (item >= 0 && item < arr.length) {
+                    String input = arr[item].toString();
+                    if (input.equals(context.getString(R.string.action_share_text)))
+                        ShareHelper.shareText(context, ringtone);
+                    if (input.equals(context.getString(R.string.action_share_wav)))
+                        ShareHelper.shareWav(context, ringtone);
+                    if (input.equals(context.getString(R.string.action_share_mp3)))
+                        ShareHelper.shareMp3(context, ringtone);
+                }
                 dialog.dismiss();
             }
-        });
-
-        dialog.show();
+        }, null);
     }
 
 }

@@ -94,9 +94,26 @@ public class RingtonesFragment extends Fragment {
         return view;
     }
 
-    public static void showRingtoneMenu(View view, RingtoneVM ringtone) {
+    public static void showRingtoneMenu(final View view, final RingtoneVM ringtone) {
         PopupMenu popup = new PopupMenu(view.getContext(), view);
         popup.inflate(ringtone.IsMy ? R.menu.menu_my_ringtone : R.menu.menu_ringtone);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_delete:
+                        break;
+                    case R.id.action_set_as_ringtone:
+                        break;
+                    case R.id.action_share:
+                        DialogHelper.showShareDialog(view.getContext(), ringtone);
+                        break;
+                }
+                return false;
+            }
+        });
+
         popup.show();
     }
 }

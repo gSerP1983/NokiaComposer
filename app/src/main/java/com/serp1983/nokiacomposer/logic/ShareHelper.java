@@ -1,6 +1,6 @@
 package com.serp1983.nokiacomposer.logic;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -14,7 +14,7 @@ import java.io.File;
 
 public class ShareHelper {
 
-    public static void shareText(Activity activity, RingtoneVM ringtone){
+    public static void shareText(Context context, RingtoneVM ringtone){
         if (ringtone == null)
             return;
 
@@ -27,18 +27,18 @@ public class ShareHelper {
             Intent intentChooser = Intent.createChooser(intentSend, "Share");
             intentChooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            activity.startActivity(intentChooser);
+            context.startActivity(intentChooser);
         }
         catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    public static void shareWav(Activity activity, RingtoneVM ringtone){
+    public static void shareWav(Context context, RingtoneVM ringtone){
         if (ringtone == null)
             return;
 
-        File externalCacheDir = activity.getExternalCacheDir();
+        File externalCacheDir = context.getExternalCacheDir();
         if (externalCacheDir == null)
             return;
 
@@ -57,18 +57,18 @@ public class ShareHelper {
             Intent intentChooser = Intent.createChooser(intentSend, "Share *.wav");
             intentChooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            activity.startActivity(intentChooser);
+            context.startActivity(intentChooser);
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
     }
 
-    public static void shareMp3(Activity activity, RingtoneVM ringtone){
+    public static void shareMp3(Context context, RingtoneVM ringtone){
         if (ringtone == null)
             return;
 
-        File externalCacheDir = activity.getExternalCacheDir();
+        File externalCacheDir = context.getExternalCacheDir();
         if (externalCacheDir == null)
             return;
 
@@ -84,7 +84,7 @@ public class ShareHelper {
                 }
             });
 
-            final File fileMp3 = new File(activity.getExternalCacheDir().getPath(), "nokiacomposer.mp3");
+            final File fileMp3 = new File(externalCacheDir.getPath(), "nokiacomposer.mp3");
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("sound/mp3");
             intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
@@ -93,7 +93,7 @@ public class ShareHelper {
             Intent intentChooser = Intent.createChooser(intentSend, "Share *.mp3");
             intentChooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            activity.startActivity(intentChooser);
+            context.startActivity(intentChooser);
         }
         catch(Exception ex){
             ex.printStackTrace();

@@ -163,24 +163,13 @@ public class DetailsActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.set_as_ringtone) {
+        if (id == R.id.action_set_as_ringtone) {
             saveAs();
             return true;
         }
 
         if (id == R.id.action_share) {
-            final AppCompatActivity activity = this;
-            DialogHelper.shareDialog(this, new DialogHelper.Callback<String>() {
-                @Override
-                public void onComplete(String input) {
-                    if (input.equals(activity.getString(R.string.action_share_text)))
-                        ShareHelper.shareText(activity, getCurrentRingtone());
-                    if (input.equals(activity.getString(R.string.action_share_wav)))
-                        ShareHelper.shareWav(activity, getCurrentRingtone());
-                    if (input.equals(activity.getString(R.string.action_share_mp3)))
-                        ShareHelper.shareMp3(activity, getCurrentRingtone());
-                }
-            });
+            DialogHelper.showShareDialog(this, getCurrentRingtone());
             return true;
         }
 
