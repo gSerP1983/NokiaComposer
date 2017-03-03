@@ -12,12 +12,12 @@
     tools:showIn="@layout/activity_details" tools:context=".DetailsActivity">
 
     <android.support.design.widget.TextInputLayout
-        android:hint="Tempo:"
+        android:hint="@string/ringtone_tempo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textInputLayoutTempo">
         <android.support.v7.widget.AppCompatEditText
-            android:hint="Tempo:"
+            android:hint="@string/ringtone_tempo_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
@@ -31,7 +31,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:hint="Ringtone code:"
+        android:hint="@string/ringtone_code_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textInputLayoutCode"
@@ -41,7 +41,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
         <android.support.v7.widget.AppCompatMultiAutoCompleteTextView
-            android:hint="Ringtone code:"
+            android:hint="@string/ringtone_code_label"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textMultiLine"

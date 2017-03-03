@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return position == 0 ? "Ringtones" : "My ringtones";
+            return position == 0
+                    ? App.getAppContext().getResources().getString(R.string.ringtones_label)
+                    : App.getAppContext().getResources().getString(R.string.my_ringtones_label) ;
         }
     }
 

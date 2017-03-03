@@ -1,13 +1,17 @@
 <resources>
-    <string name="app_name">Old Nokia Composer</string>
+    <string name="app_name">New Old Nokia Composer</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="action_share">Share</string>
     <string name="action_share_text">Share text</string>
     <string name="action_share_wav">Share *.wav</string>
     <string name="action_share_mp3">Share *.mp3</string>
-    <string name="set_as_ringtone">Set As Ringtone</string>
+    <string name="action_set_as_ringtone">Set As Ringtone</string>
     <string name="action_search">Search</string>
+    <string name="ringtone_tempo_label">Tempo:</string>
+    <string name="ringtone_code_label">Ringtone code:</string>
+    <string name="ringtones_label">Ringtones</string>
+    <string name="my_ringtones_label">My ringtones</string>
     <!--
      File Save dialog
      -->
@@ -22,7 +26,7 @@
     <string name="type_ringtone">Ringtone</string>
     <string name="no_unique_filename">Unable to find unique filename!</string>
     <string name="alert_title_success">Success</string>
-    <string name="alert_ok_button">OK</string>
+    <string name="alert_ok_button" translatable="false">OK</string>
     <string name="save_success_message">Saved!</string>
     <string name="set_default_notification">Saved! Make this your default notification?</string>
     <string name="set_default_ringtone">Saved! Make this your default ringtone?</string>
