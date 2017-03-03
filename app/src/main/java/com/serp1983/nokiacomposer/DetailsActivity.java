@@ -38,7 +38,6 @@ import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.intervigil.wave.WaveWriter;
-import com.serp1983.nokiacomposer.logic.Constants;
 import com.serp1983.nokiacomposer.logic.DataService;
 import com.serp1983.nokiacomposer.logic.RingtoneSaver;
 import com.serp1983.nokiacomposer.logic.RingtoneVM;
@@ -127,7 +126,9 @@ public class DetailsActivity extends AppCompatActivity {
         AdView adView = (AdView) this.findViewById(R.id.adView);
         AdRequest.Builder adBuilder = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(Constants.testDeviceId);
+                .addTestDevice("719114FF69D7B57C496D44E00E4D2324")  // lenovo p7800
+                .addTestDevice("75BA8C6263CDF31C6E0BD9C3C90C7B4C")  // sony e2033
+                ;
         adView.loadAd(adBuilder.build());
     }
 
