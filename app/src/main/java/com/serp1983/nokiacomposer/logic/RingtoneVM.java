@@ -1,13 +1,32 @@
 package com.serp1983.nokiacomposer.logic;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.serp1983.nokiacomposer.BR;
+import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
+import com.serp1983.nokiacomposer.lib.PCMConverter;
+import com.serp1983.nokiacomposer.lib.ShortArrayList;
+
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class RingtoneVM {
+public class RingtoneVM extends BaseObservable {
     public String Name;
     public String Code;
     public int Tempo;
-    public Boolean IsMy = false;
+    public boolean IsMy = false;
+
+    private boolean _isPlaying = false;
+
+    @Bindable
+    public boolean isPlaying() {
+        return _isPlaying;
+    }
+    private void setPlaying(boolean playing) {
+        _isPlaying = playing;
+        notifyPropertyChanged(BR.playing);
+    }
 
     public RingtoneVM(String name, int tempo, String code){
         this.Name = name;
@@ -20,7 +39,29 @@ public class RingtoneVM {
         return Name;
     }
 
-    public static void sort(RingtoneVM[] ringtones){
+    public void play(){
+        try {
+            if (!_isPlaying) {
+                setPlaying(true);
+                ShortArrayList pcm = PCMConverter.getInstance().convert(this.Code, this.Tempo);
+                AsyncAudioTrack.start(PCMConverter.shorts2Bytes(pcm), new AsyncAudioTrack.Callback() {
+                    @Override
+                    public void onComplete() {
+                        setPlaying(false);
+                    }
+                });
+            }
+            else
+                AsyncAudioTrack.stop();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            setPlaying(false);
+        }
+    }
+
+
+    static void sort(RingtoneVM[] ringtones){
         Arrays.sort(ringtones, new Comparator<RingtoneVM>() {
             @Override
             public int compare(RingtoneVM obj1, RingtoneVM obj2) {

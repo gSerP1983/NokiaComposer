@@ -141,7 +141,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu (Menu menu) {
-        boolean flag = currentRingtone != null && currentRingtone.IsMy != null && currentRingtone.IsMy;
+        boolean flag = currentRingtone != null && currentRingtone.IsMy;
         menu.findItem(R.id.action_delete).setEnabled(flag);
         return true;
     }

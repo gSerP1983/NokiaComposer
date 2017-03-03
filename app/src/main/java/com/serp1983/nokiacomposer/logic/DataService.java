@@ -74,7 +74,9 @@ public class DataService {
     }
 
     public Boolean deleteMyRingtone(Context context, RingtoneVM ringtone){
-        if (ringtone.IsMy == null || !ringtone.IsMy) return false;
+        if (!ringtone.IsMy)
+            return false;
+
         try {
             RingtoneVM[] rigtones = delete(myRingtones, ringtone);
             saveMyRingtones(context, rigtones);

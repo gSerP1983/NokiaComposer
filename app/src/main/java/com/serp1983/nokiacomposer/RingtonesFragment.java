@@ -81,5 +81,4 @@ public class RingtonesFragment extends Fragment {
 
         return view;
     }
-
 }
