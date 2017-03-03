@@ -8,4 +8,5 @@
     <dimen name="fabAddon_margin">64dp</dimen>
     <dimen name="tab_layout_height">32dp</dimen>
     <dimen name="card_corner_radius">6dp</dimen>
+    <dimen name="button_options_menu_width">54dp</dimen>
 </resources>

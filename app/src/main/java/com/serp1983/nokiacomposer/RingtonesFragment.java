@@ -1,8 +1,10 @@
 package com.serp1983.nokiacomposer;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -70,15 +72,31 @@ public class RingtonesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ringtones, container, false);
+        final View view = inflater.inflate(R.layout.fragment_ringtones, container, false);
 
         RingtoneVM[] ringtones = position == 0 ? DataService.getInstance().getAssetRingtones() : DataService.getInstance().getMyRingtones();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.ringtones_recycler);
         adapter = new RecyclerBindingAdapter<>(
                 R.layout.list_item_ringtone, BR.ringtone,
                 new ArrayList<>(Arrays.asList(ringtones)));
+
+        adapter.setOnItemClickListener(new RecyclerBindingAdapter.OnItemClickListener<RingtoneVM>() {
+            @Override
+            public void onItemClick(int position, RingtoneVM item) {
+                Intent intent = new Intent(view.getContext(), DetailsActivity.class);
+                //intent.putExtra("position", position);
+                startActivity(intent);
+            }
+        });
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.ringtones_recycler);
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    public static void showRingtoneMenu(View view, RingtoneVM ringtone) {
+        PopupMenu popup = new PopupMenu(view.getContext(), view);
+        popup.inflate(ringtone.IsMy ? R.menu.menu_my_ringtone : R.menu.menu_ringtone);
+        popup.show();
     }
 }

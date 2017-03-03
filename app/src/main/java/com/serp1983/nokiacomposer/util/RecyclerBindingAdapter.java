@@ -83,7 +83,7 @@ public class RecyclerBindingAdapter<T>
         void onAfterBindViewHolder(BindingHolder bindingHolder, T item);
     }
 
-    static class BindingHolder extends RecyclerView.ViewHolder {
+    public static class BindingHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding binding;
 
         BindingHolder(View v) {
@@ -91,7 +91,7 @@ public class RecyclerBindingAdapter<T>
             binding = DataBindingUtil.bind(v);
         }
 
-        ViewDataBinding getBinding() {
+        public ViewDataBinding getBinding() {
             return binding;
         }
     }

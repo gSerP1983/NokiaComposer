@@ -35,7 +35,6 @@ import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
 import com.serp1983.nokiacomposer.lib.FileUtils;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.intervigil.wave.WaveWriter;
 import com.serp1983.nokiacomposer.logic.DataService;
@@ -174,7 +173,7 @@ public class DetailsActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_save_as) {
+        if (id == R.id.set_as_ringtone) {
             saveAs();
             return true;
         }

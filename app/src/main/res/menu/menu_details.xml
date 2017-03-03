@@ -13,9 +13,9 @@
     <item android:id="@+id/action_delete" android:title="@string/action_delete"
         android:orderInCategory="300" app:showAsAction="never"
         android:icon="@android:drawable/ic_delete"/>
+    <item android:id="@+id/set_as_ringtone" android:title="@string/set_as_ringtone"
+        android:orderInCategory="400" app:showAsAction="never"/>
     <item android:id="@+id/action_share" android:title="@string/action_share"
-        android:orderInCategory="400" app:showAsAction="never"
+        android:orderInCategory="500" app:showAsAction="never"
         android:icon="@android:drawable/ic_menu_share"/>
-    <item android:id="@+id/action_save_as" android:title="@string/action_save_as"
-        android:orderInCategory="500" app:showAsAction="never"/>
 </menu>

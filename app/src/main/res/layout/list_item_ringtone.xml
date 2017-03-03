@@ -3,6 +3,7 @@
     >
 
     <data>
+        <import type="com.serp1983.nokiacomposer.RingtonesFragment" alias="view"/>
         <variable name="ringtone" type="com.serp1983.nokiacomposer.logic.RingtoneVM" />
     </data>
 
@@ -37,13 +38,15 @@
             />
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="@dimen/button_options_menu_width"
             android:layout_height="wrap_content"
             android:text="&#8942;"
             android:textAppearance="?android:textAppearanceLarge"
             android:layout_gravity="right"
-            android:paddingRight="@{@dimen/activity_horizontal_margin / 2}"
+            android:paddingRight="@{-@dimen/button_options_menu_width / 2}"
+            android:onClick="@{(theView) -> view.showRingtoneMenu(theView, ringtone)}"
+            android:background="@android:color/transparent"
             />
 
     </android.support.v7.widget.CardView>
