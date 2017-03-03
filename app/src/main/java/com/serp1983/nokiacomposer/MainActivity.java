@@ -12,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 
+import com.google.android.gms.ads.AdView;
+import com.serp1983.nokiacomposer.util.ActivityHelper;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -33,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, DetailsActivity.class));
             }
         });
+
+        AdView adView = (AdView) this.findViewById(R.id.adView);
+        adView.loadAd(ActivityHelper.getAdBuilder().build());
     }
 
     @Override
