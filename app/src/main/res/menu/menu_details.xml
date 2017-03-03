@@ -1,12 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".DetailsActivity">
-    <item android:id="@+id/action_open" android:title="@string/action_open"
-        android:orderInCategory="0" app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_more"/>
-    <item android:id="@+id/action_new" android:title="@string/action_new"
-        android:orderInCategory="100" app:showAsAction="never"
-        android:icon="@android:drawable/ic_input_add"/>
     <item android:id="@+id/action_save" android:title="@string/action_save"
         android:orderInCategory="200" app:showAsAction="never"
         android:icon="@android:drawable/ic_menu_save"/>

@@ -15,7 +15,6 @@ import java.io.Reader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class DataService {
     private static DataService ourInstance;
@@ -67,12 +66,6 @@ public class DataService {
         return myRingtones;
     }
 
-    public RingtoneVM[] getAll(){
-        RingtoneVM[] allRingtones = concat(assetRingtones, myRingtones);
-        RingtoneVM.sort(allRingtones);
-        return allRingtones;
-    }
-
     public Boolean deleteMyRingtone(Context context, RingtoneVM ringtone){
         if (!ringtone.IsMy)
             return false;
@@ -117,14 +110,6 @@ public class DataService {
         if (outputDir == null)
             return null;
         return new File(outputDir.getPath(), "ringtones.json");
-    }
-
-    @SafeVarargs
-    private static <T> T[] concat(T[]... arrays) {
-        ArrayList<T> al = new ArrayList<>();
-        for (T[] one : arrays)
-            Collections.addAll(al, one);
-        return al.toArray(arrays[0].clone());
     }
 
     private static <T> T[] append(T[] array, T value) {

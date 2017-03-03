@@ -150,16 +150,6 @@ public class DetailsActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_open) {
-            open();
-            return true;
-        }
-
-        if (id == R.id.action_new) {
-            setRingtone(new RingtoneVM("Noname", 120, ""));
-            return true;
-        }
-
         if (id == R.id.action_delete) {
             if (DataService.getInstance().deleteMyRingtone(DetailsActivity.this, currentRingtone)){
                 Toast.makeText(DetailsActivity.this, currentRingtone.Name + " deleted...", Toast.LENGTH_SHORT).show();
@@ -499,14 +489,4 @@ public class DetailsActivity extends AppCompatActivity {
         return new RingtoneVM(currentRingtone.Name, tempo, codeStr);
     }
 
-    private void open(){
-        DialogHelper.selectRingtoneDialog(this, DataService.getInstance().getAll(), new DialogHelper.Callback<RingtoneVM>() {
-            @Override
-            public void onComplete(RingtoneVM input) {
-                if (input != null) {
-                    setRingtone(input);
-                }
-            }
-        });
-    }
 }
