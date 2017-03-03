@@ -24,7 +24,7 @@ class DialogHelper {
     };
 
     static void inputDialog(Context context, String title, String hint, String defValue,
-                                   final Callback callback){
+                                   final Callback<String> callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (!title.isEmpty()) builder.setTitle(title);
 

@@ -40,7 +40,6 @@ import com.intervigil.wave.WaveWriter;
 import com.serp1983.nokiacomposer.logic.DataService;
 import com.serp1983.nokiacomposer.logic.RingtoneSaver;
 import com.serp1983.nokiacomposer.logic.RingtoneVM;
-import com.serp1983.nokiacomposer.logic.ShareHelper;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
 
@@ -442,7 +441,7 @@ public class DetailsActivity extends AppCompatActivity {
         Toast.makeText(DetailsActivity.this, ringtone.Name, Toast.LENGTH_SHORT).show();
 
         disallowEnableSave = true;
-        _editTextTempo.setText("" + ringtone.Tempo, TextView.BufferType.EDITABLE);
+        _editTextTempo.setText(String.valueOf(ringtone.Tempo), TextView.BufferType.EDITABLE);
         _editTextCode.setText(ringtone.Code, TextView.BufferType.EDITABLE);
         disallowEnableSave = false;
 
