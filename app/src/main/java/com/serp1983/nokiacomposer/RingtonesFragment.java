@@ -3,6 +3,7 @@ package com.serp1983.nokiacomposer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -73,11 +74,19 @@ public class RingtonesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ringtones, container, false);
+        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
         ArrayList<RingtoneVM> ringtones = position == 0
                 ? DataService.getInstance().getAssetRingtones()
                 : DataService.getInstance().getMyRingtones();
         adapter = new RecyclerBindingAdapter<>(R.layout.list_item_ringtone, BR.ringtone, ringtones);
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                fab.show();
+            }
+        });
 
         adapter.setOnItemClickListener(new RecyclerBindingAdapter.OnItemClickListener<RingtoneVM>() {
             @Override
@@ -90,6 +99,15 @@ public class RingtonesFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.ringtones_recycler);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                if (dy > 0)
+                    fab.hide();
+                else if (dy < 0)
+                    fab.show();
+            }
+        });
 
         return view;
     }
