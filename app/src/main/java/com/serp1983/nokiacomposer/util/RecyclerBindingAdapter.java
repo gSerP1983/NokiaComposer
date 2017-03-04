@@ -1,16 +1,18 @@
 package com.serp1983.nokiacomposer.util;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 
 public class RecyclerBindingAdapter<T>
-        extends RecyclerView.Adapter<RecyclerBindingAdapter.BindingHolder> {
+        extends RecyclerView.Adapter<RecyclerBindingAdapter.BindingHolder>{
 
     private final int holderLayout, variableId;
     private ArrayList<T> items;
@@ -23,6 +25,11 @@ public class RecyclerBindingAdapter<T>
         this.variableId = variableId;
         this.items = items;
         this.itemsCopy = (ArrayList<T>) items.clone();
+
+        if (items instanceof ObservableList){
+            ObservableList observable = (ObservableList) items;
+            observable.addOnListChangedCallback(CreateOnListChangedCallback());
+        }
     }
 
     @Override
@@ -83,6 +90,35 @@ public class RecyclerBindingAdapter<T>
         void onAfterBindViewHolder(BindingHolder bindingHolder, T item);
     }
 
+    private ObservableList.OnListChangedCallback CreateOnListChangedCallback(){
+        return new ObservableList.OnListChangedCallback() {
+            @Override
+            public void onChanged(ObservableList observableList) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList observableList, int position, int itemCount) {
+                notifyItemChanged(position);
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList observableList, int position, int itemCount) {
+                notifyItemInserted(position);
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList observableList, int position, int fromPosition, int toPosition) {
+                notifyItemMoved(fromPosition, toPosition);
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList observableList, int position, int itemCount) {
+                notifyItemRemoved(position);
+            }
+        };
+    }
+
     public static class BindingHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding binding;
 
@@ -95,4 +131,5 @@ public class RecyclerBindingAdapter<T>
             return binding;
         }
     }
+
 }

@@ -10,12 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.ads.AdView;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 
 public class MainActivity extends AppCompatActivity {
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.main_view_pager);
+        viewPager = (ViewPager) findViewById(R.id.main_view_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
         viewPager.setAdapter(new PagerAdapter(fragmentManager));
 
@@ -46,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate( R.menu.menu_main, menu);
         return true;
     }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem search = menu.findItem(R.id.action_search);
+        search.setVisible(viewPager.getCurrentItem() == 0);
+        return true;
+    }
+
 
     private class PagerAdapter extends FragmentPagerAdapter {
         PagerAdapter(FragmentManager fm) {

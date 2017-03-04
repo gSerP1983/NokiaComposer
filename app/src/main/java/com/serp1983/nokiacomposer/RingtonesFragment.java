@@ -74,10 +74,10 @@ public class RingtonesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ringtones, container, false);
 
-        RingtoneVM[] ringtones = position == 0 ? DataService.getInstance().getAssetRingtones() : DataService.getInstance().getMyRingtones();
-        adapter = new RecyclerBindingAdapter<>(
-                R.layout.list_item_ringtone, BR.ringtone,
-                new ArrayList<>(Arrays.asList(ringtones)));
+        ArrayList<RingtoneVM> ringtones = position == 0
+                ? DataService.getInstance().getAssetRingtones()
+                : DataService.getInstance().getMyRingtones();
+        adapter = new RecyclerBindingAdapter<>(R.layout.list_item_ringtone, BR.ringtone, ringtones);
 
         adapter.setOnItemClickListener(new RecyclerBindingAdapter.OnItemClickListener<RingtoneVM>() {
             @Override
@@ -103,6 +103,7 @@ public class RingtonesFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_delete:
+                        DataService.getInstance().deleteMyRingtone(view.getContext(), ringtone);
                         break;
                     case R.id.action_set_as_ringtone:
                         break;

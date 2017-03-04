@@ -3,6 +3,8 @@ package com.serp1983.nokiacomposer.logic;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.AssetManager;
+import android.databinding.ObservableArrayList;
+
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -26,43 +28,46 @@ public class DataService {
         ourInstance = new DataService(context);
     }
 
-    private RingtoneVM[] assetRingtones;
-    private RingtoneVM[] myRingtones;
+    private ArrayList<RingtoneVM> assetRingtones;
+    private ArrayList<RingtoneVM> myRingtones;
 
     private DataService(ContextWrapper context) {
+        // pre-installed ringtones
+        RingtoneVM[] assetRingtonesArray = null;
         try {
             AssetManager assetManager = context.getAssets();
             InputStream ims = assetManager.open("Ringtones.json");
             Reader reader = new InputStreamReader(ims);
-            assetRingtones = new Gson().fromJson(reader, RingtoneVM[].class);
+            assetRingtonesArray = new Gson().fromJson(reader, RingtoneVM[].class);
         }catch(Exception e) {
             e.printStackTrace();
         }
-        if (assetRingtones == null)
-            assetRingtones = new RingtoneVM[]{};
+        if (assetRingtonesArray == null)
+            assetRingtonesArray = new RingtoneVM[]{};
         else
-            RingtoneVM.sort(assetRingtones);
+            RingtoneVM.sort(assetRingtonesArray);
+        assetRingtones = new ArrayList<>(Arrays.asList(assetRingtonesArray));
 
+        // my ringtones
+        RingtoneVM[] myRingtonesArray = null;
         try {
             File file = getMyRingtonesFile(context);
             if (file != null && file.exists()) {
                 FileReader reader = new FileReader(file);
-                myRingtones = new Gson().fromJson(reader, RingtoneVM[].class);
+                myRingtonesArray = new Gson().fromJson(reader, RingtoneVM[].class);
             }
         }catch(Exception e) {
             e.printStackTrace();
         }
-        if (myRingtones == null)
-            myRingtones = new RingtoneVM[]{};
-        else
-            RingtoneVM.sort(myRingtones);
+        if (myRingtonesArray == null)
+            myRingtonesArray = new RingtoneVM[]{};
+        myRingtones = new ObservableArrayList<>();
+        myRingtones.addAll(Arrays.asList(myRingtonesArray));
     }
 
-    public RingtoneVM[] getAssetRingtones(){
-        return assetRingtones;
-    }
+    public ArrayList<RingtoneVM> getAssetRingtones(){return assetRingtones;}
 
-    public RingtoneVM[] getMyRingtones(){
+    public ArrayList<RingtoneVM> getMyRingtones(){
         return myRingtones;
     }
 
@@ -71,9 +76,8 @@ public class DataService {
             return false;
 
         try {
-            RingtoneVM[] rigtones = delete(myRingtones, ringtone);
-            saveMyRingtones(context, rigtones);
-            myRingtones = rigtones;
+            myRingtones.remove(ringtone);
+            saveMyRingtones(context, myRingtones);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -82,11 +86,13 @@ public class DataService {
         return true;
     }
 
-    public Boolean saveMyRingtone(Context context, RingtoneVM ringtone){
+    public Boolean addMyRingtone(Context context, RingtoneVM ringtone){
+        if (!ringtone.IsMy)
+            return false;
+
         try{
-            RingtoneVM[] rigtones = append(myRingtones, ringtone);
-            saveMyRingtones(context, rigtones);
-            myRingtones = rigtones;
+            myRingtones.add(ringtone);
+            saveMyRingtones(context, myRingtones);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -95,13 +101,14 @@ public class DataService {
         return true;
     }
 
-    private void saveMyRingtones(Context context, RingtoneVM[] rigtones) throws IOException {
+    private static void saveMyRingtones(Context context, ArrayList<RingtoneVM> rigtones) throws IOException {
+        RingtoneVM[] array = rigtones.toArray(new RingtoneVM[0]);
         File file = getMyRingtonesFile(context);
         if (file == null)
             return;
 
         FileOutputStream outputStream = new FileOutputStream(file);
-        outputStream.write(new Gson().toJson(rigtones).getBytes());
+        outputStream.write(new Gson().toJson(array).getBytes());
         outputStream.close();
     }
 
@@ -110,17 +117,5 @@ public class DataService {
         if (outputDir == null)
             return null;
         return new File(outputDir.getPath(), "ringtones.json");
-    }
-
-    private static <T> T[] append(T[] array, T value) {
-        T[] result = Arrays.copyOf(array, array.length + 1);
-        result[result.length - 1] = value;
-        return result;
-    }
-
-    private static <T> T[] delete(T[] array, T value) {
-        ArrayList<T> x = new ArrayList<>(Arrays.asList(array));
-        x.remove(value);
-        return x.toArray((T[]) Array.newInstance(array.getClass().getComponentType(), array.length - 1));
     }
 }

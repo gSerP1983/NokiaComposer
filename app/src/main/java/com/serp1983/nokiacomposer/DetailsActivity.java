@@ -128,15 +128,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_details, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu (Menu menu) {
-        boolean flag = currentRingtone != null && currentRingtone.IsMy;
-        menu.findItem(R.id.action_delete).setEnabled(flag);
         return true;
     }
 
@@ -146,14 +138,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
-            return true;
-        }
-
-        if (id == R.id.action_delete) {
-            if (DataService.getInstance().deleteMyRingtone(DetailsActivity.this, currentRingtone)){
-                Toast.makeText(DetailsActivity.this, currentRingtone.Name + " deleted...", Toast.LENGTH_SHORT).show();
-                currentRingtone.IsMy = false;
-            }
             return true;
         }
 
@@ -462,7 +446,7 @@ public class DetailsActivity extends AppCompatActivity {
                 if (!input.isEmpty()) {
                     ringtone.IsMy = true;
                     ringtone.Name = input;
-                    if (DataService.getInstance().saveMyRingtone(DetailsActivity.this, ringtone))
+                    if (DataService.getInstance().addMyRingtone(DetailsActivity.this, ringtone))
                         Toast.makeText(DetailsActivity.this, input + " saved...", Toast.LENGTH_SHORT).show();
                 }
             }
