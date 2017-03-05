@@ -14,14 +14,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +55,16 @@ public class DetailsActivity extends AppCompatActivity {
 
     private Boolean disallowEnableSave = false;
     private RingtoneVM currentRingtone;
+    private static int countNew = 0;
+
+    public static Intent getIntent(Context context, RingtoneVM ringtone){
+        Intent intent = new Intent(context, DetailsActivity.class);
+        intent.putExtra("name", ringtone.Name);
+        intent.putExtra("tempo", ringtone.Tempo);
+        intent.putExtra("code", ringtone.Code);
+        intent.putExtra("isMy", ringtone.IsMy);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +78,17 @@ public class DetailsActivity extends AppCompatActivity {
             bar.setDisplayHomeAsUpEnabled(true);
         }
 
+        RingtoneVM ringtone = new RingtoneVM("New" + ++countNew, 120, "");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String name = bundle.getString("name", null);
+            int tempo = bundle.getInt("tempo");
+            String code = bundle.getString("code");
+            // boolean isMy = bundle.getBoolean("isMy");
+            if (name != null)
+                ringtone = new RingtoneVM(name, tempo, code);
+        }
+
         _root = (ViewGroup) findViewById(R.id.root);
         _sceneRoot = (ViewGroup) findViewById(R.id.scene_root);
         _editTextTempo = (EditText) findViewById(R.id.editTextTempo);
@@ -78,7 +97,7 @@ public class DetailsActivity extends AppCompatActivity {
         _fabPlayOff = (FloatingActionButton) findViewById(R.id.playOff);
         _fabSave = (FloatingActionButton) findViewById(R.id.save);
 
-        setRingtone(new RingtoneVM("Coca Cola", 125, "8#f2 8#f2 8#f2 8#f2 4g2 8#f2 4e2 8e2 8a2 4#f2 4d2 2-"));
+        setRingtone(ringtone);
 
         _editTextTempo.addTextChangedListener(getTextWatcher());
         _editTextCode.addTextChangedListener(getTextWatcher());
@@ -96,8 +115,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!validate()) return;
-                _fabPlayOff.setVisibility(View.VISIBLE);
-                animatePlayOff(true);
+                _fabPlayOff.show();
                 play();
             }
         });
@@ -106,8 +124,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!validate()) return;
-                animatePlayOff(false);
-                _fabPlayOff.setVisibility(View.INVISIBLE);
+                _fabPlayOff.hide();
                 AsyncAudioTrack.stop();
             }
         });
@@ -116,8 +133,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!validate()) return;
-                animateSave(false);
-                _fabSave.setVisibility(View.INVISIBLE);
+                _fabSave.hide();
                 save();
             }
         });
@@ -341,26 +357,6 @@ public class DetailsActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void animatePlayOff(Boolean on){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            TransitionManager.beginDelayedTransition(_root);
-        }
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) _fabPlayOff.getLayoutParams();
-        params.bottomMargin = this.getResources().getDimensionPixelSize(R.dimen.fab_marginBottom) +
-                (on ? this.getResources().getDimensionPixelSize(R.dimen.fabAddon_margin) : 0);
-        _fabPlayOff.setLayoutParams(params);
-    }
-
-    private void animateSave(Boolean on){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.root));
-        }
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) _fabSave.getLayoutParams();
-        params.rightMargin = this.getResources().getDimensionPixelSize(R.dimen.fab_marginRight) +
-                (on ? this.getResources().getDimensionPixelSize(R.dimen.fabAddon_margin) : 0);
-        _fabSave.setLayoutParams(params);
-    }
-
     private void play(){
         if (!validate()) return;
 
@@ -398,8 +394,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (!AsyncAudioTrack.isRun) {
-                    animatePlayOff(false);
-                    _fabPlayOff.setVisibility(View.INVISIBLE);
+                    _fabPlayOff.hide();
                 }
             }
         });
@@ -414,8 +409,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (disallowEnableSave || !validate()) return;
-                _fabSave.setVisibility(View.VISIBLE);
-                animateSave(true);
+                _fabSave.show();
             }
         };
     }
@@ -431,8 +425,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         currentRingtone = ringtone;
 
-        animateSave(false);
-        _fabSave.setVisibility(View.INVISIBLE);
+        _fabSave.hide();
     }
 
     private void save(){

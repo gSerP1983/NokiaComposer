@@ -91,9 +91,7 @@ public class RingtonesFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerBindingAdapter.OnItemClickListener<RingtoneVM>() {
             @Override
             public void onItemClick(int position, RingtoneVM item) {
-                Intent intent = new Intent(view.getContext(), DetailsActivity.class);
-                //intent.putExtra("position", position);
-                startActivity(intent);
+                startActivity(DetailsActivity.getIntent(view.getContext(), item));
             }
         });
 
