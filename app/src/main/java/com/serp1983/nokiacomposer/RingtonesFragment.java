@@ -1,7 +1,6 @@
 package com.serp1983.nokiacomposer;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,10 +16,11 @@ import android.view.ViewGroup;
 
 import com.serp1983.nokiacomposer.logic.DataService;
 import com.serp1983.nokiacomposer.logic.RingtoneVM;
+import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
+import com.serp1983.nokiacomposer.util.DialogHelper;
 import com.serp1983.nokiacomposer.util.RecyclerBindingAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class RingtonesFragment extends Fragment {
@@ -122,6 +122,7 @@ public class RingtonesFragment extends Fragment {
                         DataService.getInstance().deleteMyRingtone(view.getContext(), ringtone);
                         break;
                     case R.id.action_set_as_ringtone:
+                        SetAsRingtoneService.setAsRingtone(view.getContext(), ringtone);
                         break;
                     case R.id.action_share:
                         DialogHelper.showShareDialog(view.getContext(), ringtone);

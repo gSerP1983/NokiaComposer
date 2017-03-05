@@ -27,15 +27,29 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        viewPager.setAdapter(new PagerAdapter(fragmentManager));
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 viewPager.setCurrentItem(1);
                 startActivity(new Intent(MainActivity.this, DetailsActivity.class));
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                fab.show();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
 
@@ -53,6 +67,16 @@ public class MainActivity extends AppCompatActivity {
         MenuItem search = menu.findItem(R.id.action_search);
         search.setVisible(viewPager.getCurrentItem() == 0);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_rate) {
+            ActivityHelper.rate(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

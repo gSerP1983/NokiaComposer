@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">New Old Nokia Composer</string>
     <string name="action_delete">Удалить</string>
-    <string name="action_save">Сохранить</string>
+    <string name="action_save">Сохранить в Мои рингтоны</string>
     <string name="action_search">Поиск</string>
     <string name="action_share">Поделиться</string>
     <string name="action_share_mp3">Поделиться *.mp3</string>
@@ -34,4 +34,7 @@
     <string name="ringtone_code_label">Код мелодии:</string>
     <string name="my_ringtones_label">Мои рингтоны</string>
     <string name="ringtones_label">Рингтоны</string>
+    <string name="alert_title_error">Ошибка</string>
+    <string name="send_email_subject">Написать письмо</string>
+    <string name="action_rate">Оценить приложение</string>
 </resources>

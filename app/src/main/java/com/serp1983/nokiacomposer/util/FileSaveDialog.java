@@ -1,4 +1,4 @@
-package com.serp1983.nokiacomposer;
+package com.serp1983.nokiacomposer.util;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.serp1983.nokiacomposer.R;
+
 import java.util.ArrayList;
 
 public class FileSaveDialog extends Dialog {
@@ -29,7 +32,7 @@ public class FileSaveDialog extends Dialog {
     private ArrayList<String> mTypeArray;
     private int mPreviousSelection;
 
-    FileSaveDialog(Context context,
+    public FileSaveDialog(Context context,
                           Resources resources,
                           String originalName,
                           Message response) {

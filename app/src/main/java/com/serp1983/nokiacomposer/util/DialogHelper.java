@@ -1,4 +1,4 @@
-package com.serp1983.nokiacomposer;
+package com.serp1983.nokiacomposer.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,11 +8,12 @@ import android.text.InputType;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.serp1983.nokiacomposer.R;
 import com.serp1983.nokiacomposer.logic.RingtoneVM;
 import com.serp1983.nokiacomposer.logic.ShareHelper;
 
-class DialogHelper {
-    interface Callback<T> {
+public class DialogHelper {
+    public interface Callback<T> {
         void onComplete(T input);
     }
 
@@ -23,7 +24,7 @@ class DialogHelper {
         }
     };
 
-    static void inputDialog(Context context, String title, String hint, String defValue,
+    public static void inputDialog(Context context, String title, String hint, String defValue,
                                    final Callback<String> callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (!title.isEmpty()) builder.setTitle(title);
@@ -67,7 +68,7 @@ class DialogHelper {
     }
 
 
-    static void showShareDialog(final Context context, final RingtoneVM ringtone){
+    public static void showShareDialog(final Context context, final RingtoneVM ringtone){
         String title = context.getString(R.string.action_share) + ":";
         DialogHelper.showSingleChoice(context, title, R.array.share_array, -1, new DialogInterface.OnClickListener() {
             @Override
@@ -87,4 +88,13 @@ class DialogHelper {
         }, null);
     }
 
+    public static void showError(final Context context, CharSequence message) {
+        CharSequence title = context.getResources().getText(R.string.alert_title_error);
+        new android.app.AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.alert_ok_button, null)
+                .setCancelable(false)
+                .show();
+    }
 }

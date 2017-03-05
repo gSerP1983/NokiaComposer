@@ -2,36 +2,36 @@ package com.serp1983.nokiacomposer.logic;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import static com.serp1983.nokiacomposer.FileSaveDialog.*;
+import static com.serp1983.nokiacomposer.util.FileSaveDialog.*;
 
-public class RingtoneSaver {
+class RingtoneSaver {
 
-    public static String makeRingtoneFilename(CharSequence title, String extension, int fileKind) {
-        String parentdir;
+    static String makeRingtoneFilename(CharSequence title, String extension, int fileKind) {
+        String parentDir;
         switch(fileKind) {
             default:
             case FILE_KIND_MUSIC:
-                parentdir = "/sdcard/media/audio/music";
+                parentDir = "/sdcard/media/audio/music";
                 break;
             case FILE_KIND_ALARM:
-                parentdir = "/sdcard/media/audio/alarms";
+                parentDir = "/sdcard/media/audio/alarms";
                 break;
             case FILE_KIND_NOTIFICATION:
-                parentdir = "/sdcard/media/audio/notifications";
+                parentDir = "/sdcard/media/audio/notifications";
                 break;
             case FILE_KIND_RINGTONE:
-                parentdir = "/sdcard/media/audio/ringtones";
+                parentDir = "/sdcard/media/audio/ringtones";
                 break;
         }
 
         // Create the parent directory
-        File parentDirFile = new File(parentdir);
+        File parentDirFile = new File(parentDir);
         parentDirFile.mkdirs();
 
         // If we can't write to that special path, try just writing
         // directly to the sdcard
         if (!parentDirFile.isDirectory()) {
-            parentdir = "/sdcard";
+            parentDir = "/sdcard";
         }
 
         // Turn the title into a filename
@@ -47,9 +47,9 @@ public class RingtoneSaver {
         for (int i = 0; i < 100; i++) {
             String testPath;
             if (i > 0)
-                testPath = parentdir + "/" + filename + i + extension;
+                testPath = parentDir + "/" + filename + i + extension;
             else
-                testPath = parentdir + "/" + filename + extension;
+                testPath = parentDir + "/" + filename + extension;
 
             try {
                 new RandomAccessFile(new File(testPath), "r");

@@ -1,48 +1,32 @@
 package com.serp1983.nokiacomposer;
 
-import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdView;
 import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
-import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
-import com.serp1983.nokiacomposer.lib.FileUtils;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
-import com.google.android.gms.ads.AdView;
-import com.intervigil.wave.WaveWriter;
 import com.serp1983.nokiacomposer.logic.DataService;
-import com.serp1983.nokiacomposer.logic.RingtoneSaver;
 import com.serp1983.nokiacomposer.logic.RingtoneVM;
+import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
-import com.singlecellsoftware.mp3convert.ConvertActivity;
-
-import java.io.File;
-import java.io.IOException;
+import com.serp1983.nokiacomposer.util.DialogHelper;
 
 public class DetailsActivity extends AppCompatActivity {
     EditText _editTextTempo;
@@ -163,7 +147,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_set_as_ringtone) {
-            saveAs();
+            SetAsRingtoneService.setAsRingtone(this, getCurrentRingtone());
             return true;
         }
 
@@ -173,188 +157,6 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void saveAs(){
-        final RingtoneVM ringtone = getCurrentRingtone();
-        if (ringtone == null) return;
-        final Handler handler = new Handler() {
-            public void handleMessage(Message response) {
-                CharSequence newTitle = (CharSequence)response.obj;
-                saveRingtone(newTitle, response.arg1);
-            }
-        };
-        Message message = Message.obtain(handler);
-        FileSaveDialog dlg = new FileSaveDialog(this, getResources(), ringtone.Name, message);
-        dlg.show();
-    }
-
-    private void saveRingtone(final CharSequence title, int fileKind) {
-        final RingtoneVM ringtone = getCurrentRingtone();
-        if (ringtone == null) return;
-
-        final String outPath = RingtoneSaver.makeRingtoneFilename(title, ".mp3", fileKind);
-        if (outPath == null) {
-            showFinalAlert(getString(R.string.no_unique_filename));
-            return;
-        }
-
-        if (findRingtone(MediaStore.Audio.Media.INTERNAL_CONTENT_URI, title) ||
-            findRingtone(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, title)){
-            showFinalAlert(getString(R.string.already_ringtone_exists));
-            return;
-        }
-
-        File externalCacheDir = getExternalCacheDir();
-        if (externalCacheDir == null)
-            return;
-
-        final File outFile = new File(outPath);
-        try {
-            final File fileWav = new File(externalCacheDir.getPath(), "nokiacomposer.wav");
-            final File fileMp3 = new File(externalCacheDir.getPath(), "nokiacomposer.mp3");
-            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
-            WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
-            AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
-                @Override
-                public void onComplete() {
-                    try {
-                        ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
-                        FileUtils.copy(fileMp3, outFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            afterSavingRingtone(title, outFile, fileKind);
-        }
-        catch(Exception x){
-            x.printStackTrace();
-        }
-    }
-
-    private Boolean findRingtone(Uri uri, CharSequence title){
-        try {
-            Cursor c = this.getContentResolver().query(
-                    uri,
-                    new String[]{MediaStore.Audio.Media.TITLE},
-                    null, null, null);
-            if (c == null)
-                return false;
-
-            String titleString = String.valueOf(title);
-            for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-                if (titleString.equals(c.getString(0)))
-                    return true;
-            }
-            c.close();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-    private void afterSavingRingtone(CharSequence title, File outFile, int fileKind) {
-        long fileSize = outFile.length();
-        String mimeType = "audio/mpeg";
-
-        String artist = "" + getResources().getText(R.string.app_name);
-
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.MediaColumns.DATA, outFile.getAbsolutePath());
-        values.put(MediaStore.MediaColumns.TITLE, title.toString());
-        values.put(MediaStore.MediaColumns.SIZE, fileSize);
-        values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
-
-        values.put(MediaStore.Audio.Media.ARTIST, artist);
-        values.put(MediaStore.Audio.Media.DURATION, 44100);
-
-        values.put(MediaStore.Audio.Media.IS_RINGTONE,
-                fileKind == FileSaveDialog.FILE_KIND_RINGTONE);
-        values.put(MediaStore.Audio.Media.IS_NOTIFICATION,
-                fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION);
-        values.put(MediaStore.Audio.Media.IS_ALARM,
-                fileKind == FileSaveDialog.FILE_KIND_ALARM);
-        values.put(MediaStore.Audio.Media.IS_MUSIC,
-                fileKind == FileSaveDialog.FILE_KIND_MUSIC);
-
-        // Insert it into the database
-        Uri uri = MediaStore.Audio.Media.getContentUriForPath(outFile.getAbsolutePath());
-        final Uri newUri = getContentResolver().insert(uri, values);
-        setResult(RESULT_OK, new Intent().setData(newUri));
-
-        // There's nothing more to do with music. Show a
-        // success message and then quit.
-        if (fileKind == FileSaveDialog.FILE_KIND_MUSIC) {
-            Toast.makeText(this, R.string.save_success_message, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // alarm
-        if (fileKind == FileSaveDialog.FILE_KIND_ALARM) {
-            askSetDefault(RingtoneManager.TYPE_ALARM, R.string.set_default_alarm,
-                    R.string.default_alarm_success_message, newUri);
-            return;
-        }
-
-        // If it's a notification, give the user the option of making
-        // this their default notification.  If they say no, we're finished.
-        if (fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
-            askSetDefault(RingtoneManager.TYPE_NOTIFICATION, R.string.set_default_notification,
-                    R.string.default_notification_success_message, newUri);
-            return;
-        }
-
-        // If we get here, that means the type is a ringtone.
-        if (fileKind == FileSaveDialog.FILE_KIND_RINGTONE) {
-            askSetDefault(RingtoneManager.TYPE_RINGTONE, R.string.set_default_ringtone,
-                    R.string.default_ringtone_success_message, newUri);
-        }
-    }
-
-    private void askSetDefault(final int type, final int questionId,
-                                  final int successMsgId, final Uri newUri){
-        new AlertDialog.Builder(DetailsActivity.this)
-                .setTitle(R.string.alert_title_success)
-                .setMessage(questionId)
-                .setPositiveButton(R.string.alert_yes_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int whichButton) {
-
-                                // java.lang.SecurityException: com.serp1983.nokiacomposer
-                                // was not granted  this permission: android.permission.WRITE_SETTINGS
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    if (!Settings.System.canWrite(DetailsActivity.this)){
-                                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                                        intent.setData(Uri.parse("package:" + DetailsActivity.this.getPackageName()));
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                    }
-                                }
-
-                                RingtoneManager.setActualDefaultRingtoneUri(DetailsActivity.this,
-                                        type, newUri);
-                                Toast.makeText(DetailsActivity.this, successMsgId, Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        })
-                .setNegativeButton(R.string.alert_no_button, null)
-                .setCancelable(false)
-                .show();
-    }
-
-    private void showFinalAlert(CharSequence message) {
-        CharSequence title = getResources().getText(R.string.alert_title_success);
-        new AlertDialog.Builder(DetailsActivity.this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.alert_ok_button, null)
-                .setCancelable(false)
-                .show();
     }
 
     private void play(){
