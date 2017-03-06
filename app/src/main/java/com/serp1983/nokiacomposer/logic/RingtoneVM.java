@@ -3,6 +3,7 @@ package com.serp1983.nokiacomposer.logic;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.serp1983.nokiacomposer.BR;
 import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
@@ -56,6 +57,8 @@ public class RingtoneVM extends BaseObservable {
         }
         catch(Exception e){
             e.printStackTrace();
+            FirebaseCrash.log("RingtoneVM.play()");
+            FirebaseCrash.report(e);
             setPlaying(false);
         }
     }

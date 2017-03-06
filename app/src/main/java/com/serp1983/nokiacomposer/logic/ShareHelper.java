@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
@@ -31,6 +32,8 @@ public class ShareHelper {
         }
         catch(Exception e){
             e.printStackTrace();
+            FirebaseCrash.log("ShareHelper.shareText(...)");
+            FirebaseCrash.report(e);
         }
     }
 
@@ -60,8 +63,10 @@ public class ShareHelper {
 
             context.startActivity(intentChooser);
         }
-        catch(Exception ex){
-            ex.printStackTrace();
+        catch(Exception e){
+            e.printStackTrace();
+            FirebaseCrash.log("ShareHelper.shareWav(...)");
+            FirebaseCrash.report(e);
         }
     }
 
@@ -97,8 +102,10 @@ public class ShareHelper {
 
             context.startActivity(intentChooser);
         }
-        catch(Exception ex){
-            ex.printStackTrace();
+        catch(Exception e){
+            e.printStackTrace();
+            FirebaseCrash.log("ShareHelper.shareMp3(...)");
+            FirebaseCrash.report(e);
         }
     }
 }

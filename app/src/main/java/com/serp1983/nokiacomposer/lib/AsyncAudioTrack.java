@@ -7,6 +7,8 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 public class AsyncAudioTrack implements Runnable {
 	private static AsyncAudioTrack instance;
 	public static  Boolean isRun;
@@ -63,6 +65,8 @@ public class AsyncAudioTrack implements Runnable {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			FirebaseCrash.log("AsyncAudioTrack.stop()");
+			FirebaseCrash.report(e);
 		}
 	}
 }

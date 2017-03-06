@@ -5,6 +5,7 @@ import android.content.ContextWrapper;
 import android.content.res.AssetManager;
 import android.databinding.ObservableArrayList;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -41,6 +42,8 @@ public class DataService {
             assetRingtonesArray = new Gson().fromJson(reader, RingtoneVM[].class);
         }catch(Exception e) {
             e.printStackTrace();
+            FirebaseCrash.log("DataService.ctor(...)");
+            FirebaseCrash.report(e);
         }
         if (assetRingtonesArray == null)
             assetRingtonesArray = new RingtoneVM[]{};
@@ -58,6 +61,8 @@ public class DataService {
             }
         }catch(Exception e) {
             e.printStackTrace();
+            FirebaseCrash.log("DataService.ctor(...)");
+            FirebaseCrash.report(e);
         }
         if (myRingtonesArray == null)
             myRingtonesArray = new RingtoneVM[]{};
@@ -81,6 +86,8 @@ public class DataService {
         }
         catch(Exception e){
             e.printStackTrace();
+            FirebaseCrash.log("DataService.deleteMyRingtone(...)");
+            FirebaseCrash.report(e);
             return false;
         }
         return true;
@@ -96,6 +103,8 @@ public class DataService {
         }
         catch(Exception e){
             e.printStackTrace();
+            FirebaseCrash.log("DataService.addMyRingtone(...)");
+            FirebaseCrash.report(e);
             return false;
         }
         return true;

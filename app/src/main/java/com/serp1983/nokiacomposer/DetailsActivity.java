@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.crash.FirebaseCrash;
 import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
@@ -177,6 +178,8 @@ public class DetailsActivity extends AppCompatActivity {
         }
         catch(Exception e){
             e.printStackTrace();
+            FirebaseCrash.log("DetailsActivity.play()");
+            FirebaseCrash.report(e);
         }
     }
 

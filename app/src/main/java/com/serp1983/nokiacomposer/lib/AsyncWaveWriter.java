@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.intervigil.wave.WaveWriter;
 
 public class AsyncWaveWriter implements Runnable {
@@ -45,6 +46,8 @@ public class AsyncWaveWriter implements Runnable {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			FirebaseCrash.log("AsyncWaveWriter.run()");
+			FirebaseCrash.report(e);
 		}
 	}
 }

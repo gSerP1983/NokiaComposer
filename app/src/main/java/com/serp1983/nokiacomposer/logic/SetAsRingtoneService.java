@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.intervigil.wave.WaveWriter;
 import com.serp1983.nokiacomposer.util.FileSaveDialog;
 import com.serp1983.nokiacomposer.R;
@@ -76,6 +77,8 @@ public class SetAsRingtoneService {
                         FileUtils.copy(fileMp3, outFile);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...)");
+                        FirebaseCrash.report(e);
                     }
                 }
             });
@@ -84,6 +87,8 @@ public class SetAsRingtoneService {
         }
         catch(Exception x){
             x.printStackTrace();
+            FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...)");
+            FirebaseCrash.report(x);
         }
     }
 
@@ -105,6 +110,8 @@ public class SetAsRingtoneService {
         }
         catch(Exception e){
             e.printStackTrace();
+            FirebaseCrash.log("SetAsRingtoneService.findRingtone(...)");
+            FirebaseCrash.report(e);
         }
         return false;
     }
