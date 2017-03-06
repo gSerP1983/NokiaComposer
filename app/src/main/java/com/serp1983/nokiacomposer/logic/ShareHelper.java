@@ -43,7 +43,8 @@ public class ShareHelper {
             return;
 
         try{
-            File file = new File(externalCacheDir.getPath(), "nokiacomposer.wav");
+            String name = ringtone.Name.replaceAll("\\W+", "_");
+            File file = new File(externalCacheDir.getPath(), name + ".wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
             WaveWriter writer = new WaveWriter(file, 44100, 1, 16);
@@ -73,7 +74,8 @@ public class ShareHelper {
             return;
 
         try{
-            final File fileWav = new File(externalCacheDir.getPath(), "nokiacomposer.wav");
+            String name = ringtone.Name.replaceAll("\\W+", "_");
+            final File fileWav = new File(externalCacheDir.getPath(), name + ".wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
             WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
@@ -84,7 +86,7 @@ public class ShareHelper {
                 }
             });
 
-            final File fileMp3 = new File(externalCacheDir.getPath(), "nokiacomposer.mp3");
+            final File fileMp3 = new File(externalCacheDir.getPath(), name + ".mp3");
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("sound/mp3");
             intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
