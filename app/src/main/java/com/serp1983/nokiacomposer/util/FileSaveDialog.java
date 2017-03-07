@@ -17,13 +17,9 @@ import com.serp1983.nokiacomposer.R;
 import java.util.ArrayList;
 
 public class FileSaveDialog extends Dialog {
-
-    // File kinds - these should correspond to the order in which
-    // they're presented in the spinner control
-    public static final int FILE_KIND_MUSIC = 0;
-    public static final int FILE_KIND_ALARM = 1;
-    public static final int FILE_KIND_NOTIFICATION = 2;
-    public static final int FILE_KIND_RINGTONE = 3;
+    public static final int FILE_KIND_ALARM = 0;
+    public static final int FILE_KIND_NOTIFICATION = 1;
+    public static final int FILE_KIND_RINGTONE = 2;
 
     private Spinner mTypeSpinner;
     private EditText mFilename;
@@ -44,7 +40,6 @@ public class FileSaveDialog extends Dialog {
         setTitle(resources.getString(R.string.file_save_title));
 
         mTypeArray = new ArrayList<>();
-        mTypeArray.add(resources.getString(R.string.type_music));
         mTypeArray.add(resources.getString(R.string.type_alarm));
         mTypeArray.add(resources.getString(R.string.type_notification));
         mTypeArray.add(resources.getString(R.string.type_ringtone));

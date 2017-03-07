@@ -35,7 +35,7 @@ public class DialogHelper {
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (callback != null) callback.onComplete(input.getText().toString());
@@ -93,7 +93,7 @@ public class DialogHelper {
         new android.app.AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(R.string.alert_ok_button, null)
+                .setPositiveButton(android.R.string.ok, null)
                 .setCancelable(false)
                 .show();
     }

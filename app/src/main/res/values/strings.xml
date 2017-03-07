@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">New Old Nokia Composer</string>
-    <string name="app_email" translatable="false">gserp1983@gmail.com</string>
-    <string name="send_email_subject">Send email</string>
 
     <string name="action_save">Save in My ringtones</string>
     <string name="action_delete">Delete</string>
@@ -24,22 +22,11 @@
     <string name="file_save_button_cancel">Cancel</string>
     <string name="ringtone_name_label">Name:</string>
     <string name="ringtone_type_label">Type:</string>
-    <string name="type_music">Music</string>
     <string name="type_alarm">Alarm</string>
     <string name="type_notification">Notification</string>
     <string name="type_ringtone">Ringtone</string>
     <string name="no_unique_filename">Unable to find unique filename!</string>
     <string name="alert_title_success">Success</string>
     <string name="alert_title_error">Error</string>
-    <string name="alert_ok_button" translatable="false">OK</string>
-    <string name="save_success_message">Saved!</string>
-    <string name="set_default_notification">Saved! Make this your default notification?</string>
-    <string name="set_default_ringtone">Saved! Make this your default ringtone?</string>
-    <string name="set_default_alarm">Saved! Make this your default alarm?</string>
-    <string name="alert_yes_button">Yes.</string>
-    <string name="alert_no_button">No.</string>
-    <string name="default_ringtone_success_message">Changed default ringtone</string>
-    <string name="default_notification_success_message">Changed default notification</string>
-    <string name="default_alarm_success_message">Changed default alarm</string>
     <string name="already_ringtone_exists">Already ringtone with same name exists!</string>
 </resources>

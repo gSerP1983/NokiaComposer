@@ -10,9 +10,6 @@ class RingtoneSaver {
         String parentDir;
         switch(fileKind) {
             default:
-            case FILE_KIND_MUSIC:
-                parentDir = "/sdcard/media/audio/music";
-                break;
             case FILE_KIND_ALARM:
                 parentDir = "/sdcard/media/audio/alarms";
                 break;
@@ -44,7 +41,7 @@ class RingtoneSaver {
 
         // Try to make the filename unique
         String path = null;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 300; i++) {
             String testPath;
             if (i > 0)
                 testPath = parentDir + "/" + filename + i + extension;

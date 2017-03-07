@@ -131,77 +131,47 @@ public class SetAsRingtoneService {
         values.put(MediaStore.Audio.Media.ARTIST, artist);
         values.put(MediaStore.Audio.Media.DURATION, 44100);
 
-        values.put(MediaStore.Audio.Media.IS_RINGTONE,
-                fileKind == FileSaveDialog.FILE_KIND_RINGTONE);
-        values.put(MediaStore.Audio.Media.IS_NOTIFICATION,
-                fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION);
-        values.put(MediaStore.Audio.Media.IS_ALARM,
-                fileKind == FileSaveDialog.FILE_KIND_ALARM);
-        values.put(MediaStore.Audio.Media.IS_MUSIC,
-                fileKind == FileSaveDialog.FILE_KIND_MUSIC);
+        values.put(MediaStore.Audio.Media.IS_RINGTONE, fileKind == FileSaveDialog.FILE_KIND_RINGTONE);
+        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION);
+        values.put(MediaStore.Audio.Media.IS_ALARM, fileKind == FileSaveDialog.FILE_KIND_ALARM);
 
         // Insert it into the database
         Uri uri = MediaStore.Audio.Media.getContentUriForPath(outFile.getAbsolutePath());
         final Uri newUri = context.getContentResolver().insert(uri, values);
         //setResult(RESULT_OK, new Intent().setData(newUri));
 
-        // There's nothing more to do with music. Show a
-        // success message and then quit.
-        if (fileKind == FileSaveDialog.FILE_KIND_MUSIC) {
-            Toast.makeText(context, R.string.save_success_message, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         // alarm
         if (fileKind == FileSaveDialog.FILE_KIND_ALARM) {
-            askSetDefault(context, RingtoneManager.TYPE_ALARM, R.string.set_default_alarm,
-                    R.string.default_alarm_success_message, newUri);
+            setAsDefaultRingtone(context, RingtoneManager.TYPE_ALARM, newUri);
             return;
         }
 
-        // If it's a notification, give the user the option of making
-        // this their default notification.  If they say no, we're finished.
+        // notification
         if (fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
-            askSetDefault(context, RingtoneManager.TYPE_NOTIFICATION, R.string.set_default_notification,
-                    R.string.default_notification_success_message, newUri);
+            setAsDefaultRingtone(context, RingtoneManager.TYPE_NOTIFICATION, newUri);
             return;
         }
 
-        // If we get here, that means the type is a ringtone.
+        // ringtone.
         if (fileKind == FileSaveDialog.FILE_KIND_RINGTONE) {
-            askSetDefault(context, RingtoneManager.TYPE_RINGTONE, R.string.set_default_ringtone,
-                    R.string.default_ringtone_success_message, newUri);
+            setAsDefaultRingtone(context, RingtoneManager.TYPE_RINGTONE, newUri);
         }
     }
 
-    private static void askSetDefault(final Context context, final int type, final int questionId,
-                               final int successMsgId, final Uri newUri){
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.alert_title_success)
-                .setMessage(questionId)
-                .setPositiveButton(R.string.alert_yes_button,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int whichButton) {
+    private static void setAsDefaultRingtone(final Context context, final int type, final Uri newUri) {
 
-                                // java.lang.SecurityException: com.serp1983.nokiacomposer
-                                // was not granted  this permission: android.permission.WRITE_SETTINGS
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    if (!Settings.System.canWrite(context)){
-                                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                                        intent.setData(Uri.parse("package:" + context.getPackageName()));
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        context.startActivity(intent);
-                                    }
-                                }
+        // java.lang.SecurityException: com.serp1983.nokiacomposer
+        // was not granted  this permission: android.permission.WRITE_SETTINGS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(context)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        }
 
-                                RingtoneManager.setActualDefaultRingtoneUri(context, type, newUri);
-                                Toast.makeText(context, successMsgId, Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        })
-                .setNegativeButton(R.string.alert_no_button, null)
-                .setCancelable(false)
-                .show();
+        RingtoneManager.setActualDefaultRingtoneUri(context, type, newUri);
+        Toast.makeText(context, R.string.alert_title_success, Toast.LENGTH_SHORT).show();
     }
 }
