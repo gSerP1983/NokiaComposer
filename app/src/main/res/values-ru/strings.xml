@@ -29,7 +29,7 @@
     <string name="default_ringtone_success_message">Сигнал звонка по умолчанию изменен</string>
     <string name="default_notification_success_message">Сигнал уведомления по умолчанию изменен</string>
     <string name="default_alarm_success_message">Сигнал будильника по умолчанию изменен</string>
-    <string name="action_set_as_ringtone">Установить как сигнал звонка</string>
+    <string name="action_set_as_call_ringtone">Установить как сигнал звонка</string>
     <string name="ringtone_tempo_label">Темп:</string>
     <string name="ringtone_code_label">Код мелодии:</string>
     <string name="my_ringtones_label">Мои рингтоны</string>

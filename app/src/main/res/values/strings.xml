@@ -9,7 +9,7 @@
     <string name="action_share_text">Share text</string>
     <string name="action_share_wav">Share *.wav</string>
     <string name="action_share_mp3">Share *.mp3</string>
-    <string name="action_set_as_ringtone">Set As Ringtone</string>
+    <string name="action_set_as_call_ringtone">Set as call ringtone</string>
     <string name="action_search">Search</string>
     <string name="ringtone_tempo_label">Tempo:</string>
     <string name="ringtone_code_label">Ringtone code:</string>
