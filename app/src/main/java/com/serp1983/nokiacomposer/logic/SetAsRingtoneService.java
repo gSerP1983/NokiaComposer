@@ -2,20 +2,18 @@ package com.serp1983.nokiacomposer.logic;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.widget.Toast;
 
 import com.google.firebase.crash.FirebaseCrash;
 import com.intervigil.wave.WaveWriter;
-import com.serp1983.nokiacomposer.util.FileSaveDialog;
 import com.serp1983.nokiacomposer.R;
 import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
 import com.serp1983.nokiacomposer.lib.FileUtils;
@@ -28,32 +26,54 @@ import java.io.File;
 import java.io.IOException;
 
 public class SetAsRingtoneService {
-    public static void setAsRingtone(final Context context, final RingtoneVM ringtone){
-        if (ringtone == null) return;
-        final Handler handler = new Handler() {
-            public void handleMessage(Message response) {
-                CharSequence newTitle = (CharSequence)response.obj;
-                saveRingtone(context, ringtone, newTitle, response.arg1);
-            }
-        };
-        Message message = Message.obtain(handler);
-        FileSaveDialog dlg = new FileSaveDialog(context, context.getResources(), ringtone.Name, message);
-        dlg.show();
-    }
+    static final int FILE_KIND_ALARM = 0;
+    static final int FILE_KIND_NOTIFICATION = 1;
+    static final int FILE_KIND_RINGTONE = 2;
 
-    private static void saveRingtone(final Context context, final RingtoneVM ringtone, final CharSequence title, int fileKind) {
+    public static void setAsRingtone(final Context context, final RingtoneVM ringtone){
         if (ringtone == null)
             return;
 
-        final String outPath = RingtoneSaver.makeRingtoneFilename(title, ".mp3", fileKind);
-        if (outPath == null) {
-            DialogHelper.showError(context, context.getString(R.string.no_unique_filename));
+        String title = context.getString(R.string.title_set_as_ringtone);
+        DialogHelper.showSingleChoice(context, title, R.array.ringtone_type_array, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                saveRingtone(context, ringtone, item);
+                dialog.dismiss();
+            }
+        }, null);
+    }
+
+    private static void saveRingtone(final Context context, final RingtoneVM ringtone, int fileKind) {
+        if (ringtone == null)
             return;
+
+        String title = ringtone.Name;
+        switch(fileKind) {
+            default:
+            case SetAsRingtoneService.FILE_KIND_ALARM:
+                title += " alarm";
+                break;
+            case SetAsRingtoneService.FILE_KIND_NOTIFICATION:
+                title += " notify";
+                break;
+            case SetAsRingtoneService.FILE_KIND_RINGTONE:
+                title += " ringtone";
+                break;
         }
 
-        if (findRingtone(context, MediaStore.Audio.Media.INTERNAL_CONTENT_URI, title) ||
-                findRingtone(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, title)){
-            DialogHelper.showError(context, context.getString(R.string.already_ringtone_exists));
+        int i = 0;
+        String newTitle = title;
+        while (findRingtone(context, MediaStore.Audio.Media.INTERNAL_CONTENT_URI, newTitle) ||
+                findRingtone(context, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, newTitle)){
+            newTitle = title + " " + ++i;
+        }
+        title = newTitle;
+
+        final String outPath = RingtoneSaver.makeRingtoneFilename(title, ".mp3", fileKind);
+        if (outPath == null) {
+            Toast.makeText(context, android.R.string.cancel, Toast.LENGTH_SHORT).show();
+            FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...): Unable to find unique filename!");
             return;
         }
 
@@ -74,7 +94,7 @@ public class SetAsRingtoneService {
                         ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
                         FileUtils.copy(fileMp3, outFile);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Toast.makeText(context, android.R.string.cancel, Toast.LENGTH_SHORT).show();
                         FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...)");
                         FirebaseCrash.report(e);
                     }
@@ -83,10 +103,10 @@ public class SetAsRingtoneService {
 
             afterSavingRingtone(context, title, outFile, fileKind);
         }
-        catch(Exception x){
-            x.printStackTrace();
+        catch(Exception e){
+            Toast.makeText(context, android.R.string.cancel, Toast.LENGTH_SHORT).show();
             FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...)");
-            FirebaseCrash.report(x);
+            FirebaseCrash.report(e);
         }
     }
 
@@ -101,13 +121,13 @@ public class SetAsRingtoneService {
 
             String titleString = String.valueOf(title);
             for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-                if (titleString.equals(c.getString(0)))
+                if (titleString.toLowerCase().equals(c.getString(0).toLowerCase())) {
                     return true;
+                }
             }
             c.close();
         }
         catch(Exception e){
-            e.printStackTrace();
             FirebaseCrash.log("SetAsRingtoneService.findRingtone(...)");
             FirebaseCrash.report(e);
         }
@@ -129,9 +149,9 @@ public class SetAsRingtoneService {
         values.put(MediaStore.Audio.Media.ARTIST, artist);
         values.put(MediaStore.Audio.Media.DURATION, 44100);
 
-        values.put(MediaStore.Audio.Media.IS_RINGTONE, fileKind == FileSaveDialog.FILE_KIND_RINGTONE);
-        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION);
-        values.put(MediaStore.Audio.Media.IS_ALARM, fileKind == FileSaveDialog.FILE_KIND_ALARM);
+        values.put(MediaStore.Audio.Media.IS_RINGTONE, fileKind == FILE_KIND_RINGTONE);
+        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, fileKind == FILE_KIND_NOTIFICATION);
+        values.put(MediaStore.Audio.Media.IS_ALARM, fileKind == FILE_KIND_ALARM);
 
         // Insert it into the database
         Uri uri = MediaStore.Audio.Media.getContentUriForPath(outFile.getAbsolutePath());
@@ -139,19 +159,19 @@ public class SetAsRingtoneService {
         //setResult(RESULT_OK, new Intent().setData(newUri));
 
         // alarm
-        if (fileKind == FileSaveDialog.FILE_KIND_ALARM) {
+        if (fileKind == FILE_KIND_ALARM) {
             setAsDefaultRingtone(context, RingtoneManager.TYPE_ALARM, newUri);
             return;
         }
 
         // notification
-        if (fileKind == FileSaveDialog.FILE_KIND_NOTIFICATION) {
+        if (fileKind == FILE_KIND_NOTIFICATION) {
             setAsDefaultRingtone(context, RingtoneManager.TYPE_NOTIFICATION, newUri);
             return;
         }
 
         // ringtone.
-        if (fileKind == FileSaveDialog.FILE_KIND_RINGTONE) {
+        if (fileKind == FILE_KIND_RINGTONE) {
             setAsDefaultRingtone(context, RingtoneManager.TYPE_RINGTONE, newUri);
         }
     }

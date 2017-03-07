@@ -177,7 +177,6 @@ public class DetailsActivity extends AppCompatActivity {
             });
         }
         catch(Exception e){
-            e.printStackTrace();
             FirebaseCrash.log("DetailsActivity.play()");
             FirebaseCrash.report(e);
         }

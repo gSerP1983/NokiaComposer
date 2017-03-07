@@ -14,19 +14,10 @@
     <string name="ringtones_label">Ringtones</string>
     <string name="my_ringtones_label">My ringtones</string>
     <string name="action_rate">Rate the app</string>
-    <!--
-     File Save dialog
-     -->
-    <string name="file_save_title">Save As:</string>
-    <string name="file_save_button_save">Save</string>
-    <string name="file_save_button_cancel">Cancel</string>
-    <string name="ringtone_name_label">Name:</string>
-    <string name="ringtone_type_label">Type:</string>
+    <string name="title_set_as_ringtone">Set as ringtone for:</string>
+
     <string name="type_alarm">Alarm</string>
     <string name="type_notification">Notification</string>
-    <string name="type_ringtone">Ringtone</string>
-    <string name="no_unique_filename">Unable to find unique filename!</string>
+    <string name="type_call">Call</string>
     <string name="alert_title_success">Success</string>
-    <string name="alert_title_error">Error</string>
-    <string name="already_ringtone_exists">Already ringtone with same name exists!</string>
 </resources>

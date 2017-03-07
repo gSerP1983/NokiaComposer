@@ -5,4 +5,10 @@
         <item>@string/action_share_wav</item>
         <item>@string/action_share_mp3</item>
     </string-array>
+
+    <string-array name="ringtone_type_array">
+        <item>@string/type_alarm</item>
+        <item>@string/type_notification</item>
+        <item>@string/type_call</item>
+    </string-array>
 </resources>

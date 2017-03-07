@@ -47,7 +47,7 @@ public class DialogHelper {
         builder.show();
     }
 
-    private static void showSingleChoice(
+    public static void showSingleChoice(
             Context context,
             String title,
             @ArrayRes int itemsId,
@@ -86,15 +86,5 @@ public class DialogHelper {
                 dialog.dismiss();
             }
         }, null);
-    }
-
-    public static void showError(final Context context, CharSequence message) {
-        CharSequence title = context.getResources().getText(R.string.alert_title_error);
-        new android.app.AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .setCancelable(false)
-                .show();
     }
 }

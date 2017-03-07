@@ -8,22 +8,15 @@
     <string name="action_share_mp3">Поделиться *.mp3</string>
     <string name="action_share_text">Поделиться текст</string>
     <string name="action_share_wav">Поделиться *.wav</string>
-    <string name="type_ringtone">Звонок</string>
-    <string name="alert_title_success">Успешно</string>
-    <string name="file_save_button_cancel">Отмена</string>
-    <string name="type_notification">Уведомление</string>
-    <string name="type_alarm">Будильник</string>
-    <string name="ringtone_type_label">Тип:</string>
-    <string name="ringtone_name_label">Наименование:</string>
-    <string name="file_save_button_save">Сохранить</string>
-    <string name="file_save_title">Сохранить как:</string>
-    <string name="already_ringtone_exists">Уже есть сигнал звонка с таким наименованием!</string>
-    <string name="no_unique_filename">Не удалось найти уникальное имя для файла!</string>
+    <string name="type_call">Звонка</string>
+    <string name="alert_title_success">Выполнено</string>
+    <string name="type_notification">Уведомления</string>
+    <string name="type_alarm">Будильника</string>
     <string name="action_set_as_call_ringtone">Установить как сигнал звонка</string>
     <string name="ringtone_tempo_label">Темп:</string>
     <string name="ringtone_code_label">Код мелодии:</string>
     <string name="my_ringtones_label">Мои рингтоны</string>
     <string name="ringtones_label">Рингтоны</string>
-    <string name="alert_title_error">Ошибка</string>
     <string name="action_rate">Оценить приложение</string>
+    <string name="title_set_as_ringtone">Установить как сигнал для:</string>
 </resources>

@@ -2,7 +2,6 @@ package com.serp1983.nokiacomposer.logic;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import static com.serp1983.nokiacomposer.util.FileSaveDialog.*;
 
 class RingtoneSaver {
 
@@ -10,13 +9,13 @@ class RingtoneSaver {
         String parentDir;
         switch(fileKind) {
             default:
-            case FILE_KIND_ALARM:
+            case SetAsRingtoneService.FILE_KIND_ALARM:
                 parentDir = "/sdcard/media/audio/alarms";
                 break;
-            case FILE_KIND_NOTIFICATION:
+            case SetAsRingtoneService.FILE_KIND_NOTIFICATION:
                 parentDir = "/sdcard/media/audio/notifications";
                 break;
-            case FILE_KIND_RINGTONE:
+            case SetAsRingtoneService.FILE_KIND_RINGTONE:
                 parentDir = "/sdcard/media/audio/ringtones";
                 break;
         }

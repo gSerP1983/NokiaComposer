@@ -40,7 +40,6 @@ public class DataService {
             Reader reader = new InputStreamReader(ims);
             assetRingtonesArray = new Gson().fromJson(reader, RingtoneVM[].class);
         }catch(Exception e) {
-            e.printStackTrace();
             FirebaseCrash.log("DataService.ctor(...)");
             FirebaseCrash.report(e);
         }
@@ -59,7 +58,6 @@ public class DataService {
                 myRingtonesArray = new Gson().fromJson(reader, RingtoneVM[].class);
             }
         }catch(Exception e) {
-            e.printStackTrace();
             FirebaseCrash.log("DataService.ctor(...)");
             FirebaseCrash.report(e);
         }
@@ -84,7 +82,6 @@ public class DataService {
             saveMyRingtones(context, myRingtones);
         }
         catch(Exception e){
-            e.printStackTrace();
             FirebaseCrash.log("DataService.deleteMyRingtone(...)");
             FirebaseCrash.report(e);
             return false;
@@ -101,7 +98,6 @@ public class DataService {
             saveMyRingtones(context, myRingtones);
         }
         catch(Exception e){
-            e.printStackTrace();
             FirebaseCrash.log("DataService.addMyRingtone(...)");
             FirebaseCrash.report(e);
             return false;

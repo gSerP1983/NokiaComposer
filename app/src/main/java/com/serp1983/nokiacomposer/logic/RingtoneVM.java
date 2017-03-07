@@ -56,7 +56,6 @@ public class RingtoneVM extends BaseObservable {
                 AsyncAudioTrack.stop();
         }
         catch(Exception e){
-            e.printStackTrace();
             FirebaseCrash.log("RingtoneVM.play()");
             FirebaseCrash.report(e);
             setPlaying(false);
