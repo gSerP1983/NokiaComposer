@@ -1,5 +1,6 @@
 package com.serp1983.nokiacomposer.logic;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +34,28 @@ public class SetAsRingtoneService {
     public static void setAsRingtone(final Context context, final RingtoneVM ringtone){
         if (ringtone == null)
             return;
+
+        // java.lang.SecurityException: com.serp1983.nokiacomposer
+        // was not granted  this permission: android.permission.WRITE_SETTINGS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(context)) {
+                String msg = context.getString(R.string.msg_modify_system_settings);
+                DialogHelper.showAlert(context, null, msg, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        @SuppressLint("InlinedApi")
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                        intent.setData(Uri.parse("package:" + context.getPackageName()));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        context.startActivity(intent);
+                    }
+                });
+
+                return;
+            }
+        }
 
         String title = context.getString(R.string.title_set_as_ringtone);
         DialogHelper.showSingleChoice(context, title, R.array.ringtone_type_array, -1, new DialogInterface.OnClickListener() {
@@ -176,18 +199,6 @@ public class SetAsRingtoneService {
     }
 
     private static void setAsDefaultRingtone(final Context context, final int type, final Uri newUri) {
-
-        // java.lang.SecurityException: com.serp1983.nokiacomposer
-        // was not granted  this permission: android.permission.WRITE_SETTINGS
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.System.canWrite(context)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                intent.setData(Uri.parse("package:" + context.getPackageName()));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        }
-
         RingtoneManager.setActualDefaultRingtoneUri(context, type, newUri);
         Toast.makeText(context, R.string.alert_title_success, Toast.LENGTH_SHORT).show();
     }

@@ -47,6 +47,25 @@ public class DialogHelper {
         builder.show();
     }
 
+    public static void showAlert(
+            Context context,
+            CharSequence title,
+            CharSequence message,
+            DialogInterface.OnClickListener okOnClickListener){
+
+        if (okOnClickListener == null) okOnClickListener = nullOnClickListener;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, okOnClickListener);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+
     public static void showSingleChoice(
             Context context,
             String title,

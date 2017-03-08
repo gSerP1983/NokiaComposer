@@ -19,4 +19,6 @@
     <string name="ringtones_label">Рингтоны</string>
     <string name="action_rate">Оценить приложение</string>
     <string name="title_set_as_ringtone">Установить как сигнал для:</string>
+    <string name="msg_modify_system_settings">Разрешите приложению изменять системные настройки. После этого повторите попытку.</string>
+    <string name="msg_saved">сохранено</string>
 </resources>

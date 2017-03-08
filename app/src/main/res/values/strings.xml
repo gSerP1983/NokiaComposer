@@ -20,4 +20,6 @@
     <string name="type_notification">Notification</string>
     <string name="type_call">Call</string>
     <string name="alert_title_success">Success</string>
+    <string name="msg_modify_system_settings">You need allow modify system settings for this app. Then try again.</string>
+    <string name="msg_saved">saved</string>
 </resources>

@@ -243,8 +243,10 @@ public class DetailsActivity extends AppCompatActivity {
                 if (!input.isEmpty()) {
                     ringtone.IsMy = true;
                     ringtone.Name = input;
-                    if (DataService.getInstance().addMyRingtone(DetailsActivity.this, ringtone))
-                        Toast.makeText(DetailsActivity.this, input + " saved...", Toast.LENGTH_SHORT).show();
+                    if (DataService.getInstance().addMyRingtone(DetailsActivity.this, ringtone)) {
+                        String msg = input + " " + DetailsActivity.this.getString(R.string.msg_saved);
+                        Toast.makeText(DetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
