@@ -1,5 +1,6 @@
 package com.serp1983.nokiacomposer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new PagerAdapter(this, getSupportFragmentManager()));
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private class PagerAdapter extends FragmentPagerAdapter {
-        PagerAdapter(FragmentManager fm) {
+        private Context context;
+        PagerAdapter(Context context, FragmentManager fm) {
             super(fm);
+            this.context = context;
         }
 
         @Override
@@ -98,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return position == 0
-                    ? App.getAppContext().getResources().getString(R.string.ringtones_label)
-                    : App.getAppContext().getResources().getString(R.string.my_ringtones_label) ;
+                    ? context.getResources().getString(R.string.ringtones_label)
+                    : context.getResources().getString(R.string.my_ringtones_label) ;
         }
     }
 
