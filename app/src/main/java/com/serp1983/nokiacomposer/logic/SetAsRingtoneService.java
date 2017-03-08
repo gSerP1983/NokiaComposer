@@ -94,7 +94,6 @@ public class SetAsRingtoneService {
                         ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
                         FileUtils.copy(fileMp3, outFile);
                     } catch (IOException e) {
-                        Toast.makeText(context, android.R.string.cancel, Toast.LENGTH_SHORT).show();
                         FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...)");
                         FirebaseCrash.report(e);
                     }
