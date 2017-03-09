@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="bottom|center"
-        ads:adUnitId="ca-app-pub-6052365977112487/8857818250"
+        ads:adUnitId="@string/ads_banner"
         ads:adSize="SMART_BANNER"/>
 
     <android.support.design.widget.FloatingActionButton
