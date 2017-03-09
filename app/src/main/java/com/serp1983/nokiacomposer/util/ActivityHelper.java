@@ -1,8 +1,11 @@
 package com.serp1983.nokiacomposer.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.Uri;
+
 import com.google.android.gms.ads.AdRequest;
 
 public class ActivityHelper {
@@ -12,6 +15,16 @@ public class ActivityHelper {
                 .addTestDevice("719114FF69D7B57C496D44E00E4D2324")  // lenovo p7800
                 .addTestDevice("75BA8C6263CDF31C6E0BD9C3C90C7B4C")  // sony e2033
                 ;
+    }
+
+    public static Activity getActivity(Context context) {
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity)context;
+            }
+            context = ((ContextWrapper)context).getBaseContext();
+        }
+        return null;
     }
 
     public static void rate(Context context) {

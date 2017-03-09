@@ -1,6 +1,7 @@
 package com.serp1983.nokiacomposer;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import com.serp1983.nokiacomposer.logic.DataService;
 import com.serp1983.nokiacomposer.logic.RingtoneVM;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
+import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
 import com.serp1983.nokiacomposer.util.RecyclerBindingAdapter;
 
@@ -122,7 +124,9 @@ public class RingtonesFragment extends Fragment {
                         DataService.getInstance().deleteMyRingtone(view.getContext(), ringtone);
                         break;
                     case R.id.action_set_as_ringtone:
-                        SetAsRingtoneService.setAsRingtone(view.getContext(), ringtone);
+                        Activity activity = ActivityHelper.getActivity(view.getContext());
+                        if (activity != null)
+                            SetAsRingtoneService.setAsRingtone(activity, ringtone);
                         break;
                     case R.id.action_share:
                         DialogHelper.showShareDialog(view.getContext(), ringtone);

@@ -1,16 +1,20 @@
 package com.serp1983.nokiacomposer.logic;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.google.firebase.crash.FirebaseCrash;
@@ -22,34 +26,49 @@ import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.serp1983.nokiacomposer.util.DialogHelper;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
+import android.Manifest;
 
 import java.io.File;
 import java.io.IOException;
 
 public class SetAsRingtoneService {
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+
     static final int FILE_KIND_ALARM = 0;
     static final int FILE_KIND_NOTIFICATION = 1;
     static final int FILE_KIND_RINGTONE = 2;
 
-    public static void setAsRingtone(final Context context, final RingtoneVM ringtone){
+    public static void setAsRingtone(final Activity activity, final RingtoneVM ringtone){
         if (ringtone == null)
             return;
 
-        // java.lang.SecurityException: com.serp1983.nokiacomposer
-        // was not granted  this permission: android.permission.WRITE_SETTINGS
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.System.canWrite(context)) {
-                String msg = context.getString(R.string.msg_modify_system_settings);
-                DialogHelper.showAlert(context, null, msg, new DialogInterface.OnClickListener() {
+
+            //requires android.permission.READ_EXTERNAL_STORAGE
+            //requires android.permission.WRITE_EXTERNAL_STORAGE
+            int writePermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int readPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_EXTERNAL_STORAGE);
+                return;
+            }
+
+            // was not granted this permission: android.permission.WRITE_SETTINGS
+            if (!Settings.System.canWrite(activity)) {
+                String msg = activity.getString(R.string.msg_modify_system_settings);
+                DialogHelper.showAlert(activity, null, msg, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
                         @SuppressLint("InlinedApi")
                         Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                        intent.setData(Uri.parse("package:" + context.getPackageName()));
+                        intent.setData(Uri.parse("package:" + activity.getPackageName()));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        context.startActivity(intent);
+                        activity.startActivity(intent);
                     }
                 });
 
@@ -57,11 +76,11 @@ public class SetAsRingtoneService {
             }
         }
 
-        String title = context.getString(R.string.title_set_as_ringtone);
-        DialogHelper.showSingleChoice(context, title, R.array.ringtone_type_array, -1, new DialogInterface.OnClickListener() {
+        String title = activity.getString(R.string.title_set_as_ringtone);
+        DialogHelper.showSingleChoice(activity, title, R.array.ringtone_type_array, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                saveRingtone(context, ringtone, item);
+                saveRingtone(activity, ringtone, item);
                 dialog.dismiss();
             }
         }, null);
