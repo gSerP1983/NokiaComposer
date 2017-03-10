@@ -20,6 +20,7 @@ import com.serp1983.nokiacomposer.logic.RingtoneVM;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
+import com.serp1983.nokiacomposer.util.InterstitialAdService;
 import com.serp1983.nokiacomposer.util.RecyclerBindingAdapter;
 
 import java.util.ArrayList;
@@ -93,6 +94,7 @@ public class RingtonesFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerBindingAdapter.OnItemClickListener<RingtoneVM>() {
             @Override
             public void onItemClick(int position, RingtoneVM item) {
+                InterstitialAdService.getInstance().tryShow();
                 startActivity(DetailsActivity.getIntent(view.getContext(), item));
             }
         });

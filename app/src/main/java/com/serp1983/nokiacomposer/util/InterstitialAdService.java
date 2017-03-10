@@ -3,6 +3,7 @@ package com.serp1983.nokiacomposer.util;
 import android.content.Context;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.firebase.crash.FirebaseCrash;
 import com.serp1983.nokiacomposer.R;
 
 public class InterstitialAdService {
@@ -36,4 +37,13 @@ public class InterstitialAdService {
         }
     }
 
+    public void tryShow() {
+        try{
+            show();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            FirebaseCrash.report(e);
+        }
+    }
 }

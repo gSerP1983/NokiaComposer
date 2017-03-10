@@ -42,13 +42,7 @@ public class RingtoneVM extends BaseObservable {
     }
 
     public void play(){
-        try{
-            InterstitialAdService.getInstance().show();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
-        }
+        InterstitialAdService.getInstance().tryShow();
 
         try {
             if (!_isPlaying) {
