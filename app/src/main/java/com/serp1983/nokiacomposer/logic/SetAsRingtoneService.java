@@ -49,6 +49,8 @@ public class SetAsRingtoneService {
             int writePermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int readPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
             if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
+                String msg = activity.getString(R.string.msg_need_permissions);
+                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(activity,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -136,7 +138,7 @@ public class SetAsRingtoneService {
                         ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
                         FileUtils.copy(fileMp3, outFile);
                     } catch (IOException e) {
-                        FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...)");
+                        e.printStackTrace();
                         FirebaseCrash.report(e);
                     }
                 }
@@ -146,7 +148,7 @@ public class SetAsRingtoneService {
         }
         catch(Exception e){
             Toast.makeText(context, android.R.string.cancel, Toast.LENGTH_SHORT).show();
-            FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...)");
+            e.printStackTrace();
             FirebaseCrash.report(e);
         }
     }
@@ -169,7 +171,7 @@ public class SetAsRingtoneService {
             c.close();
         }
         catch(Exception e){
-            FirebaseCrash.log("SetAsRingtoneService.findRingtone(...)");
+            e.printStackTrace();
             FirebaseCrash.report(e);
         }
         return false;

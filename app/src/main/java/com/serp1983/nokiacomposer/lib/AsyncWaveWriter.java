@@ -45,7 +45,7 @@ public class AsyncWaveWriter implements Runnable {
 				_callback.onComplete();
 
 		} catch (IOException e) {
-			FirebaseCrash.log("AsyncWaveWriter.run()");
+			e.printStackTrace();
 			FirebaseCrash.report(e);
 		}
 	}

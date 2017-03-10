@@ -46,6 +46,7 @@ public class RingtoneVM extends BaseObservable {
             InterstitialAdService.getInstance().show();
         }
         catch(Exception e){
+            e.printStackTrace();
             FirebaseCrash.report(e);
         }
 
@@ -64,7 +65,7 @@ public class RingtoneVM extends BaseObservable {
                 AsyncAudioTrack.stop();
         }
         catch(Exception e){
-            FirebaseCrash.log("RingtoneVM.play()");
+            e.printStackTrace();
             FirebaseCrash.report(e);
             setPlaying(false);
         }

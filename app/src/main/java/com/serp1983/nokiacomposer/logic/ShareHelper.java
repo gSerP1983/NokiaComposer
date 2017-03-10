@@ -31,7 +31,7 @@ public class ShareHelper {
             context.startActivity(intentChooser);
         }
         catch(Exception e){
-            FirebaseCrash.log("ShareHelper.shareText(...)");
+            e.printStackTrace();
             FirebaseCrash.report(e);
         }
     }
@@ -63,7 +63,7 @@ public class ShareHelper {
             context.startActivity(intentChooser);
         }
         catch(Exception e){
-            FirebaseCrash.log("ShareHelper.shareWav(...)");
+            e.printStackTrace();
             FirebaseCrash.report(e);
         }
     }
@@ -101,7 +101,7 @@ public class ShareHelper {
             context.startActivity(intentChooser);
         }
         catch(Exception e){
-            FirebaseCrash.log("ShareHelper.shareMp3(...)");
+            e.printStackTrace();
             FirebaseCrash.report(e);
         }
     }

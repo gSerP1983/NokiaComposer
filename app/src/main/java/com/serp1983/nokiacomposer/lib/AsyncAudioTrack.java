@@ -16,6 +16,7 @@ public class AsyncAudioTrack implements Runnable {
 	private byte[] _buffer;
 	private AudioTrack _audioTrack;
 	private Callback _callback;
+	private int _bufferSize;
 	public interface Callback {
 		void onComplete();
 	}
@@ -23,20 +24,30 @@ public class AsyncAudioTrack implements Runnable {
 	private AsyncAudioTrack(byte[] buffer, Callback callback){
 		_buffer = buffer;
 		_callback = callback;
+
+		try {
+			_bufferSize = AudioTrack.getMinBufferSize(44100,
+					AudioFormat.CHANNEL_OUT_MONO,
+					AudioFormat.ENCODING_PCM_16BIT);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			_bufferSize = 3528;
+		}
+
+		if (_bufferSize == -1)
+			_bufferSize = 3528;
 	}
 	
 	@Override
 	public void run() {
 		isRun = true;
 
-		int bufferSize = AudioTrack.getMinBufferSize(
-				44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-		
 		_audioTrack = new AudioTrack(
 				AudioManager.STREAM_MUSIC, 44100,
 				AudioFormat.CHANNEL_OUT_MONO, 
 				AudioFormat.ENCODING_PCM_16BIT, 
-				bufferSize, AudioTrack.MODE_STREAM);
+				_bufferSize, AudioTrack.MODE_STREAM);
 		
 		_audioTrack.play();
 		_audioTrack.write(_buffer, 0, _buffer.length);
@@ -47,8 +58,11 @@ public class AsyncAudioTrack implements Runnable {
 		isRun = false;
 	}
 
-	public void release(){
-		if (_audioTrack != null) _audioTrack.stop();
+	private void release(){
+		if (_audioTrack != null) {
+			_audioTrack.release();
+			_audioTrack = null;
+		}
 	}
 	
 	public static void start(byte[] buffer, Callback callback){
@@ -64,8 +78,7 @@ public class AsyncAudioTrack implements Runnable {
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
-			FirebaseCrash.log("AsyncAudioTrack.stop()");
-			FirebaseCrash.report(e);
+			e.printStackTrace();
 		}
 	}
 }

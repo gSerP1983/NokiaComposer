@@ -20,8 +20,9 @@
     <string name="type_notification">Notification</string>
     <string name="type_call">Call</string>
     <string name="alert_title_success">Success</string>
-    <string name="msg_modify_system_settings">You need allow modify system settings for this app. Then try again.</string>
     <string name="msg_saved">saved</string>
+    <string name="msg_modify_system_settings">You need to allow modify system settings for this app. Then try again.</string>
+    <string name="msg_need_permissions">You need to allow read/write external storage. Then try again.</string>
 
     <string name="ads_banner" translatable="false">ca-app-pub-6052365977112487/8857818250</string>
     <string name="ads_interstitial" translatable="false">ca-app-pub-6052365977112487/9920309054</string>
