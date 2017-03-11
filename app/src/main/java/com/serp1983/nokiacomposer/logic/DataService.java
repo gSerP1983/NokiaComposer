@@ -105,6 +105,16 @@ public class DataService {
         return true;
     }
 
+    public void saveMyRingtones(Context context){
+        try{
+            saveMyRingtones(context, myRingtones);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            FirebaseCrash.report(e);
+        }
+    }
+
     private static void saveMyRingtones(Context context, ArrayList<RingtoneVM> rigtones) throws IOException {
         RingtoneVM[] array = rigtones.toArray(new RingtoneVM[0]);
         File file = getMyRingtonesFile(context);

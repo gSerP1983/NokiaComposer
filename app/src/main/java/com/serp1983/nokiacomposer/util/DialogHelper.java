@@ -30,8 +30,10 @@ public class DialogHelper {
         if (!title.isEmpty()) builder.setTitle(title);
 
         final EditText input = new EditText(context);
-        if (!defValue.isEmpty()) input.setText(defValue, TextView.BufferType.EDITABLE);
-        if (!hint.isEmpty()) input.setHint(hint);
+        if (defValue != null && !defValue.isEmpty())
+            input.setText(defValue, TextView.BufferType.EDITABLE);
+        if (hint != null && !hint.isEmpty())
+            input.setHint(hint);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 

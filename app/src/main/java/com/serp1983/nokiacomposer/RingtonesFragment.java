@@ -2,6 +2,7 @@ package com.serp1983.nokiacomposer;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -122,6 +123,18 @@ public class RingtonesFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.action_rename:
+                        final Context context = view.getContext();
+                        String title = context.getString(R.string.action_rename) + ":";
+                        DialogHelper.inputDialog(context, title, null, ringtone.Name, new DialogHelper.Callback<String>() {
+                            @Override
+                            public void onComplete(String input) {
+                                ringtone.Name = input;
+                                ringtone.notifyChange();
+                                DataService.getInstance().saveMyRingtones(context);
+                            }
+                        });
+                        break;
                     case R.id.action_delete:
                         DataService.getInstance().deleteMyRingtone(view.getContext(), ringtone);
                         break;
