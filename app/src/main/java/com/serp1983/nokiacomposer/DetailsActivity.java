@@ -189,8 +189,14 @@ public class DetailsActivity extends AppCompatActivity {
         if (codeStr.isEmpty() || tempoStr.isEmpty() || tempoStr.length() > 4)
             return false;
 
-        int tempo = Integer.parseInt(tempoStr);
-        return tempo > 0  && tempo <= 1000;
+        try {
+            int tempo = Integer.parseInt(tempoStr);
+            return tempo > 0  && tempo <= 1000;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void safetyPlayOff(){
