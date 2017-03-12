@@ -23,4 +23,5 @@
     <string name="msg_saved">сохранено</string>
     <string name="msg_need_permissions">Разрешите приложению читать/писать на SD-карту и повторите попытку.</string>
     <string name="action_rename">Переименовать</string>
+    <string name="ringtone_name_label">Наименование</string>
 </resources>

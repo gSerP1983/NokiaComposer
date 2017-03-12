@@ -27,7 +27,8 @@ public class DialogHelper {
     public static void inputDialog(Context context, String title, String hint, String defValue,
                                    final Callback<String> callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        if (!title.isEmpty()) builder.setTitle(title);
+        if (title != null && !title.isEmpty())
+            builder.setTitle(title);
 
         final EditText input = new EditText(context);
         if (defValue != null && !defValue.isEmpty())
@@ -40,7 +41,8 @@ public class DialogHelper {
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (callback != null) callback.onComplete(input.getText().toString());
+                if (callback != null)
+                    callback.onComplete(input.getText().toString());
             }
         });
 

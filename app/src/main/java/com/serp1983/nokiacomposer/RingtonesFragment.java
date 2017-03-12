@@ -125,10 +125,12 @@ public class RingtonesFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.action_rename:
                         final Context context = view.getContext();
-                        String title = context.getString(R.string.action_rename) + ":";
-                        DialogHelper.inputDialog(context, title, null, ringtone.Name, new DialogHelper.Callback<String>() {
+                        String hint = context.getString(R.string.ringtone_name_label);
+                        DialogHelper.inputDialog(context, null, hint, ringtone.Name, new DialogHelper.Callback<String>() {
                             @Override
                             public void onComplete(String input) {
+                                if (input == null || input.isEmpty())
+                                    return;
                                 ringtone.Name = input;
                                 ringtone.notifyChange();
                                 DataService.getInstance().saveMyRingtones(context);

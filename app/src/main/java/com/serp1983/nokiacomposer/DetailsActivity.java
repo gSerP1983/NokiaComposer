@@ -240,10 +240,15 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void save(){
         final RingtoneVM ringtone = getCurrentRingtone();
-        if (ringtone == null) return;
+        if (ringtone == null)
+            return;
+
         String name = ringtone.Name;
-        if (!name.startsWith("(My) ")) name = "(My) " + name;
-        DialogHelper.inputDialog(this, "", "Name", name, new DialogHelper.Callback<String>() {
+        if (!name.startsWith("(My) "))
+            name = "(My) " + name;
+
+        String hint = this.getString(R.string.ringtone_name_label);
+        DialogHelper.inputDialog(this, "", hint, name, new DialogHelper.Callback<String>() {
             @Override
             public void onComplete(String input) {
                 if (!input.isEmpty()) {

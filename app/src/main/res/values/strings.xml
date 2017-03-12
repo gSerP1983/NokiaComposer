@@ -10,17 +10,19 @@
     <string name="action_set_as_call_ringtone">Set as call ringtone</string>
     <string name="action_search">Search</string>
     <string name="action_rename">Rename</string>
+    <string name="action_rate">Rate the app</string>
 
     <string name="ringtone_tempo_label">Tempo:</string>
     <string name="ringtone_code_label">Ringtone code:</string>
     <string name="ringtones_label">Ringtones</string>
     <string name="my_ringtones_label">My ringtones</string>
-    <string name="action_rate">Rate the app</string>
     <string name="title_set_as_ringtone">Set as ringtone for:</string>
+    <string name="ringtone_name_label">Name</string>
 
     <string name="type_alarm">Alarm</string>
     <string name="type_notification">Notification</string>
     <string name="type_call">Call</string>
+
     <string name="alert_title_success">Success</string>
     <string name="msg_saved">saved</string>
     <string name="msg_modify_system_settings">You need to allow modify system settings for this app. Then try again.</string>
