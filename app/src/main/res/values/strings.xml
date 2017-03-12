@@ -11,6 +11,7 @@
     <string name="action_search">Search</string>
     <string name="action_rename">Rename</string>
     <string name="action_rate">Rate the app</string>
+    <string name="action_open">Open</string>
 
     <string name="ringtone_tempo_label">Tempo:</string>
     <string name="ringtone_code_label">Ringtone code:</string>

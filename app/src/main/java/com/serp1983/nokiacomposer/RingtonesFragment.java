@@ -122,14 +122,14 @@ public class RingtonesFragment extends Fragment {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                final Context context = view.getContext();
                 switch (item.getItemId()) {
                     case R.id.action_rename:
-                        final Context context = view.getContext();
                         String hint = context.getString(R.string.ringtone_name_label);
                         DialogHelper.inputDialog(context, null, hint, ringtone.Name, new DialogHelper.Callback<String>() {
                             @Override
                             public void onComplete(String input) {
-                                if (input == null || input.isEmpty())
+                                if (input == null || input.isEmpty() || input.equals(ringtone.Name))
                                     return;
                                 ringtone.Name = input;
                                 ringtone.notifyChange();
@@ -138,15 +138,19 @@ public class RingtonesFragment extends Fragment {
                         });
                         break;
                     case R.id.action_delete:
-                        DataService.getInstance().deleteMyRingtone(view.getContext(), ringtone);
+                        DataService.getInstance().deleteMyRingtone(context, ringtone);
                         break;
                     case R.id.action_set_as_ringtone:
-                        Activity activity = ActivityHelper.getActivity(view.getContext());
+                        Activity activity = ActivityHelper.getActivity(context);
                         if (activity != null)
                             SetAsRingtoneService.setAsRingtone(activity, ringtone);
                         break;
                     case R.id.action_share:
-                        DialogHelper.showShareDialog(view.getContext(), ringtone);
+                        DialogHelper.showShareDialog(context, ringtone);
+                        break;
+                    case R.id.action_open:
+                        InterstitialAdService.getInstance().tryShow();
+                        context.startActivity(DetailsActivity.getIntent(context, ringtone));
                         break;
                 }
                 return false;
