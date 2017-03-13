@@ -45,8 +45,6 @@ public class DataService {
         }
         if (assetRingtonesArray == null)
             assetRingtonesArray = new RingtoneVM[]{};
-        else
-            RingtoneVM.sort(assetRingtonesArray);
         assetRingtones = new ArrayList<>(Arrays.asList(assetRingtonesArray));
 
         // my ringtones

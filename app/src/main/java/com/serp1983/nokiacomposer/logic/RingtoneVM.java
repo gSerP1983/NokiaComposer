@@ -11,8 +11,6 @@ import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.serp1983.nokiacomposer.util.InterstitialAdService;
 
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class RingtoneVM extends BaseObservable {
     @SerializedName("Name") private String _name;
@@ -73,28 +71,5 @@ public class RingtoneVM extends BaseObservable {
             FirebaseCrash.report(e);
             setPlaying(false);
         }
-    }
-
-
-    static void sort(RingtoneVM[] ringtones){
-        Arrays.sort(ringtones, new Comparator<RingtoneVM>() {
-            @Override
-            public int compare(RingtoneVM obj1, RingtoneVM obj2) {
-                if (obj1 == obj2) {
-                    return 0;
-                }
-                if (obj1 == null) {
-                    return -1;
-                }
-                if (obj2 == null) {
-                    return 1;
-                }
-                String name1 = obj1._name;
-                if (name1 == null) name1 = "";
-                String name2 = obj2._name;
-                if (name2 == null) name2 = "";
-                return name1.compareTo(name2);
-            }
-        });
     }
 }
