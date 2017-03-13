@@ -22,8 +22,8 @@ public class ShareHelper {
         try{
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("text/plain");
-            intentSend.putExtra(Intent.EXTRA_TEXT, ringtone.Name + ", tempo=" + ringtone.Tempo + ", " + ringtone.Code);
-            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
+            intentSend.putExtra(Intent.EXTRA_TEXT, ringtone.getName() + ", tempo=" + ringtone.Tempo + ", " + ringtone.Code);
+            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.getName());
 
             Intent intentChooser = Intent.createChooser(intentSend, "Share");
             intentChooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -45,7 +45,7 @@ public class ShareHelper {
             return;
 
         try{
-            String name = ringtone.Name.replaceAll("\\W+", "_");
+            String name = ringtone.getName().replaceAll("\\W+", "_");
             File file = new File(externalCacheDir.getPath(), name + ".wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
@@ -54,7 +54,7 @@ public class ShareHelper {
 
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("sound/wav");
-            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
+            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.getName());
             intentSend.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 
             Intent intentChooser = Intent.createChooser(intentSend, "Share *.wav");
@@ -77,7 +77,7 @@ public class ShareHelper {
             return;
 
         try{
-            String name = ringtone.Name.replaceAll("\\W+", "_");
+            String name = ringtone.getName().replaceAll("\\W+", "_");
             final File fileWav = new File(externalCacheDir.getPath(), name + ".wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
@@ -92,7 +92,7 @@ public class ShareHelper {
             final File fileMp3 = new File(externalCacheDir.getPath(), name + ".mp3");
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("sound/mp3");
-            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.Name);
+            intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.getName());
             intentSend.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileMp3));
 
             Intent intentChooser = Intent.createChooser(intentSend, "Share *.mp3");

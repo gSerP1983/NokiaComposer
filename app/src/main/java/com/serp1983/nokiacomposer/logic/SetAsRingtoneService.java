@@ -92,7 +92,7 @@ public class SetAsRingtoneService {
         if (ringtone == null)
             return;
 
-        String title = ringtone.Name;
+        String title = ringtone.getName();
         switch(fileKind) {
             default:
             case SetAsRingtoneService.FILE_KIND_ALARM:

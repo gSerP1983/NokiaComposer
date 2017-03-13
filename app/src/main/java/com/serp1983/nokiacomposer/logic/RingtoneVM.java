@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
 import com.google.firebase.crash.FirebaseCrash;
+import com.google.gson.annotations.SerializedName;
 import com.serp1983.nokiacomposer.BR;
 import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
@@ -14,12 +15,21 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class RingtoneVM extends BaseObservable {
-    public String Name;
+    @SerializedName("Name") private String _name;
     public String Code;
     public int Tempo;
     public boolean IsMy = false;
 
     private boolean _isPlaying = false;
+
+    @Bindable
+    public String getName() {
+        return _name;
+    }
+    public void setName(String name) {
+        _name = name;
+        notifyPropertyChanged(BR.name);
+    }
 
     @Bindable
     public boolean isPlaying() {
@@ -31,14 +41,14 @@ public class RingtoneVM extends BaseObservable {
     }
 
     public RingtoneVM(String name, int tempo, String code){
-        this.Name = name;
+        this._name = name;
         this.Code = code;
         this.Tempo = tempo;
     }
 
     @Override
     public String toString() {
-        return Name;
+        return _name;
     }
 
     public void play(){
@@ -79,9 +89,9 @@ public class RingtoneVM extends BaseObservable {
                 if (obj2 == null) {
                     return 1;
                 }
-                String name1 = obj1.Name;
+                String name1 = obj1._name;
                 if (name1 == null) name1 = "";
-                String name2 = obj2.Name;
+                String name2 = obj2._name;
                 if (name2 == null) name2 = "";
                 return name1.compareTo(name2);
             }

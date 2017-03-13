@@ -44,7 +44,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     public static Intent getIntent(Context context, RingtoneVM ringtone){
         Intent intent = new Intent(context, DetailsActivity.class);
-        intent.putExtra("name", ringtone.Name);
+        intent.putExtra("name", ringtone.getName());
         intent.putExtra("tempo", ringtone.Tempo);
         intent.putExtra("code", ringtone.Code);
         intent.putExtra("isMy", ringtone.IsMy);
@@ -226,7 +226,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void setRingtone(RingtoneVM ringtone){
         if (ringtone == null) return;
-        Toast.makeText(DetailsActivity.this, ringtone.Name, Toast.LENGTH_SHORT).show();
+        Toast.makeText(DetailsActivity.this, ringtone.getName(), Toast.LENGTH_SHORT).show();
 
         disallowEnableSave = true;
         _editTextTempo.setText(String.valueOf(ringtone.Tempo), TextView.BufferType.EDITABLE);
@@ -243,7 +243,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (ringtone == null)
             return;
 
-        String name = ringtone.Name;
+        String name = ringtone.getName();
         if (!name.startsWith("(My) "))
             name = "(My) " + name;
 
@@ -253,7 +253,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onComplete(String input) {
                 if (!input.isEmpty()) {
                     ringtone.IsMy = true;
-                    ringtone.Name = input;
+                    ringtone.setName(input);
                     if (DataService.getInstance().addMyRingtone(DetailsActivity.this, ringtone)) {
                         String msg = input + " " + DetailsActivity.this.getString(R.string.msg_saved);
                         Toast.makeText(DetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
@@ -268,7 +268,7 @@ public class DetailsActivity extends AppCompatActivity {
         String codeStr = _editTextCode.getText().toString();
         String tempoStr = _editTextTempo.getText().toString();
         int tempo = Integer.parseInt(tempoStr);
-        return new RingtoneVM(currentRingtone.Name, tempo, codeStr);
+        return new RingtoneVM(currentRingtone.getName(), tempo, codeStr);
     }
 
 }
