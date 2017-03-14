@@ -19,6 +19,7 @@
     <string name="my_ringtones_label">My ringtones</string>
     <string name="title_set_as_ringtone">Set as ringtone for:</string>
     <string name="ringtone_name_label">Name</string>
+    <string name="key_press_label">Key press</string>
 
     <string name="type_alarm">Alarm</string>
     <string name="type_notification">Notification</string>

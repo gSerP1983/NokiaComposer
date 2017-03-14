@@ -1,7 +1,10 @@
 package com.serp1983.nokiacomposer.lib;
 
 import android.annotation.SuppressLint;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +27,9 @@ public class PCMConverter {
 		return array;
 	}
 
-	private Map<String, Float> notes = new HashMap<>();
+	private final Map<String, Float> notes = new HashMap<>();
+	private final Map<String, String> tones = new HashMap<>();
+	private final Pattern regexPattern;
 
 	private PCMConverter(){
 		notes.put("-", 0f);
@@ -42,6 +47,25 @@ public class PCMConverter {
 		notes.put("#A", 466.164f); 
 		notes.put("B", 493.883f); 
 		notes.put("#B", 523.251f);
+
+		tones.put("-", "0");
+		tones.put("C", "1");
+		tones.put("#C", "1#");
+		tones.put("D", "2");
+		tones.put("#D", "2#");
+		tones.put("E", "3");
+		tones.put("#E", "3#");
+		tones.put("F", "4");
+		tones.put("#F", "4#");
+		tones.put("G", "5");
+		tones.put("#G", "5#");
+		tones.put("A", "6");
+		tones.put("#A", "6#");
+		tones.put("B", "7");
+		tones.put("#B", "7#");
+
+		String pattern = "^(\\d{1,2})[.]?(#?[A-G]|[A-G]#?)(\\d)$";
+		regexPattern = Pattern.compile(pattern);
 	}
 	
 	private void appendNote(ShortArrayList pcm, float volume, int time, String note, int octave){
@@ -88,12 +112,12 @@ public class PCMConverter {
 				duration = Integer.parseInt(str);
 			}
 			else{
-				String pattern = "^(\\d{1,2})[.]?(#?[A-G])(\\d)$";
-				Pattern p = Pattern.compile(pattern);
-				Matcher m = p.matcher(token);
+				Matcher m = regexPattern.matcher(token);
 				if (m.matches()){
 					duration = Integer.parseInt(m.group(1));
 					note = m.group(2);
+					if (note.length() == 2 && note.charAt(1) == '#')
+						note = "#" + note.charAt(0);
 					octave = Integer.parseInt(m.group(3));
 				}
 			}
@@ -108,5 +132,96 @@ public class PCMConverter {
 		appendNote(pcm, 0, (int) (250 * 7.5 / tempo), "-", 1);
 		
 		return pcm;
+	}
+
+	public String convert2Keys(String nokiaCodes){
+		String[] tokens = nokiaCodes.toUpperCase().split(" ");
+		List<String> result = new ArrayList<>();
+
+		int prevDuration = 4;
+		int prevOctave = 1;
+		for(String token : tokens){
+			int duration = 4;
+			int octave = 1;
+			String note = "-";
+
+			if (token.endsWith("-")){
+				String str = token.substring(0, token.length() - 1);
+				if (str.endsWith("."))
+					str = str.substring(0, str.length() - 1);
+				duration = Integer.parseInt(str);
+			}
+			else{
+				Matcher m = regexPattern.matcher(token);
+				if (m.matches()){
+					duration = Integer.parseInt(m.group(1));
+					note = m.group(2);
+					if (note.length() == 2 && note.charAt(1) == '#')
+						note = "#" + note.charAt(0);
+					octave = Integer.parseInt(m.group(3));
+				}
+			}
+
+			String keyForNote= tones.get(note);
+			if (token.contains("."))
+				keyForNote = "(" + keyForNote + ")";
+
+			result.add(keyForNote
+					+ getKeysForDuration(prevDuration, duration)
+					+ getKeysForOctave(note, prevOctave, octave)
+			);
+
+			if (!"-".equals(note)) {
+				prevDuration = duration;
+				prevOctave = octave;
+			}
+		}
+
+		StringBuilder strBuilder = new StringBuilder();
+		for (String token : result) {
+			strBuilder.append(token);
+			strBuilder.append(", ");
+		}
+
+		return strBuilder.toString();
+	}
+
+	private static String getKeysForDuration(int prevDuration, int duration){
+		if (prevDuration == duration)
+			return "";
+
+		int divDuration = duration > prevDuration ? duration / prevDuration : prevDuration / duration;
+		int log2Duration = 1;
+		if (divDuration == 2) log2Duration = 1;
+		if (divDuration == 4) log2Duration = 2;
+		if (divDuration == 8) log2Duration = 3;
+		if (divDuration == 16) log2Duration = 4;
+		if (divDuration == 32) log2Duration = 5;
+
+		String tone = duration > prevDuration ? "8" : "9";
+		String res = "";
+		for (int i = 0; i < log2Duration; i++)
+			res += tone;
+
+		return res;
+	}
+
+	private static String getKeysForOctave(String note, int prevOctave, int octave) {
+		if ("-".equals(note) || octave == prevOctave)
+			return "";
+
+		int count = 0;
+		if (prevOctave == 1 && octave == 2) count = 1;
+		if (prevOctave == 1 && octave == 3) count = 2;
+		if (prevOctave == 2 && octave == 1) count = 2;
+		if (prevOctave == 2 && octave == 3) count = 1;
+		if (prevOctave == 3 && octave == 1) count = 1;
+		if (prevOctave == 3 && octave == 2) count = 2;
+
+		String res = "";
+		for (int i = 0; i < count; i++)
+			res += "*";
+
+		return res;
 	}
 }

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -111,6 +112,16 @@ public class DetailsActivity extends AppCompatActivity {
                 if (!validate()) return;
                 _fabPlayOff.hide();
                 AsyncAudioTrack.stop();
+            }
+        });
+
+        Button btn = (Button) findViewById(R.id.details_button_tones);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogHelper.showAlert(DetailsActivity.this, "",
+                        PCMConverter.getInstance().convert2Keys(_editTextCode.getText().toString()),
+                        null);
             }
         });
 

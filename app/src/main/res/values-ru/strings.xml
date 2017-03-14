@@ -25,4 +25,5 @@
     <string name="action_rename">Переименовать</string>
     <string name="ringtone_name_label">Наименование</string>
     <string name="action_open">Открыть</string>
+    <string name="key_press_label">Кнопки</string>
 </resources>
