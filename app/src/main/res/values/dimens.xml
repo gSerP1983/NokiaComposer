@@ -5,6 +5,7 @@
     <dimen name="activity_horizontal_margin_half">8dp</dimen>
     <dimen name="fab_marginBottom">56dp</dimen>
     <dimen name="fab_marginRight">16dp</dimen>
+    <dimen name="fab_margin">8dp</dimen>
     <dimen name="tab_layout_height">32dp</dimen>
     <dimen name="card_corner_radius">6dp</dimen>
     <dimen name="button_options_menu_width">54dp</dimen>
