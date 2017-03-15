@@ -31,7 +31,7 @@ public class InterstitialAdService {
         });
     }
 
-    public void show() {
+    private void show() {
         if ((++count) % 26 == 0 && interstitial.isLoaded()) {
             interstitial.show();
         }
