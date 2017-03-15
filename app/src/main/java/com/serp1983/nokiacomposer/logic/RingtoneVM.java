@@ -50,7 +50,7 @@ public class RingtoneVM extends BaseObservable {
     }
 
     public void play(){
-        InterstitialAdService.getInstance().tryShow();
+        // InterstitialAdService.getInstance().tryShow();
 
         try {
             if (!_isPlaying) {
