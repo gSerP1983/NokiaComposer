@@ -26,4 +26,6 @@
     <string name="ringtone_name_label">Наименование</string>
     <string name="action_open">Открыть</string>
     <string name="key_press_label">Кнопки</string>
+    <string name="action_help_project">Помочь проекту (посмотреть видео)</string>
+    <string name="msg_thank_you">Спасибо большое</string>
 </resources>

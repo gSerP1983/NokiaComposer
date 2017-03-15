@@ -12,5 +12,10 @@
         android:title="@string/action_rate"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/action_help_project"
+        android:title="@string/action_help_project"
+        app:showAsAction="never"
+        />
 
 </menu>

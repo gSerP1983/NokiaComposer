@@ -16,9 +16,11 @@ import android.view.View;
 
 import com.google.android.gms.ads.AdView;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
+import com.serp1983.nokiacomposer.util.RewardedVideoAdService;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
+    RewardedVideoAdService adService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        adService = new RewardedVideoAdService(this);
+
         AdView adView = (AdView) this.findViewById(R.id.adView);
         adView.loadAd(ActivityHelper.getAdBuilder().build());
     }
@@ -67,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem search = menu.findItem(R.id.action_search);
         search.setVisible(viewPager.getCurrentItem() == 0);
+
+        MenuItem helpProject = menu.findItem(R.id.action_help_project);
+        helpProject.setVisible(adService.isLoaded());
+
         return true;
     }
 
@@ -77,9 +85,29 @@ public class MainActivity extends AppCompatActivity {
             ActivityHelper.rate(this);
             return true;
         }
+        if (id == R.id.action_help_project) {
+            adService.tryShow();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
+    public void onResume() {
+        adService.resume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        adService.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        adService.destroy();
+        super.onDestroy();
+    }
 
     private class PagerAdapter extends FragmentPagerAdapter {
         private Context context;

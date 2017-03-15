@@ -12,6 +12,7 @@
     <string name="action_rename">Rename</string>
     <string name="action_rate">Rate the app</string>
     <string name="action_open">Open</string>
+    <string name="action_help_project">Help project (view video)</string>
 
     <string name="ringtone_tempo_label">Tempo:</string>
     <string name="ringtone_code_label">Ringtone code:</string>
@@ -29,7 +30,10 @@
     <string name="msg_saved">saved</string>
     <string name="msg_modify_system_settings">You need to allow modify system settings for this app. Then try again.</string>
     <string name="msg_need_permissions">You need to allow read/write external storage. Then try again.</string>
+    <string name="msg_thank_you">Thank you very much</string>
 
     <string name="ads_banner" translatable="false">ca-app-pub-6052365977112487/8857818250</string>
     <string name="ads_interstitial" translatable="false">ca-app-pub-6052365977112487/9920309054</string>
+    <string name="ads_rewarded_video" translatable="false">ca-app-pub-6052365977112487/7862676254</string>
+
 </resources>
