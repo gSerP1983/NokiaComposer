@@ -70,10 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem search = menu.findItem(R.id.action_search);
-        search.setVisible(viewPager.getCurrentItem() == 0);
+        if (search != null && viewPager != null)
+            search.setVisible(viewPager.getCurrentItem() == 0);
 
         MenuItem helpProject = menu.findItem(R.id.action_help_project);
-        helpProject.setVisible(adService.isLoaded());
+        if (helpProject != null && adService != null)
+            helpProject.setVisible(adService.isLoaded());
 
         return true;
     }
