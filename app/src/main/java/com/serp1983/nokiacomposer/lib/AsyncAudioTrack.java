@@ -43,14 +43,15 @@ public class AsyncAudioTrack implements Runnable {
 	public void run() {
 		isRun = true;
 
-		_audioTrack = new AudioTrack(
-				AudioManager.STREAM_MUSIC, 44100,
-				AudioFormat.CHANNEL_OUT_MONO, 
-				AudioFormat.ENCODING_PCM_16BIT, 
-				_bufferSize, AudioTrack.MODE_STREAM);
-		
-		_audioTrack.play();
-		_audioTrack.write(_buffer, 0, _buffer.length);
+		// double try
+		try {
+			runInner();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			delay(100);
+			runInner();
+		}
 
 		if (_callback != null)
 			_callback.onComplete();
@@ -58,10 +59,24 @@ public class AsyncAudioTrack implements Runnable {
 		isRun = false;
 	}
 
+	private void runInner(){
+		release();
+
+		_audioTrack = new AudioTrack(
+				AudioManager.STREAM_MUSIC, 44100,
+				AudioFormat.CHANNEL_OUT_MONO,
+				AudioFormat.ENCODING_PCM_16BIT,
+				_bufferSize, AudioTrack.MODE_STREAM);
+
+		_audioTrack.play();
+		_audioTrack.write(_buffer, 0, _buffer.length);
+	}
+
 	private void release(){
 		if (_audioTrack != null) {
 			_audioTrack.release();
 			_audioTrack = null;
+			delay(250);
 		}
 	}
 	
@@ -74,9 +89,13 @@ public class AsyncAudioTrack implements Runnable {
 	}
 	
 	public static void stop(){
-		if (instance != null) instance.release();
+		if (instance != null)
+			instance.release();
+	}
+
+	private static void delay(long millis){
 		try {
-			Thread.sleep(200);
+			Thread.sleep(millis);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
