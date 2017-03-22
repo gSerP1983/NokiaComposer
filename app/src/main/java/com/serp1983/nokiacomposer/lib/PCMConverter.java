@@ -149,7 +149,9 @@ public class PCMConverter {
 				String str = token.substring(0, token.length() - 1);
 				if (str.endsWith("."))
 					str = str.substring(0, str.length() - 1);
-				duration = Integer.parseInt(str);
+
+                if (isNumeric(str))
+				    duration = Integer.parseInt(str);
 			}
 			else{
 				Matcher m = regexPattern.matcher(token);
@@ -185,6 +187,15 @@ public class PCMConverter {
 
 		return strBuilder.toString();
 	}
+
+    public static boolean isNumeric(String str)
+    {
+        for (char c : str.toCharArray())
+            if (!Character.isDigit(c))
+                return false;
+
+        return true;
+    }
 
 	private static String getKeysForDuration(int prevDuration, int duration){
 		if (prevDuration == duration)
