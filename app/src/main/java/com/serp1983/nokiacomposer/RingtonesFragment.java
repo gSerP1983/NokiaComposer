@@ -17,11 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.serp1983.nokiacomposer.logic.DataService;
-import com.serp1983.nokiacomposer.logic.RingtoneVM;
+import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
-import com.serp1983.nokiacomposer.util.InterstitialAdService;
 import com.serp1983.nokiacomposer.util.RecyclerBindingAdapter;
 
 import java.util.ArrayList;

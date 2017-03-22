@@ -1,4 +1,4 @@
-package com.serp1983.nokiacomposer.logic;
+package com.serp1983.nokiacomposer.domain;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

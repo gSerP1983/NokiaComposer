@@ -25,7 +25,7 @@ import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.serp1983.nokiacomposer.logic.DataService;
-import com.serp1983.nokiacomposer.logic.RingtoneVM;
+import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;

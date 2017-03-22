@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.serp1983.nokiacomposer.R;
-import com.serp1983.nokiacomposer.logic.RingtoneVM;
+import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.logic.ShareHelper;
 
 public class DialogHelper {

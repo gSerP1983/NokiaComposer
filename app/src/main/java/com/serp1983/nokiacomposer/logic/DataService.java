@@ -7,6 +7,7 @@ import android.databinding.ObservableArrayList;
 
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
+import com.serp1983.nokiacomposer.domain.RingtoneVM;
 
 import java.io.File;
 import java.io.FileOutputStream;
