@@ -29,6 +29,12 @@ public class ComposerVM extends BaseObservable {
         map.put("7", "B");
     }
 
+    public void onDeleteClick() {
+        if (CurrentNote != null){
+            Notes.remove(CurrentNote);
+        }
+    }
+
     public void onClick(View v){
         String text = ((Button)v).getText().toString();
 

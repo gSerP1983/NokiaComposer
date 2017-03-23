@@ -102,7 +102,7 @@ public class ComposerActivity extends AppCompatActivity {
     private AppCompatTextView CreateTextView(Note note){
         AppCompatTextView textView = new AppCompatTextView(this, null, android.R.attr.editTextStyle);
         textView.setTag(note);
-        textView.setTextSize(20);
+        //textView.setTextSize(20);
         textView.setPadding(8,8,8,8);
         textView.setText(note.toString());
         textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -141,6 +141,11 @@ public class ComposerActivity extends AppCompatActivity {
 
             @Override
             public void onItemRangeRemoved(ObservableList<Note> notes, int index, int count) {
+                flexBox.removeViewAt(index);
+                if (index == notes.size() && index != 0)
+                    flexBox.getChildAt(index - 1).requestFocus();
+                if (index < notes.size())
+                    flexBox.getChildAt(index).requestFocus();
             }
         };
     }
