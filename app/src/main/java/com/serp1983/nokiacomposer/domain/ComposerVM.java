@@ -2,10 +2,17 @@ package com.serp1983.nokiacomposer.domain;
 
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.firebase.crash.FirebaseCrash;
+import com.serp1983.nokiacomposer.BR;
+import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
+import com.serp1983.nokiacomposer.lib.PCMConverter;
+import com.serp1983.nokiacomposer.lib.ShortArrayList;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +20,35 @@ import java.util.Map;
 public class ComposerVM extends BaseObservable {
     public ObservableList<Note> Notes;
     public Note CurrentNote;
-
     private final Map<String, String> map = new HashMap<>();
+
+    public String getRingtone(){
+        String res = "";
+        for (Note note : Notes) {
+            res += note.toString() + " ";
+        }
+        return res;
+    }
+
+    private boolean _isPlaying = false;
+    @Bindable
+    public boolean isPlaying() {
+        return _isPlaying;
+    }
+    private void setPlaying(boolean playing) {
+        _isPlaying = playing;
+        notifyPropertyChanged(BR.playing);
+    }
+
+    private int _tempo = 120;
+    @Bindable
+    public int getTempo() {
+        return _tempo;
+    }
+    private void setTempo(int tempo) {
+        _tempo = tempo;
+        notifyPropertyChanged(BR.tempo);
+    }
 
     public ComposerVM() {
         Notes = new ObservableArrayList<>();
@@ -142,5 +176,27 @@ public class ComposerVM extends BaseObservable {
         int idx = getIdx();
         if (idx >= 0)
             Notes.set(idx, CurrentNote);
+    }
+
+    public void play(){
+        try {
+            if (!_isPlaying) {
+                setPlaying(true);
+                ShortArrayList pcm = PCMConverter.getInstance().convert(getRingtone(), getTempo());
+                AsyncAudioTrack.start(PCMConverter.shorts2Bytes(pcm), new AsyncAudioTrack.Callback() {
+                    @Override
+                    public void onComplete() {
+                        setPlaying(false);
+                    }
+                });
+            }
+            else
+                AsyncAudioTrack.stop();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            FirebaseCrash.report(e);
+            setPlaying(false);
+        }
     }
 }

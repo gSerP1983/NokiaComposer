@@ -2,11 +2,11 @@ package com.serp1983.nokiacomposer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.BindingMethod;
+import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableList;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
@@ -17,13 +17,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.gms.ads.AdView;
 import com.serp1983.nokiacomposer.databinding.ActivityComposerBinding;
 import com.serp1983.nokiacomposer.domain.ComposerVM;
 import com.serp1983.nokiacomposer.domain.Note;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
+import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
 
+@BindingMethods({
+        @BindingMethod(type = android.widget.ImageView.class,
+                attribute = "app:srcCompat",
+                method = "setImageDrawable") })
 public class ComposerActivity extends AppCompatActivity {
 
     private FlexboxLayout flexBox;
@@ -56,14 +62,8 @@ public class ComposerActivity extends AppCompatActivity {
         binding.contentComposer.setVm(vm);
         vm.Notes.addOnListChangedCallback(getAddOnListChangedCallback());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        AdView adView = (AdView) this.findViewById(R.id.adView);
+        adView.loadAd(ActivityHelper.getAdBuilder().build());
     }
 
     @Override
