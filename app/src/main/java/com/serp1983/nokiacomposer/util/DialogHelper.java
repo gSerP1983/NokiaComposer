@@ -6,6 +6,7 @@ import android.support.annotation.ArrayRes;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.serp1983.nokiacomposer.R;
@@ -23,6 +24,33 @@ public class DialogHelper {
             dialog.dismiss();
         }
     };
+
+    public static void showNumberPickerDialog(Context context, String title, int min, int max, Integer defValue,
+                                   final Callback<Integer> callback){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if (title != null && !title.isEmpty())
+            builder.setTitle(title);
+
+        final NumberPicker input = new NumberPicker(context);
+        input.setMinValue(min);
+        input.setMaxValue(max);
+        input.setWrapSelectorWheel(false);
+        if (defValue != null)
+            input.setValue(defValue);
+        builder.setView(input);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (callback != null)
+                    callback.onComplete(input.getValue());
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, nullOnClickListener);
+
+        builder.show();
+    }
 
     public static void inputDialog(Context context, String title, String hint, String defValue,
                                    final Callback<String> callback){
@@ -67,8 +95,6 @@ public class DialogHelper {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-
 
     public static void showSingleChoice(
             Context context,

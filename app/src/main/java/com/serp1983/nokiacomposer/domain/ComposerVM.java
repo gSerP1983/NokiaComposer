@@ -1,18 +1,22 @@
 package com.serp1983.nokiacomposer.domain;
 
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.crash.FirebaseCrash;
 import com.serp1983.nokiacomposer.BR;
+import com.serp1983.nokiacomposer.R;
 import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
+import com.serp1983.nokiacomposer.util.DialogHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -135,6 +139,17 @@ public class ComposerVM extends BaseObservable {
         CurrentNote = token;
 
         return true;
+    }
+
+    public void onTempoClick(View v){
+        Context context = v.getContext();
+        String title = context.getString(R.string.ringtone_tempo_label);
+        DialogHelper.showNumberPickerDialog(context, title, 10, 500, (int) v.getTag(), new DialogHelper.Callback<Integer>() {
+            @Override
+            public void onComplete(Integer input) {
+                ComposerVM.this.setTempo(input);
+            }
+        });
     }
 
     private int getPrevDuration(){
