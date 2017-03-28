@@ -23,7 +23,7 @@ public class ShareHelper {
         try{
             Intent intentSend = new Intent(Intent.ACTION_SEND);
             intentSend.setType("text/plain");
-            intentSend.putExtra(Intent.EXTRA_TEXT, ringtone.getName() + ", tempo=" + ringtone.Tempo + ", " + ringtone.Code);
+            intentSend.putExtra(Intent.EXTRA_TEXT, ringtone.getName() + ", tempo=" + ringtone.getTempo() + ", " + ringtone.getCode());
             intentSend.putExtra(Intent.EXTRA_SUBJECT, ringtone.getName());
 
             Intent intentChooser = Intent.createChooser(intentSend, "Share");
@@ -49,7 +49,7 @@ public class ShareHelper {
             String name = ringtone.getName().replaceAll("\\W+", "_");
             File file = new File(externalCacheDir.getPath(), name + ".wav");
 
-            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
+            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.getCode(), ringtone.getTempo());
             WaveWriter writer = new WaveWriter(file, 44100, 1, 16);
             AsyncWaveWriter.execute(writer, pcm.toArray(), null, null);
 
@@ -81,7 +81,7 @@ public class ShareHelper {
             String name = ringtone.getName().replaceAll("\\W+", "_");
             final File fileWav = new File(externalCacheDir.getPath(), name + ".wav");
 
-            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
+            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.getCode(), ringtone.getTempo());
             WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
             AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
                 @Override

@@ -2,22 +2,18 @@ package com.serp1983.nokiacomposer.domain;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.annotations.SerializedName;
 import com.serp1983.nokiacomposer.BR;
 import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
-import com.serp1983.nokiacomposer.util.InterstitialAdService;
-
 
 public class RingtoneVM extends BaseObservable {
     @SerializedName("Name") private String _name;
-    public String Code;
-    public int Tempo;
+    @SerializedName("Tempo") private int _tempo = 120;
+    @SerializedName("Code") private String _code;
     public boolean IsMy = false;
-
     private boolean _isPlaying = false;
 
     @Bindable
@@ -30,18 +26,31 @@ public class RingtoneVM extends BaseObservable {
     }
 
     @Bindable
+    public int getTempo() {
+        return _tempo;
+    }
+    protected void setTempo(int tempo) {
+        _tempo = tempo;
+        notifyPropertyChanged(BR.tempo);
+    }
+
+    @Bindable
     public boolean isPlaying() {
         return _isPlaying;
     }
-    private void setPlaying(boolean playing) {
+    void setPlaying(boolean playing) {
         _isPlaying = playing;
         notifyPropertyChanged(BR.playing);
     }
 
+    public String getCode() {
+        return _code;
+    }
+
     public RingtoneVM(String name, int tempo, String code){
         this._name = name;
-        this.Code = code;
-        this.Tempo = tempo;
+        this._code = code;
+        this._tempo = tempo;
     }
 
     @Override
@@ -50,12 +59,10 @@ public class RingtoneVM extends BaseObservable {
     }
 
     public void play(){
-        // InterstitialAdService.getInstance().tryShow();
-
         try {
-            if (!_isPlaying) {
+            if (!isPlaying()) {
                 setPlaying(true);
-                ShortArrayList pcm = PCMConverter.getInstance().convert(this.Code, this.Tempo);
+                ShortArrayList pcm = PCMConverter.getInstance().convert(this.getCode(), this.getTempo());
                 AsyncAudioTrack.start(PCMConverter.shorts2Bytes(pcm), new AsyncAudioTrack.Callback() {
                     @Override
                     public void onComplete() {

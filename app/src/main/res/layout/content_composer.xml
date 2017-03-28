@@ -32,7 +32,10 @@
                     android:hint="@string/ringtone_tempo_label"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
-                    android:background="@android:color/transparent"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin_half"
+                    android:background="@drawable/button_tempo"
                     android:text='@{@string/ringtone_tempo_label + " " + vm.tempo}'
                     android:tag='@{vm.tempo}'
                     android:onClick="@{(theView) -> vm.onTempoClick(theView)}"

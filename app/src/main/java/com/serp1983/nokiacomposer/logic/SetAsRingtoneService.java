@@ -130,7 +130,7 @@ public class SetAsRingtoneService {
         try {
             final File fileWav = new File(externalCacheDir.getPath(), "nokiacomposer.wav");
             final File fileMp3 = new File(externalCacheDir.getPath(), "nokiacomposer.mp3");
-            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.Code, ringtone.Tempo);
+            ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.getCode(), ringtone.getTempo());
             WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
             AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
                 @Override

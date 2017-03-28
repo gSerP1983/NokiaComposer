@@ -46,8 +46,8 @@ public class DetailsActivity extends AppCompatActivity {
     public static Intent getIntent(Context context, RingtoneVM ringtone){
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra("name", ringtone.getName());
-        intent.putExtra("tempo", ringtone.Tempo);
-        intent.putExtra("code", ringtone.Code);
+        intent.putExtra("tempo", ringtone.getTempo());
+        intent.putExtra("code", ringtone.getCode());
         intent.putExtra("isMy", ringtone.IsMy);
         return intent;
     }
@@ -240,8 +240,8 @@ public class DetailsActivity extends AppCompatActivity {
         Toast.makeText(DetailsActivity.this, ringtone.getName(), Toast.LENGTH_SHORT).show();
 
         disallowEnableSave = true;
-        _editTextTempo.setText(String.valueOf(ringtone.Tempo), TextView.BufferType.EDITABLE);
-        _editTextCode.setText(ringtone.Code, TextView.BufferType.EDITABLE);
+        _editTextTempo.setText(String.valueOf(ringtone.getTempo()), TextView.BufferType.EDITABLE);
+        _editTextCode.setText(ringtone.getCode(), TextView.BufferType.EDITABLE);
         disallowEnableSave = false;
 
         currentRingtone = ringtone;

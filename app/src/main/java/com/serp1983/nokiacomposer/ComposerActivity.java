@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.gms.ads.AdView;
@@ -22,6 +23,8 @@ import com.serp1983.nokiacomposer.databinding.ActivityComposerBinding;
 import com.serp1983.nokiacomposer.domain.ComposerVM;
 import com.serp1983.nokiacomposer.domain.Note;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
+import com.serp1983.nokiacomposer.lib.PCMConverter;
+import com.serp1983.nokiacomposer.logic.DataService;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
@@ -34,12 +37,13 @@ public class ComposerActivity extends AppCompatActivity {
 
     private FlexboxLayout flexBox;
     private ComposerVM vm;
+    private static int countNew = 0;
 
     public static Intent getIntent(Context context, RingtoneVM ringtone){
         Intent intent = new Intent(context, ComposerActivity.class);
         intent.putExtra("name", ringtone.getName());
-        intent.putExtra("tempo", ringtone.Tempo);
-        intent.putExtra("code", ringtone.Code);
+        intent.putExtra("tempo", ringtone.getTempo());
+        intent.putExtra("code", ringtone.getCode());
         intent.putExtra("isMy", ringtone.IsMy);
         return intent;
     }
@@ -58,7 +62,7 @@ public class ComposerActivity extends AppCompatActivity {
 
         flexBox = (FlexboxLayout) findViewById(R.id.flexBox);
 
-        vm = new ComposerVM();
+        vm = new ComposerVM("New" + ++countNew, 120, "");
         binding.contentComposer.setVm(vm);
         vm.Notes.addOnListChangedCallback(getAddOnListChangedCallback());
 
@@ -68,7 +72,7 @@ public class ComposerActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_details, menu);
+        getMenuInflater().inflate(R.menu.menu_composer, menu);
         return true;
     }
 
@@ -81,28 +85,53 @@ public class ComposerActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_key_press) {
+            DialogHelper.showAlert(this, "", PCMConverter.getInstance().convert2Keys(vm.getCode()),null);
+            return true;
+        }
+
         if (id == R.id.action_save) {
-            //save();
+            save();
             return true;
         }
 
         if (id == R.id.action_set_as_ringtone) {
-            //SetAsRingtoneService.setAsRingtone(this, getCurrentRingtone());
+            SetAsRingtoneService.setAsRingtone(this, vm);
             return true;
         }
 
         if (id == R.id.action_share) {
-            //DialogHelper.showShareDialog(this, getCurrentRingtone());
+            DialogHelper.showShareDialog(this, vm);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void save(){
+        String name = vm.getName();
+        if (!name.startsWith("(My) "))
+            name = "(My) " + name;
+
+        String hint = this.getString(R.string.ringtone_name_label);
+        DialogHelper.inputDialog(this, "", hint, name, new DialogHelper.Callback<String>() {
+            @Override
+            public void onComplete(String input) {
+                if (!input.isEmpty()) {
+                    vm.IsMy = true;
+                    vm.setName(input);
+                    if (DataService.getInstance().addMyRingtone(ComposerActivity.this, vm)) {
+                        String msg = input + " " + ComposerActivity.this.getString(R.string.msg_saved);
+                        Toast.makeText(ComposerActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
     private AppCompatTextView CreateTextView(Note note){
         AppCompatTextView textView = new AppCompatTextView(this, null, android.R.attr.editTextStyle);
         textView.setTag(note);
-        //textView.setTextSize(20);
         textView.setPadding(8,8,8,8);
         textView.setText(note.toString());
         textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {

@@ -21,12 +21,13 @@ import com.serp1983.nokiacomposer.util.DialogHelper;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ComposerVM extends BaseObservable {
+public class ComposerVM extends RingtoneVM {
     public ObservableList<Note> Notes;
     public Note CurrentNote;
     private final Map<String, String> map = new HashMap<>();
 
-    public String getRingtone(){
+    @Override
+    public String getCode(){
         String res = "";
         for (Note note : Notes) {
             res += note.toString() + " ";
@@ -34,29 +35,10 @@ public class ComposerVM extends BaseObservable {
         return res;
     }
 
-    private boolean _isPlaying = false;
-    @Bindable
-    public boolean isPlaying() {
-        return _isPlaying;
-    }
-    private void setPlaying(boolean playing) {
-        _isPlaying = playing;
-        notifyPropertyChanged(BR.playing);
-    }
+    public ComposerVM(String name, int tempo, String code) {
+        super(name, tempo, code);
 
-    private int _tempo = 120;
-    @Bindable
-    public int getTempo() {
-        return _tempo;
-    }
-    private void setTempo(int tempo) {
-        _tempo = tempo;
-        notifyPropertyChanged(BR.tempo);
-    }
-
-    public ComposerVM() {
         Notes = new ObservableArrayList<>();
-
         map.put("0", "-");
         map.put("1", "C");
         map.put("2", "D");
@@ -191,27 +173,5 @@ public class ComposerVM extends BaseObservable {
         int idx = getIdx();
         if (idx >= 0)
             Notes.set(idx, CurrentNote);
-    }
-
-    public void play(){
-        try {
-            if (!_isPlaying) {
-                setPlaying(true);
-                ShortArrayList pcm = PCMConverter.getInstance().convert(getRingtone(), getTempo());
-                AsyncAudioTrack.start(PCMConverter.shorts2Bytes(pcm), new AsyncAudioTrack.Callback() {
-                    @Override
-                    public void onComplete() {
-                        setPlaying(false);
-                    }
-                });
-            }
-            else
-                AsyncAudioTrack.stop();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
-            setPlaying(false);
-        }
     }
 }
