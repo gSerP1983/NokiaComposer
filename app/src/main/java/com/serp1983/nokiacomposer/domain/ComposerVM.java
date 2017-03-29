@@ -2,20 +2,12 @@ package com.serp1983.nokiacomposer.domain;
 
 
 import android.content.Context;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.firebase.crash.FirebaseCrash;
-import com.serp1983.nokiacomposer.BR;
 import com.serp1983.nokiacomposer.R;
-import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
-import com.serp1983.nokiacomposer.lib.PCMConverter;
-import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.serp1983.nokiacomposer.util.DialogHelper;
 
 import java.util.HashMap;
@@ -35,8 +27,17 @@ public class ComposerVM extends RingtoneVM {
         return res;
     }
 
-    public ComposerVM(String name, int tempo, String code) {
-        super(name, tempo, code);
+    public void setCode(String code) {
+        String[] tokens = code.toUpperCase().split(" ");
+        for(String token : tokens){
+            Note note = new Note(token);
+            Notes.add(note);
+        }
+        CurrentNote = Notes.get(Notes.size() - 1);
+    }
+
+    public ComposerVM(String name, int tempo) {
+        super(name, tempo, "");
 
         Notes = new ObservableArrayList<>();
         map.put("0", "-");
@@ -126,7 +127,7 @@ public class ComposerVM extends RingtoneVM {
     public void onTempoClick(View v){
         Context context = v.getContext();
         String title = context.getString(R.string.ringtone_tempo_label);
-        DialogHelper.showNumberPickerDialog(context, title, 10, 500, (int) v.getTag(), new DialogHelper.Callback<Integer>() {
+        DialogHelper.showNumberPickerDialog(context, title, 10, 500, getTempo(), new DialogHelper.Callback<Integer>() {
             @Override
             public void onComplete(Integer input) {
                 ComposerVM.this.setTempo(input);

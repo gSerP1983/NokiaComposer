@@ -94,8 +94,7 @@ public class RingtonesFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerBindingAdapter.OnItemClickListener<RingtoneVM>() {
             @Override
             public void onItemClick(int position, RingtoneVM item) {
-                // InterstitialAdService.getInstance().tryShow();
-                startActivity(DetailsActivity.getIntent(view.getContext(), item));
+                startActivity(ComposerActivity.getIntent(view.getContext(), item));
             }
         });
 
@@ -147,8 +146,7 @@ public class RingtonesFragment extends Fragment {
                         DialogHelper.showShareDialog(context, ringtone);
                         break;
                     case R.id.action_open:
-                        // InterstitialAdService.getInstance().tryShow();
-                        context.startActivity(DetailsActivity.getIntent(context, ringtone));
+                        context.startActivity(ComposerActivity.getIntent(context, ringtone));
                         break;
                 }
                 return false;

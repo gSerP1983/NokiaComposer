@@ -54,18 +54,35 @@ public class DialogHelper {
 
     public static void inputDialog(Context context, String title, String hint, String defValue,
                                    final Callback<String> callback){
+        inputDialogInner(context, title, hint, defValue, callback, false);
+    }
+
+    public static void multilineInputDialog(Context context, String title, String hint, String defValue,
+                                   final Callback<String> callback){
+        inputDialogInner(context, title, hint, defValue, callback, true);
+    }
+
+    private static void inputDialogInner(Context context, String title, String hint, String defValue,
+                                   final Callback<String> callback, boolean multiline){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (title != null && !title.isEmpty())
             builder.setTitle(title);
 
         final EditText input = new EditText(context);
+        if (multiline){
+            input.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            input.setSingleLine(false);
+        }
+        else
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+
         if (defValue != null && !defValue.isEmpty())
             input.setText(defValue, TextView.BufferType.EDITABLE);
+
         if (hint != null && !hint.isEmpty())
             input.setHint(hint);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
 
+        builder.setView(input);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

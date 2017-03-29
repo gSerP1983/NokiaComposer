@@ -29,21 +29,19 @@
                 android:orientation="vertical">
 
                 <android.support.v7.widget.AppCompatButton
-                    android:hint="@string/ringtone_tempo_label"
                     android:layout_width="wrap_content"
                     android:layout_height="24dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin_half"
                     android:background="@drawable/button_tempo"
-                    android:text='@{@string/ringtone_tempo_label + " " + vm.tempo}'
-                    android:tag='@{vm.tempo}'
+                    android:text='@{@string/ringtone_tempo_label + "=" + vm.tempo}'
                     android:onClick="@{(theView) -> vm.onTempoClick(theView)}"
                     />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="140dp"
                     android:layout_marginRight="@dimen/activity_horizontal_margin_half"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin_half"
                     card_view:cardCornerRadius="@dimen/card_corner_radius"

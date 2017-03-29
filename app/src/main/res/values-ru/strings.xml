@@ -13,8 +13,7 @@
     <string name="type_notification">Уведомления</string>
     <string name="type_alarm">Будильника</string>
     <string name="action_set_as_call_ringtone">Установить как сигнал звонка</string>
-    <string name="ringtone_tempo_label">Темп:</string>
-    <string name="ringtone_code_label">Код мелодии:</string>
+    <string name="ringtone_tempo_label">Темп</string>
     <string name="my_ringtones_label">Мои рингтоны</string>
     <string name="ringtones_label">Рингтоны</string>
     <string name="action_rate">Оценить приложение</string>
@@ -28,4 +27,5 @@
     <string name="key_press_label">Кнопки</string>
     <string name="action_help_project">Помочь проекту (посмотреть видео)</string>
     <string name="msg_thank_you">Спасибо большое</string>
+    <string name="action_quick_edit">Быстрое редактирование</string>
 </resources>

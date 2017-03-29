@@ -62,12 +62,46 @@ public class ComposerActivity extends AppCompatActivity {
 
         flexBox = (FlexboxLayout) findViewById(R.id.flexBox);
 
-        vm = new ComposerVM("New" + ++countNew, 120, "");
+        String name = "New" + ++countNew;
+        int tempo = 120;
+        String code = "";
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            name = bundle.getString("name", null);
+            tempo = bundle.getInt("tempo");
+            code = bundle.getString("code");
+        }
+
+        vm = new ComposerVM(name, tempo);
         binding.contentComposer.setVm(vm);
         vm.Notes.addOnListChangedCallback(getAddOnListChangedCallback());
+        if (!"".equals(code))
+            vm.setCode(code);
+
+        Toast.makeText(this, vm.getName(), Toast.LENGTH_SHORT).show();
 
         AdView adView = (AdView) this.findViewById(R.id.adView);
         adView.loadAd(ActivityHelper.getAdBuilder().build());
+    }
+
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem keyPress = menu.findItem(R.id.action_key_press);
+        if (keyPress != null)
+            keyPress.setVisible(vm.Notes.size() > 0);
+
+        MenuItem save = menu.findItem(R.id.action_save);
+        if (save != null)
+            save.setVisible(vm.Notes.size() > 0);
+
+        MenuItem setRingtone = menu.findItem(R.id.action_set_as_ringtone);
+        if (setRingtone != null)
+            setRingtone.setVisible(vm.Notes.size() > 0);
+
+        MenuItem share = menu.findItem(R.id.action_share);
+        if (share != null)
+            share.setVisible(vm.Notes.size() > 0);
+
+        return true;
     }
 
     @Override
@@ -84,6 +118,23 @@ public class ComposerActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         }
+
+        if (id == R.id.action_tempo) {
+            vm.onTempoClick(getWindow().getDecorView());
+            return true;
+        }
+
+        /*
+        todo action_quick_edit
+        if (id == R.id.action_quick_edit) {
+            DialogHelper.multilineInputDialog(this, null, null, vm.getCode(), new DialogHelper.Callback<String>() {
+                @Override
+                public void onComplete(String input) {
+                    vm.setCode(input);
+                }
+            });
+            return true;
+        }*/
 
         if (id == R.id.action_key_press) {
             DialogHelper.showAlert(this, "", PCMConverter.getInstance().convert2Keys(vm.getCode()),null);

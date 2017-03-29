@@ -37,14 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 viewPager.setCurrentItem(1);
-                startActivity(new Intent(MainActivity.this, DetailsActivity.class));
-            }
-        });
-        fab.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
                 startActivity(new Intent(MainActivity.this, ComposerActivity.class));
-                return false;
             }
         });
 

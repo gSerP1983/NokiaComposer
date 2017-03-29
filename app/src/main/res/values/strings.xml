@@ -13,9 +13,9 @@
     <string name="action_rate">Rate the app</string>
     <string name="action_open">Open</string>
     <string name="action_help_project">Help project (view video)</string>
+    <string name="action_quick_edit">Quick edit</string>
 
-    <string name="ringtone_tempo_label">Tempo:</string>
-    <string name="ringtone_code_label">Ringtone code:</string>
+    <string name="ringtone_tempo_label">Tempo</string>
     <string name="ringtones_label">Ringtones</string>
     <string name="my_ringtones_label">My ringtones</string>
     <string name="title_set_as_ringtone">Set as ringtone for:</string>

@@ -2,6 +2,8 @@ package com.serp1983.nokiacomposer.lib;
 
 import android.annotation.SuppressLint;
 
+import com.serp1983.nokiacomposer.domain.Note;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,6 @@ public class PCMConverter {
 
 	private final Map<String, Float> notes = new HashMap<>();
 	private final Map<String, String> tones = new HashMap<>();
-	private final Pattern regexPattern;
 
 	private PCMConverter(){
 		notes.put("-", 0f);
@@ -63,9 +64,6 @@ public class PCMConverter {
 		tones.put("#A", "6#");
 		tones.put("B", "7");
 		tones.put("#B", "7#");
-
-		String pattern = "^(\\d{1,2})[.]?(#?[A-G]|[A-G]#?)(\\d)$";
-		regexPattern = Pattern.compile(pattern);
 	}
 	
 	private void appendNote(ShortArrayList pcm, float volume, int time, String note, int octave){
@@ -101,29 +99,15 @@ public class PCMConverter {
 		String[] tokens = nokiaCodes.toUpperCase().split(" ");
 		
 		for(String token : tokens){
-			float duration = 0f;
-			String note = "-";
-			int octave = 1;
-			
-			if (token.endsWith("-")){
-				String str = token.substring(0, token.length() - 1);
-				if (str.endsWith("."))
-					str = str.substring(0, str.length() - 1);
-				duration = Integer.parseInt(str);
-			}
-			else{
-				Matcher m = regexPattern.matcher(token);
-				if (m.matches()){
-					duration = Integer.parseInt(m.group(1));
-					note = m.group(2);
-					if (note.length() == 2 && note.charAt(1) == '#')
-						note = "#" + note.charAt(0);
-					octave = Integer.parseInt(m.group(3));
-				}
-			}
-			
+			Note noteObj = new Note(token);
+			int duration = noteObj.getDuration();
+			Integer octave = noteObj.getOctave();
+            if (octave == null)
+                octave = 1;
+			String note = noteObj.getNote();
+
 			if (token.contains("."))
-				duration = duration / 1.5f;
+				duration = duration * 2 / 3;
 			
 			float time = 32f / duration; 			
 			appendNote(pcm, volume, (int) (time * 1000f * 7.5f / tempo), note, octave);
@@ -141,28 +125,12 @@ public class PCMConverter {
 		int prevDuration = 4;
 		int prevOctave = 1;
 		for(String token : tokens){
-			int duration = 4;
-			int octave = 1;
-			String note = "-";
-
-			if (token.endsWith("-")){
-				String str = token.substring(0, token.length() - 1);
-				if (str.endsWith("."))
-					str = str.substring(0, str.length() - 1);
-
-                if (isNumeric(str))
-				    duration = Integer.parseInt(str);
-			}
-			else{
-				Matcher m = regexPattern.matcher(token);
-				if (m.matches()){
-					duration = Integer.parseInt(m.group(1));
-					note = m.group(2);
-					if (note.length() == 2 && note.charAt(1) == '#')
-						note = "#" + note.charAt(0);
-					octave = Integer.parseInt(m.group(3));
-				}
-			}
+			Note noteObj = new Note(token);
+			int duration = noteObj.getDuration();
+			Integer octave = noteObj.getOctave();
+			if (octave == null)
+                octave = 1;
+			String note = noteObj.getNote();
 
 			String keyForNote= tones.get(note);
 			if (token.contains("."))
@@ -187,15 +155,6 @@ public class PCMConverter {
 
 		return strBuilder.toString();
 	}
-
-    public static boolean isNumeric(String str)
-    {
-        for (char c : str.toCharArray())
-            if (!Character.isDigit(c))
-                return false;
-
-        return true;
-    }
 
 	private static String getKeysForDuration(int prevDuration, int duration){
 		if (prevDuration == duration)
