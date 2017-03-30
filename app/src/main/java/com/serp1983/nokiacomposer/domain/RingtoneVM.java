@@ -46,6 +46,7 @@ public class RingtoneVM extends BaseObservable {
     public String getCode() {
         return _code;
     }
+    protected void setCode(String code) { _code = code; }
 
     public RingtoneVM(String name, int tempo, String code){
         this._name = name;

@@ -124,8 +124,6 @@ public class ComposerActivity extends AppCompatActivity {
             return true;
         }
 
-        /*
-        todo action_quick_edit
         if (id == R.id.action_quick_edit) {
             DialogHelper.multilineInputDialog(this, null, null, vm.getCode(), new DialogHelper.Callback<String>() {
                 @Override
@@ -134,7 +132,7 @@ public class ComposerActivity extends AppCompatActivity {
                 }
             });
             return true;
-        }*/
+        }
 
         if (id == R.id.action_key_press) {
             DialogHelper.showAlert(this, "", PCMConverter.getInstance().convert2Keys(vm.getCode()),null);
@@ -221,9 +219,14 @@ public class ComposerActivity extends AppCompatActivity {
 
             @Override
             public void onItemRangeRemoved(ObservableList<Note> notes, int index, int count) {
-                flexBox.removeViewAt(index);
-                if (index != 0)
-                    flexBox.getChildAt(index - 1).requestFocus();
+                if (notes.size() == 0){
+                    flexBox.removeAllViews();
+                }
+                else {
+                    flexBox.removeViewAt(index);
+                    if (index != 0)
+                        flexBox.getChildAt(index - 1).requestFocus();
+                }
             }
         };
     }

@@ -24,16 +24,19 @@ public class ComposerVM extends RingtoneVM {
         for (Note note : Notes) {
             res += note.toString() + " ";
         }
-        return res;
+        return res.trim();
     }
 
+    @Override
     public void setCode(String code) {
         String[] tokens = code.toUpperCase().split(" ");
+        Notes.clear();
         for(String token : tokens){
             Note note = new Note(token);
             Notes.add(note);
         }
         CurrentNote = Notes.get(Notes.size() - 1);
+        super.setCode(getCode());
     }
 
     public ComposerVM(String name, int tempo) {
