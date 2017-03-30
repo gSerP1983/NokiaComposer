@@ -8,6 +8,8 @@
     <item android:id="@+id/action_key_press" android:title="@string/key_press_label"
         android:orderInCategory="100" app:showAsAction="never"/>
     <item android:id="@+id/action_save" android:title="@string/action_save"
+        android:orderInCategory="200" app:showAsAction="never"/>
+    <item android:id="@+id/action_save_in_my_ringtones" android:title="@string/action_save_in_my_ringtones"
         android:orderInCategory="300" app:showAsAction="never"/>
     <item android:id="@+id/action_set_as_ringtone" android:title="@string/action_set_as_call_ringtone"
         android:orderInCategory="400" app:showAsAction="never"/>

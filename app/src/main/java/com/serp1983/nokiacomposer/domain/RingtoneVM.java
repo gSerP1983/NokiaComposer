@@ -29,7 +29,7 @@ public class RingtoneVM extends BaseObservable {
     public int getTempo() {
         return _tempo;
     }
-    protected void setTempo(int tempo) {
+    public void setTempo(int tempo) {
         _tempo = tempo;
         notifyPropertyChanged(BR.tempo);
     }
@@ -38,7 +38,7 @@ public class RingtoneVM extends BaseObservable {
     public boolean isPlaying() {
         return _isPlaying;
     }
-    void setPlaying(boolean playing) {
+    private void setPlaying(boolean playing) {
         _isPlaying = playing;
         notifyPropertyChanged(BR.playing);
     }
@@ -46,7 +46,7 @@ public class RingtoneVM extends BaseObservable {
     public String getCode() {
         return _code;
     }
-    protected void setCode(String code) { _code = code; }
+    public void setCode(String code) { _code = code; }
 
     public RingtoneVM(String name, int tempo, String code){
         this._name = name;

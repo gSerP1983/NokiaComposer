@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">New Old 3310 Composer</string>
 
-    <string name="action_save">Save in My ringtones</string>
+    <string name="action_save">Save</string>
+    <string name="action_save_in_my_ringtones">Save in My ringtones</string>
     <string name="action_delete">Delete</string>
     <string name="action_share">Share</string>
     <string name="action_share_text">Share text</string>

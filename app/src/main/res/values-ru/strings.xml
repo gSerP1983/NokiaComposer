@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">New Old 3310 Composer</string>
     <string name="action_delete">Удалить</string>
-    <string name="action_save">Сохранить в Мои рингтоны</string>
+    <string name="action_save_in_my_ringtones">Сохранить в Мои рингтоны</string>
     <string name="action_search">Поиск</string>
     <string name="action_share">Поделиться</string>
     <string name="action_share_mp3">Поделиться *.mp3</string>
@@ -28,4 +28,5 @@
     <string name="action_help_project">Помочь проекту (посмотреть видео)</string>
     <string name="msg_thank_you">Спасибо большое</string>
     <string name="action_quick_edit">Быстрое редактирование</string>
+    <string name="action_save">Сохранить</string>
 </resources>

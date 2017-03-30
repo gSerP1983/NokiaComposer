@@ -114,6 +114,13 @@ public class DataService {
         }
     }
 
+    public RingtoneVM findMyRingtone(int tempo, String name, String code){
+        for(RingtoneVM ring : myRingtones)
+            if (ring.getTempo() == tempo && ring.getName().equals(name) && ring.getCode().equals(code))
+                return ring;
+        return null;
+    }
+
     private static void saveMyRingtones(Context context, ArrayList<RingtoneVM> rigtones) throws IOException {
         RingtoneVM[] array = rigtones.toArray(new RingtoneVM[0]);
         File file = getMyRingtonesFile(context);

@@ -37,6 +37,7 @@ public class ComposerActivity extends AppCompatActivity {
 
     private FlexboxLayout flexBox;
     private ComposerVM vm;
+    private RingtoneVM currentMyRingtone;
     private static int countNew = 0;
 
     public static Intent getIntent(Context context, RingtoneVM ringtone){
@@ -65,14 +66,18 @@ public class ComposerActivity extends AppCompatActivity {
         String name = "New" + ++countNew;
         int tempo = 120;
         String code = "";
+        boolean isMy = false;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             name = bundle.getString("name", null);
             tempo = bundle.getInt("tempo");
             code = bundle.getString("code");
+            isMy = bundle.getBoolean("isMy");
+            currentMyRingtone = DataService.getInstance().findMyRingtone(tempo, name, code);
         }
 
         vm = new ComposerVM(name, tempo);
+        vm.IsMy = isMy;
         binding.contentComposer.setVm(vm);
         vm.Notes.addOnListChangedCallback(getAddOnListChangedCallback());
         if (!"".equals(code))
@@ -91,7 +96,11 @@ public class ComposerActivity extends AppCompatActivity {
 
         MenuItem save = menu.findItem(R.id.action_save);
         if (save != null)
-            save.setVisible(vm.Notes.size() > 0);
+            save.setVisible(vm.Notes.size() > 0 && vm.IsMy);
+
+        MenuItem saveInMyRingtones = menu.findItem(R.id.action_save_in_my_ringtones);
+        if (saveInMyRingtones != null)
+            saveInMyRingtones.setVisible(vm.Notes.size() > 0);
 
         MenuItem setRingtone = menu.findItem(R.id.action_set_as_ringtone);
         if (setRingtone != null)
@@ -144,6 +153,11 @@ public class ComposerActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_save_in_my_ringtones) {
+            saveInMyRingtones();
+            return true;
+        }
+
         if (id == R.id.action_set_as_ringtone) {
             SetAsRingtoneService.setAsRingtone(this, vm);
             return true;
@@ -157,7 +171,16 @@ public class ComposerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void save(){
+    private void save() {
+        currentMyRingtone.setTempo(vm.getTempo());
+        currentMyRingtone.setCode(vm.getCode());
+        DataService.getInstance().saveMyRingtones(this);
+
+        String msg = currentMyRingtone.getName() + " " + ComposerActivity.this.getString(R.string.msg_saved);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveInMyRingtones(){
         String name = vm.getName();
         if (!name.startsWith("(My) "))
             name = "(My) " + name;
