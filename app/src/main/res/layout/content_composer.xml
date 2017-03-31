@@ -34,7 +34,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin_half"
-                    android:background="@drawable/button_tempo"
+                    android:background="@drawable/button_small"
                     android:text='@{@string/ringtone_tempo_label + "=" + vm.tempo}'
                     android:onClick="@{(theView) -> vm.onTempoClick(theView)}"
                     />
@@ -45,6 +45,7 @@
                     android:layout_marginRight="@dimen/activity_horizontal_margin_half"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin_half"
                     card_view:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="1dp"
                     >
                     <ScrollView
                         android:layout_width="match_parent"
@@ -70,78 +71,78 @@
                     android:columnCount="3"
                     android:orientation="horizontal"
                     android:layout_gravity="center"
+                    android:paddingTop="@dimen/activity_vertical_margin_half"
                     >
-                    <Button android:text="1"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="1"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
                         />
-                    <Button android:text="2"
-                        android:textSize="20sp"
-                        android:onClick="@{(theView) -> vm.onClick(theView)}"
-                        android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
-                        />
-
-                    <Button android:text="3"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="2"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
                         />
 
-                    <Button android:text="4"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="3"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
                         />
 
-                    <Button android:text="5"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="4"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
                         />
 
-                    <Button android:text="6"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="5"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
                         />
 
-                    <Button android:text="7"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="6"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
                         />
 
-                    <Button android:text="8"
-                        android:textSize="20sp"
-                        android:onClick="@{(theView) -> vm.onClick(theView)}"
-                        />
-
-                    <Button android:text="9"
-                        android:textSize="20sp"
-                        android:onClick="@{(theView) -> vm.onClick(theView)}"
-                        />
-
-                    <Button android:text="*"
-                        android:textSize="20sp"
-                        android:onClick="@{(theView) -> vm.onClick(theView)}"
-                        />
-
-                    <Button android:text="0"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="7"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
                         />
 
-                    <Button android:text="#"
-                        android:textSize="20sp"
+                    <android.support.v7.widget.AppCompatButton android:text="8"
+                        style="@style/button_round"
                         android:onClick="@{(theView) -> vm.onClick(theView)}"
                         />
 
-                    <Button
-                        android:layout_gravity="fill"
-                        android:layout_columnSpan="2"
-                        android:text="Delete"
+                    <android.support.v7.widget.AppCompatButton android:text="9"
+                        style="@style/button_round"
+                        android:onClick="@{(theView) -> vm.onClick(theView)}"
+                        />
+
+                    <android.support.v7.widget.AppCompatButton android:text="*"
+                        style="@style/button_round"
+                        android:onClick="@{(theView) -> vm.onClick(theView)}"
+                        />
+
+                    <android.support.v7.widget.AppCompatButton android:text="0"
+                        style="@style/button_round"
+                        android:onClick="@{(theView) -> vm.onClick(theView)}"
+                        android:onLongClick="@{(theView) -> vm.onLongClick(theView)}"
+                        />
+
+                    <android.support.v7.widget.AppCompatButton android:text="#"
+                        style="@style/button_round"
+                        android:onClick="@{(theView) -> vm.onClick(theView)}"
+                        />
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:src="@android:drawable/ic_menu_delete"
+                        style="@style/button_round"
                         android:onClick="@{() -> vm.onDeleteClick()}"
                         />
 
