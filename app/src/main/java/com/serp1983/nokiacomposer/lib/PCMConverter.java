@@ -95,10 +95,8 @@ public class PCMConverter {
 	
 	@SuppressLint("DefaultLocale")
 	private ShortArrayList convert(String nokiaCodes, float tempo /*120*/, float volume /*1*/){
-		ShortArrayList pcm = new ShortArrayList();		
-		String[] tokens = nokiaCodes.toUpperCase().split(" ");
-		
-		for(String token : tokens){
+		ShortArrayList pcm = new ShortArrayList();
+		for(String token : Note.getTokens(nokiaCodes)){
 			Note noteObj = new Note(token);
 			int duration = noteObj.getDuration();
 			Integer octave = noteObj.getOctave();
@@ -119,12 +117,10 @@ public class PCMConverter {
 	}
 
 	public String convert2Keys(String nokiaCodes){
-		String[] tokens = nokiaCodes.toUpperCase().split(" ");
 		List<String> result = new ArrayList<>();
-
 		int prevDuration = 4;
 		int prevOctave = 1;
-		for(String token : tokens){
+		for(String token : Note.getTokens(nokiaCodes)){
 			Note noteObj = new Note(token);
 			int duration = noteObj.getDuration();
 			Integer octave = noteObj.getOctave();

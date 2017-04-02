@@ -29,9 +29,8 @@ public class ComposerVM extends RingtoneVM {
 
     @Override
     public void setCode(String code) {
-        String[] tokens = code.toUpperCase().split(" ");
         Notes.clear();
-        for(String token : tokens){
+        for(String token : Note.getTokens(code)){
             Note note = new Note(token);
             Notes.add(note);
         }

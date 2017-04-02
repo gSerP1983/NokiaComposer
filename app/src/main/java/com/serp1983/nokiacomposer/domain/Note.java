@@ -102,4 +102,10 @@ public class Note extends BaseObservable {
                 + (mOctave == null ? "" : mOctave);
     }
 
+    public static String[] getTokens(String nokiaCodes){
+        return nokiaCodes
+                .replaceAll("\\s+", " ")
+                .toUpperCase().split(" ");
+    }
+
 }
