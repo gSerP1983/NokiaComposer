@@ -67,22 +67,22 @@ public class PCMConverter {
 	}
 	
 	private void appendNote(ShortArrayList pcm, float volume, int time, String note, int octave){
-		float FREQ = (float) (notes.get(note) * Math.pow(2, octave-1));
-		double KFREQ = 0;
+		float freq = (float) (notes.get(note) * Math.pow(2, octave-1));
+		double kFreq = 0;
 		short value;
 		int i;
 		
 		for(i = 0; i < SAMPLING_FREQUENCY * time / 1000; i++){
-			KFREQ = Math.sin(6.28f * FREQ * i / SAMPLING_FREQUENCY);
-			value = (short) (32765f * volume * KFREQ);
+			kFreq = Math.sin(6.28f * freq * i / SAMPLING_FREQUENCY);
+			value = (short) (32765f * volume * kFreq);
 			pcm.add(value);
 		}
 		
 		// making clear sound
-		if (Math.abs(KFREQ)>0.1f){
-			while (Math.abs(KFREQ)>0.1f){				
-				KFREQ = Math.sin(6.28f * FREQ * i / SAMPLING_FREQUENCY);
-				value = (short) (32765f * volume * KFREQ);
+		if (Math.abs(kFreq)>0.1f){
+			while (Math.abs(kFreq)>0.1f){
+				kFreq = Math.sin(6.28f * freq * i / SAMPLING_FREQUENCY);
+				value = (short) (32765f * volume * kFreq);
 				pcm.add(value);	
 				i++;
 			}
