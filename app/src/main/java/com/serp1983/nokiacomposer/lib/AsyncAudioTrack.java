@@ -7,11 +7,8 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 public class AsyncAudioTrack implements Runnable {
 	private static AsyncAudioTrack instance;
-	public static  Boolean isRun;
 
 	private byte[] _buffer;
 	private AudioTrack _audioTrack;
@@ -26,7 +23,7 @@ public class AsyncAudioTrack implements Runnable {
 		_callback = callback;
 
 		try {
-			_bufferSize = AudioTrack.getMinBufferSize(44100,
+			_bufferSize = AudioTrack.getMinBufferSize(PCMConverter.SAMPLING_FREQUENCY,
 					AudioFormat.CHANNEL_OUT_MONO,
 					AudioFormat.ENCODING_PCM_16BIT);
 		}
@@ -41,8 +38,6 @@ public class AsyncAudioTrack implements Runnable {
 	
 	@Override
 	public void run() {
-		isRun = true;
-
 		// double try
 		try {
 			runInner();
@@ -55,15 +50,13 @@ public class AsyncAudioTrack implements Runnable {
 
 		if (_callback != null)
 			_callback.onComplete();
-
-		isRun = false;
 	}
 
 	private void runInner(){
 		release();
 
 		_audioTrack = new AudioTrack(
-				AudioManager.STREAM_MUSIC, 44100,
+				AudioManager.STREAM_MUSIC, PCMConverter.SAMPLING_FREQUENCY,
 				AudioFormat.CHANNEL_OUT_MONO,
 				AudioFormat.ENCODING_PCM_16BIT,
 				_bufferSize, AudioTrack.MODE_STREAM);

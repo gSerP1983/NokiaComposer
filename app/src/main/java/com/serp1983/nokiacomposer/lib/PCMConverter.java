@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PCMConverter {
+
+    public final static int SAMPLING_FREQUENCY = 44100;
 	
 	private static PCMConverter instance;	
 	public static PCMConverter getInstance(){	
@@ -72,8 +72,8 @@ public class PCMConverter {
 		short value;
 		int i;
 		
-		for(i = 0; i < 44100 * time / 1000; i++){			
-			KFREQ = Math.sin(6.28f * FREQ * i / 44100f);
+		for(i = 0; i < SAMPLING_FREQUENCY * time / 1000; i++){
+			KFREQ = Math.sin(6.28f * FREQ * i / SAMPLING_FREQUENCY);
 			value = (short) (32765f * volume * KFREQ);
 			pcm.add(value);
 		}
@@ -81,7 +81,7 @@ public class PCMConverter {
 		// making clear sound
 		if (Math.abs(KFREQ)>0.1f){
 			while (Math.abs(KFREQ)>0.1f){				
-				KFREQ = Math.sin(6.28f * FREQ * i / 44100f);
+				KFREQ = Math.sin(6.28f * FREQ * i / SAMPLING_FREQUENCY);
 				value = (short) (32765f * volume * KFREQ);
 				pcm.add(value);	
 				i++;

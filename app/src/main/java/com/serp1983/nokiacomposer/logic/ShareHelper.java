@@ -50,7 +50,7 @@ public class ShareHelper {
             File file = new File(externalCacheDir.getPath(), name + ".wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.getCode(), ringtone.getTempo());
-            WaveWriter writer = new WaveWriter(file, 44100, 1, 16);
+            WaveWriter writer = new WaveWriter(file, PCMConverter.SAMPLING_FREQUENCY, 1, 16);
             AsyncWaveWriter.execute(writer, pcm.toArray(), null, null);
 
             Intent intentSend = new Intent(Intent.ACTION_SEND);
@@ -82,11 +82,11 @@ public class ShareHelper {
             final File fileWav = new File(externalCacheDir.getPath(), name + ".wav");
 
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.getCode(), ringtone.getTempo());
-            WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
+            WaveWriter writer = new WaveWriter(fileWav, PCMConverter.SAMPLING_FREQUENCY, 2, 16);
             AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
                 @Override
                 public void onComplete() {
-                    ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
+                    ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), PCMConverter.SAMPLING_FREQUENCY, 1);
                 }
             });
 

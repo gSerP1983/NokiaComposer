@@ -131,12 +131,12 @@ public class SetAsRingtoneService {
             final File fileWav = new File(externalCacheDir.getPath(), "nokiacomposer.wav");
             final File fileMp3 = new File(externalCacheDir.getPath(), "nokiacomposer.mp3");
             ShortArrayList pcm = PCMConverter.getInstance().convert(ringtone.getCode(), ringtone.getTempo());
-            WaveWriter writer = new WaveWriter(fileWav, 44100, 2, 16);
+            WaveWriter writer = new WaveWriter(fileWav, PCMConverter.SAMPLING_FREQUENCY, 2, 16);
             AsyncWaveWriter.execute(writer, pcm.toArray(), pcm.toArray(), new AsyncWaveWriter.Callback() {
                 @Override
                 public void onComplete() {
                     try {
-                        ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), 44100, 1);
+                        ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), PCMConverter.SAMPLING_FREQUENCY, 1);
                         FileUtils.copy(fileMp3, outFile);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -191,7 +191,7 @@ public class SetAsRingtoneService {
         values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
 
         values.put(MediaStore.Audio.Media.ARTIST, artist);
-        values.put(MediaStore.Audio.Media.DURATION, 44100);
+        values.put(MediaStore.Audio.Media.DURATION, PCMConverter.SAMPLING_FREQUENCY);
 
         values.put(MediaStore.Audio.Media.IS_RINGTONE, fileKind == FILE_KIND_RINGTONE);
         values.put(MediaStore.Audio.Media.IS_NOTIFICATION, fileKind == FILE_KIND_NOTIFICATION);
