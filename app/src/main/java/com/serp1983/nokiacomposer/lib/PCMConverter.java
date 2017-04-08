@@ -73,7 +73,7 @@ public class PCMConverter {
 		int i;
 		
 		for(i = 1; i <= SAMPLING_FREQUENCY * time / 1000; i++){
-			kFreq = Math.sin(6.28f * freq * i / SAMPLING_FREQUENCY);
+			kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
 			value = (short) (32765f * volume * kFreq);
 			pcm.add(value);
 		}
@@ -81,7 +81,7 @@ public class PCMConverter {
 		// making clear sound
 		if (Math.abs(kFreq)>0.1f){
 			while (Math.abs(kFreq)>0.1f){
-				kFreq = Math.sin(6.28f * freq * i / SAMPLING_FREQUENCY);
+				kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
 				value = (short) (32765f * volume * kFreq);
 				pcm.add(value);	
 				i++;
