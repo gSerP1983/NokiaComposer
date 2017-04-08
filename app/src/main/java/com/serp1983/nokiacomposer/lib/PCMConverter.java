@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class PCMConverter {
 
-    public final static int SAMPLING_FREQUENCY = 44100;
+    public final static int SAMPLING_FREQUENCY = 22050;
 	
 	private static PCMConverter instance;	
 	public static PCMConverter getInstance(){	
@@ -72,7 +72,7 @@ public class PCMConverter {
 		short value;
 		int i;
 		
-		for(i = 0; i < SAMPLING_FREQUENCY * time / 1000; i++){
+		for(i = 1; i <= SAMPLING_FREQUENCY * time / 1000; i++){
 			kFreq = Math.sin(6.28f * freq * i / SAMPLING_FREQUENCY);
 			value = (short) (32765f * volume * kFreq);
 			pcm.add(value);
