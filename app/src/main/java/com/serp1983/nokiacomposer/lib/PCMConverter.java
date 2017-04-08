@@ -71,24 +71,41 @@ public class PCMConverter {
 		double kFreq = 0;
 		short value;
 		int i;
-		
-		for(i = 1; i <= SAMPLING_FREQUENCY * time / 1000; i++){
-			kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
+
+		int max = SAMPLING_FREQUENCY * time / 1000;
+		float prev;
+		float curr = 0.5f;
+		do {
+			prev = curr;
+			curr = freq * ++max / SAMPLING_FREQUENCY % 1;
+		} while (Math.abs(curr - 0.5f) > Math.abs(prev - 0.5f));
+
+
+		for(i = 1; i <= max-1; i++){
+			// kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
+			kFreq = 2 * (
+					Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY)
+				+ Math.sin(3 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 3f
+							+ Math.sin(5 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 5f
+							+ Math.sin(7 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 7f
+							+ Math.sin(9 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 9f
+			) / Math.PI
+			;
 			value = (short) (32765f * volume * kFreq);
 			pcm.add(value);
 		}
 		
 		// making clear sound
-		if (Math.abs(kFreq)>0.1f){
+		/*if (Math.abs(kFreq)>0.1f){
 			while (Math.abs(kFreq)>0.1f){
 				kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
 				value = (short) (32765f * volume * kFreq);
 				pcm.add(value);	
 				i++;
 			}
-		}
+		}*/
 	}
-	
+
 	public ShortArrayList convert(String nokiaCodes, float tempo /*120*/){
 		return convert(nokiaCodes, tempo, 1f);
 	}
@@ -191,3 +208,4 @@ public class PCMConverter {
 		return res;
 	}
 }
+
