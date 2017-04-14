@@ -82,15 +82,15 @@ public class PCMConverter {
 
 
 		for(i = 1; i <= max-1; i++){
-			// kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
-			kFreq = 2 * (
+			kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
+			/*kFreq = 2 * (
 					Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY)
 				+ Math.sin(3 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 3f
 							+ Math.sin(5 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 5f
 							+ Math.sin(7 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 7f
 							+ Math.sin(9 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 9f
 			) / Math.PI
-			;
+			;*/
 			value = (short) (32765f * volume * kFreq);
 			pcm.add(value);
 		}

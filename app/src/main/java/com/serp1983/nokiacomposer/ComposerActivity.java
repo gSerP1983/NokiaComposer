@@ -2,11 +2,13 @@ package com.serp1983.nokiacomposer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.BindingMethod;
 import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableList;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
@@ -76,8 +78,10 @@ public class ComposerActivity extends AppCompatActivity {
             currentMyRingtone = DataService.getInstance().findMyRingtone(tempo, name, code);
         }
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         vm = new ComposerVM(name, tempo);
         vm.IsMy = isMy;
+        vm.setKeySound(prefs.getBoolean(ComposerVM.keySoundPrefName, true));
         binding.contentComposer.setVm(vm);
         vm.Notes.addOnListChangedCallback(getAddOnListChangedCallback());
         if (!"".equals(code))

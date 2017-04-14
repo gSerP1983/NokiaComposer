@@ -59,11 +59,11 @@ public class RingtoneVM extends BaseObservable {
         return _name;
     }
 
-    public void play(){
+    void play(String code, int tempo){
         try {
             if (!isPlaying()) {
                 setPlaying(true);
-                ShortArrayList pcm = PCMConverter.getInstance().convert(this.getCode(), this.getTempo());
+                ShortArrayList pcm = PCMConverter.getInstance().convert(code, tempo);
                 AsyncAudioTrack.start(PCMConverter.shorts2Bytes(pcm), new AsyncAudioTrack.Callback() {
                     @Override
                     public void onComplete() {
@@ -79,5 +79,9 @@ public class RingtoneVM extends BaseObservable {
             FirebaseCrash.report(e);
             setPlaying(false);
         }
+    }
+
+    public void play(){
+        play(this.getCode(), this.getTempo());
     }
 }

@@ -2,11 +2,15 @@ package com.serp1983.nokiacomposer.domain;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 
+import com.serp1983.nokiacomposer.BR;
 import com.serp1983.nokiacomposer.R;
 import com.serp1983.nokiacomposer.util.DialogHelper;
 
@@ -17,6 +21,17 @@ public class ComposerVM extends RingtoneVM {
     public ObservableList<Note> Notes;
     public Note CurrentNote;
     private final Map<String, String> map = new HashMap<>();
+
+    public static String keySoundPrefName = "KEY_SOUND";
+    private boolean _isKeySound = false;
+    @Bindable
+    public boolean isKeySound() {
+        return _isKeySound;
+    }
+    public void setKeySound(boolean isKeySound) {
+        _isKeySound = isKeySound;
+        notifyPropertyChanged(BR.keySound);
+    }
 
     @Override
     public String getCode(){
@@ -112,6 +127,9 @@ public class ComposerVM extends RingtoneVM {
             CurrentNote.setDuration(duration);
             notifyChanged();
         }
+
+        if (CurrentNote != null && _isKeySound)
+            play(CurrentNote.toString(), getTempo());
     }
 
     public boolean onLongClick(View v){
@@ -123,7 +141,17 @@ public class ComposerVM extends RingtoneVM {
         Notes.add(getIdx() + 1, token);
         CurrentNote = token;
 
+        if (CurrentNote != null && _isKeySound)
+            play(CurrentNote.toString(), getTempo());
+
         return true;
+    }
+
+    public void onKeySoundClick(View v){
+        setKeySound(!isKeySound());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
+        prefs.edit().putBoolean(keySoundPrefName, _isKeySound).apply();
     }
 
     public void onTempoClick(View v){
