@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class PCMConverter {
 
-    public final static int SAMPLING_FREQUENCY = 22050;
+    public final static int SAMPLING_FREQUENCY = 8000;
 	
 	private static PCMConverter instance;	
 	public static PCMConverter getInstance(){	
@@ -73,12 +73,12 @@ public class PCMConverter {
 		int i;
 
 		int max = SAMPLING_FREQUENCY * time / 1000;
-		float prev;
-		float curr = 0.5f;
+		/*float prev;
+		float curr = 0f;
 		do {
 			prev = curr;
 			curr = freq * ++max / SAMPLING_FREQUENCY % 1;
-		} while (Math.abs(curr - 0.5f) > Math.abs(prev - 0.5f));
+		} while (Math.abs(curr) > Math.abs(prev));*/
 
 
 		for(i = 1; i <= max-1; i++){
@@ -96,14 +96,14 @@ public class PCMConverter {
 		}
 		
 		// making clear sound
-		/*if (Math.abs(kFreq)>0.1f){
+		if (Math.abs(kFreq)>0.1f){
 			while (Math.abs(kFreq)>0.1f){
 				kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
 				value = (short) (32765f * volume * kFreq);
 				pcm.add(value);	
 				i++;
 			}
-		}*/
+		}
 	}
 
 	public ShortArrayList convert(String nokiaCodes, float tempo /*120*/){
