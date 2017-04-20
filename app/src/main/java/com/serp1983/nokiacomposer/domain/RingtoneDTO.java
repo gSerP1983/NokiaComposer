@@ -9,4 +9,10 @@ public class RingtoneDTO {
     public int Tempo;
 
     public RingtoneDTO(){}
+
+    public RingtoneDTO(String name, String code, int tempo){
+        Name = name;
+        Code = code;
+        Tempo = tempo;
+    }
 }

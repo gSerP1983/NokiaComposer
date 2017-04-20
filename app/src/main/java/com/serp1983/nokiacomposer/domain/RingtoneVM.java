@@ -84,4 +84,8 @@ public class RingtoneVM extends BaseObservable {
     public void play(){
         play(this.getCode(), this.getTempo());
     }
+
+    public RingtoneDTO getRingtoneDTO(){
+        return new RingtoneDTO(this.getName(), this.getCode(), this.getTempo());
+    }
 }

@@ -27,6 +27,7 @@ import com.serp1983.nokiacomposer.domain.Note;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.logic.DataService;
+import com.serp1983.nokiacomposer.logic.FirebaseDatabaseService;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
@@ -199,6 +200,7 @@ public class ComposerActivity extends AppCompatActivity {
                     if (DataService.getInstance().addMyRingtone(ComposerActivity.this, vm)) {
                         String msg = input + " " + ComposerActivity.this.getString(R.string.msg_saved);
                         Toast.makeText(ComposerActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        FirebaseDatabaseService.add(vm.getRingtoneDTO());
                     }
                 }
             }
