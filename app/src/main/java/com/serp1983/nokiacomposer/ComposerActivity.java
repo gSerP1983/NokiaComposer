@@ -177,6 +177,9 @@ public class ComposerActivity extends AppCompatActivity {
     }
 
     private void save() {
+        if (currentMyRingtone == null)
+            return;
+
         currentMyRingtone.setTempo(vm.getTempo());
         currentMyRingtone.setCode(vm.getCode());
         DataService.getInstance().saveMyRingtones(this);
