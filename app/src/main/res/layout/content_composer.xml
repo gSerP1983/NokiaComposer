@@ -54,7 +54,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
                         android:background="@drawable/button_small"
-                        android:src="@{!vm.keySound ? @android:drawable/ic_lock_silent_mode : @android:drawable/ic_lock_silent_mode_off}"
+                        android:src="@{!vm.keySound ? @drawable/ic_volume_off : @drawable/ic_volume_up}"
                         android:onClick="@{(theView) -> vm.onKeySoundClick(theView)}"
                         />
 
@@ -190,7 +190,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
-                app:srcCompat='@{vm.playing ? @android:drawable/ic_lock_silent_mode : @android:drawable/ic_lock_silent_mode_off}'
+                app:srcCompat='@{vm.playing ? @drawable/ic_volume_off : @drawable/ic_volume_up}'
                 android:onClick="@{() -> vm.play()}"
                 />
 

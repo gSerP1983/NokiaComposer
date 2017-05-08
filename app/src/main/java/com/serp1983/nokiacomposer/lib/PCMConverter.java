@@ -109,7 +109,7 @@ public class PCMConverter {
 	@SuppressLint("DefaultLocale")
 	private ShortArrayList convert(String nokiaCodes, float tempo /*120*/, float volume /*1*/){
 		ShortArrayList pcm = new ShortArrayList();
-		appendNote(pcm, 0, (int) (1000 * 7.5 / tempo), "-", 1);
+		appendNote(pcm, 0, 100, "-", 1);
 		for(String token : Note.getTokens(nokiaCodes)){
 			Note noteObj = new Note(token);
 			int duration = noteObj.getDuration();
@@ -124,7 +124,7 @@ public class PCMConverter {
 			float time = 32f / duration; 			
 			appendNote(pcm, volume, (int) (time * 1000f * 7.5f / tempo), note, octave);
 		}
-		appendNote(pcm, 0, (int) (1000 * 7.5 / tempo), "-", 1);
+		appendNote(pcm, 0, 100, "-", 1);
 
 		return pcm;
 	}
