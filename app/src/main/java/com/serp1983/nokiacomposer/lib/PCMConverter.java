@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class PCMConverter {
 
-    public final static int SAMPLING_FREQUENCY = 8000;
+    public final static int SAMPLING_FREQUENCY = 4000; // min support value for AudioTrack
 	
 	private static PCMConverter instance;	
 	public static PCMConverter getInstance(){	
@@ -68,21 +68,30 @@ public class PCMConverter {
 	
 	private void appendNote(ShortArrayList pcm, float volume, int time, String note, int octave){
 		float freq = (float) (notes.get(note) * Math.pow(2, octave-1));
-		double kFreq = 0;
+		double val = 0;
 		short value;
 		int i;
 
 		int max = SAMPLING_FREQUENCY * time / 1000;
-		/*float prev;
-		float curr = 0f;
-		do {
-			prev = curr;
-			curr = freq * ++max / SAMPLING_FREQUENCY % 1;
-		} while (Math.abs(curr) > Math.abs(prev));*/
 
-
+		pcm.add((short)0);
 		for(i = 1; i <= max-1; i++){
-			kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
+			val = getValByTime(freq, i);
+			value = (short) (32765f * volume * val);
+			pcm.add(value);
+		}
+		// making clear sound
+        while (Math.abs(val)>0.1f){
+            val = getValByTime(freq, i);
+            value = (short) (32765f * volume * val);
+            pcm.add(value);
+            i++;
+        }
+        pcm.add((short)0);
+	}
+
+	private static double getValByTime(float freq, int i){
+        return Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
 			/*kFreq = 2 * (
 					Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY)
 				+ Math.sin(3 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 3f
@@ -91,20 +100,7 @@ public class PCMConverter {
 							+ Math.sin(9 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 9f
 			) / Math.PI
 			;*/
-			value = (short) (32765f * volume * kFreq);
-			pcm.add(value);
-		}
-		
-		// making clear sound
-		if (Math.abs(kFreq)>0.1f){
-			while (Math.abs(kFreq)>0.1f){
-				kFreq = Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
-				value = (short) (32765f * volume * kFreq);
-				pcm.add(value);	
-				i++;
-			}
-		}
-	}
+    }
 
 	public ShortArrayList convert(String nokiaCodes, float tempo /*120*/){
 		return convert(nokiaCodes, tempo, 1f);
@@ -113,6 +109,7 @@ public class PCMConverter {
 	@SuppressLint("DefaultLocale")
 	private ShortArrayList convert(String nokiaCodes, float tempo /*120*/, float volume /*1*/){
 		ShortArrayList pcm = new ShortArrayList();
+		appendNote(pcm, 0, (int) (1000 * 7.5 / tempo), "-", 1);
 		for(String token : Note.getTokens(nokiaCodes)){
 			Note noteObj = new Note(token);
 			int duration = noteObj.getDuration();
@@ -127,9 +124,8 @@ public class PCMConverter {
 			float time = 32f / duration; 			
 			appendNote(pcm, volume, (int) (time * 1000f * 7.5f / tempo), note, octave);
 		}
-		
-		appendNote(pcm, 0, (int) (250 * 7.5 / tempo), "-", 1);
-		
+		appendNote(pcm, 0, (int) (1000 * 7.5 / tempo), "-", 1);
+
 		return pcm;
 	}
 

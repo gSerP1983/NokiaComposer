@@ -128,8 +128,7 @@ public class ComposerVM extends RingtoneVM {
             notifyChanged();
         }
 
-        if (CurrentNote != null && _isKeySound)
-            play(CurrentNote.toString(), getTempo());
+        playCurrentNote();
     }
 
     public boolean onLongClick(View v){
@@ -141,9 +140,7 @@ public class ComposerVM extends RingtoneVM {
         Notes.add(getIdx() + 1, token);
         CurrentNote = token;
 
-        if (CurrentNote != null && _isKeySound)
-            play(CurrentNote.toString(), getTempo());
-
+        playCurrentNote();
         return true;
     }
 
@@ -204,5 +201,10 @@ public class ComposerVM extends RingtoneVM {
         int idx = getIdx();
         if (idx >= 0)
             Notes.set(idx, CurrentNote);
+    }
+
+    public void playCurrentNote(){
+        if (CurrentNote != null && _isKeySound)
+            play(CurrentNote.toString(), getTempo());
     }
 }

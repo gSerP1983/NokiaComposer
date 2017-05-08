@@ -15,6 +15,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -220,6 +221,14 @@ public class ComposerActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus)
                     vm.CurrentNote = (Note) v.getTag();
+            }
+        });
+        textView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                vm.CurrentNote = (Note) v.getTag();
+                vm.playCurrentNote();
+                return false;
             }
         });
         return textView;
