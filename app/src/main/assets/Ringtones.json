@@ -469,7 +469,6 @@
  {"Name":"Limp Bizkit: Boiler","Tempo":225,"Code":"8c2 16c2 8.c2 16c2 16c2 8c2 8c2 16c2 16c2 8c2 8c2 4- 8c2 8c2 2- 8c2 16c2 8.c2 16c2 16c2 8c2 8c2 16c2 16c2 8c2 8c2 4- 8c2 8c2 1- 16c2 16c2 16c2 8c2 8c2 16c2 16c2 8c2 8c2 4- 8c2 8c2 1- 16c2 16c2 8c2 16c2 16c2 16c2 16c2 16g1 16#c2 8c2 8- 16c2 16c2 16g1 16#c2 8c2"},
  {"Name":"Limp Bizkit: Break Stuff","Tempo":125,"Code":"4c1 4d1 4f2 4e1 4f1 4g1 4b1 4g1 4b1 4g2 4f1 4g1 4b3 4g1 4f3 4g1 4b1 4g1 4f1 4.g1 4b1"},
  {"Name":"Limp Bizkit: Getcha Groove On","Tempo":90,"Code":"8g1 8e1 8- 8d1 16f1 16d1 16f1 16d1 16f1 32- 16- 16d1 16- 8g1 8e1 32- 8- 16d1 16f1 16d1 16f1 16d1 16f1 16d1 32- 16- 16d1 16- 8g1 8e1 8- 8d1 16f1 16d1 16f1 16d1 16f1 16- 4- 8#c1 16#c1 16d1 8f1 16d1"},
- {"Name":"Limp Bizkit: Hot Dog","Tempo":80,"Code":"16d1 16- 16d1 16- 16d1 16- 16d1 16-"},
  {"Name":"Limp Bizkit: My generation","Tempo":112,"Code":"8g2 8e2 8d2 16f2 16d2 16f2 16d2 16f2 16d2 8g2 8e2 16d2 16f2 16d2 16f2 16d2 16f2 16d2 16d2 8g2 8e2 8d2 16f2 16d2 16f2 16d2 16f2 4d2 8e2 8#c2 16#c2 16d2 8f2 16d2"},
  {"Name":"Limp Bizkit: My way","Tempo":125,"Code":"8f2 8f2 16f2 16f2 16f2 16f2 8f2 4f2 8f2 8f2 16f2 16f2 8f2 8f2 8f2 8f2 8- 16f2 16f2 8f2 8f2 8#g2 4f2 8f2 8#g2 4f2 8b1 8b1 16b1 16b1 8e2 8#c2"},
  {"Name":"Limp Bizkit: N Together Now","Tempo":112,"Code":"16f2 16#d2 16d2 16c2 4#a1 4- 4#c2 4- 8f2 8- 4.f2 8- 16f2 16#d2 16d2 16c2 4#a1 4- 4#c2 4- 8f2 8- 4.f2 8- 16f2 16#d2 16d2 16c2 4#a1 4- 4#c2 4- 8f2 8- 4.f2 8- 16f2 16#d2 16d2 16c2 4#a1 4- 4#c2 4- 8f2 8- 4.f2"},
