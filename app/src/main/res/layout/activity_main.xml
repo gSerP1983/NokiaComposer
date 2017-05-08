@@ -51,7 +51,9 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
-                app:srcCompat="@drawable/ic_add" />
+                app:srcCompat="@drawable/ic_add"
+                android:tint="@android:color/white"
+                />
         </FrameLayout>
 
         <FrameLayout

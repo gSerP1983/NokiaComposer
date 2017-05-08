@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">New Old 3310 Composer</string>
+    <string name="app_name">3310 Composer</string>
     <string name="action_delete">Удалить</string>
     <string name="action_save_in_my_ringtones">Сохранить в Мои рингтоны</string>
     <string name="action_search">Поиск</string>

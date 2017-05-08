@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#01A9F2</color>
+    <color name="colorPrimary">#3A517A</color>
+    <color name="colorPrimaryDark">#3A517A</color>
+    <color name="colorAccent">#FE3F80</color>
+    <color name="nokiaBackground">#3A517A</color>
+    <color name="nokiaBtn">#CBDBEB</color>
+    <color name="nokiaScreen">#91C9A4</color>
+    <color name="nokiaFab">#81c784</color>
 </resources>

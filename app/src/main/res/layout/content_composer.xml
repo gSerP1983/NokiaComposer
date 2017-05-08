@@ -16,7 +16,9 @@
         tools:showIn="@layout/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/nokiaBackground"
+        >
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -67,6 +69,7 @@
                     android:layout_marginLeft="@dimen/activity_horizontal_margin_half"
                     card_view:cardCornerRadius="@dimen/card_corner_radius"
                     app:cardElevation="1dp"
+                    app:cardBackgroundColor="@color/nokiaScreen"
                     >
                     <ScrollView
                         android:layout_width="match_parent"
@@ -192,6 +195,7 @@
                 android:layout_marginRight="@dimen/fab_margin"
                 app:srcCompat='@{vm.playing ? @drawable/ic_volume_off : @drawable/ic_volume_up}'
                 android:onClick="@{() -> vm.play()}"
+                app:backgroundTint="@color/nokiaFab"
                 />
 
         </FrameLayout>
