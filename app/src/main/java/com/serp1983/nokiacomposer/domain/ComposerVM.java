@@ -33,13 +33,20 @@ public class ComposerVM extends RingtoneVM {
         notifyPropertyChanged(BR.keySound);
     }
 
+    public static String notePinPrefName = "NOTE_PIN";
+    private boolean _isNotePin = false;
+    @Bindable
+    public boolean isNotePin() {
+        return _isNotePin;
+    }
+    public void setNotePin(boolean isNotePin) {
+        _isNotePin = isNotePin;
+        notifyPropertyChanged(BR.notePin);
+    }
+
     @Override
     public String getCode(){
-        String res = "";
-        for (Note note : Notes) {
-            res += note.toString() + " ";
-        }
-        return res.trim();
+        return getCodeInner(false);
     }
 
     @Override
@@ -151,6 +158,13 @@ public class ComposerVM extends RingtoneVM {
         prefs.edit().putBoolean(keySoundPrefName, _isKeySound).apply();
     }
 
+    public void onNotePinClick(View v){
+        setNotePin(!isNotePin());
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
+        prefs.edit().putBoolean(notePinPrefName, _isNotePin).apply();
+    }
+
     public void onTempoClick(View v){
         Context context = v.getContext();
         String title = context.getString(R.string.ringtone_tempo_label);
@@ -201,6 +215,24 @@ public class ComposerVM extends RingtoneVM {
         int idx = getIdx();
         if (idx >= 0)
             Notes.set(idx, CurrentNote);
+    }
+
+    @Override
+    public void play(){
+        play(getCodeInner(isNotePin()), this.getTempo());
+    }
+
+    private String getCodeInner(boolean isPinCurrentNote){
+        String res = "";
+        boolean skip = isPinCurrentNote;
+        for (Note note : Notes) {
+            if (note.equals(CurrentNote))
+                skip = false;
+            if (skip)
+                continue;
+            res += note.toString() + " ";
+        }
+        return res.trim();
     }
 
     public void playCurrentNote(){

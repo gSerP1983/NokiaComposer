@@ -59,7 +59,7 @@ public class RingtoneVM extends BaseObservable {
         return _name;
     }
 
-    void play(String code, int tempo){
+    protected void play(String code, int tempo){
         try {
             if (!isPlaying()) {
                 setPlaying(true);

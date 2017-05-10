@@ -84,10 +84,14 @@ public class ComposerActivity extends AppCompatActivity {
         vm = new ComposerVM(name, tempo);
         vm.IsMy = isMy;
         vm.setKeySound(prefs.getBoolean(ComposerVM.keySoundPrefName, true));
+        vm.setNotePin(prefs.getBoolean(ComposerVM.notePinPrefName, false));
         binding.contentComposer.setVm(vm);
         vm.Notes.addOnListChangedCallback(getAddOnListChangedCallback());
         if (!"".equals(code))
             vm.setCode(code);
+
+        if (vm.Notes.size() > 0)
+            flexBox.findViewWithTag(vm.Notes.get(0)).requestFocus();
 
         Toast.makeText(this, vm.getName(), Toast.LENGTH_SHORT).show();
 
