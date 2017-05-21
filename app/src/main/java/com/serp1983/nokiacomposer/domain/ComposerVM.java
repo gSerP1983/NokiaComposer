@@ -53,6 +53,8 @@ public class ComposerVM extends RingtoneVM {
     public void setCode(String code) {
         Notes.clear();
         for(String token : Note.getTokens(code)){
+            if ("".equals(token))
+                continue;
             Note note = new Note(token);
             Notes.add(note);
         }
