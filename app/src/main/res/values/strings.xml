@@ -46,6 +46,8 @@
 * - to change the octave for a particular tone (composer actually supports up to 3 octaves).\n
 # - to make the current tone sharp (applicable for Do, Re, Fa, Sol, La only).\n
     </string>
+    <string name="err_empty_name">The ringtone was not saved. The name cannot be empty.</string>
+    <string name="err_double_name">The ringtone was not saved. The name must be unique.</string>
 
     <string name="ads_banner" translatable="false">ca-app-pub-6052365977112487/8857818250</string>
     <string name="ads_interstitial" translatable="false">ca-app-pub-6052365977112487/9920309054</string>
