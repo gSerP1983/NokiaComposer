@@ -29,6 +29,7 @@ public class FirebaseDatabaseService {
                 return;
         }
 
+        ringtone.Name = ringtone.Name.trim();
         FirebaseDatabaseService.getReference().push().setValue(ringtone);
     }
 

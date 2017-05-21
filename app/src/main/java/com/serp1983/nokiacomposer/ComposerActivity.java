@@ -138,6 +138,11 @@ public class ComposerActivity extends AppCompatActivity {
             return true;
         }
 
+        if (item.getItemId() == R.id.action_help) {
+            DialogHelper.showAlert(this, getString(R.string.action_help), getString(R.string.msg_help), null);
+            return true;
+        }
+
         if (id == R.id.action_tempo) {
             vm.onTempoClick(getWindow().getDecorView());
             return true;

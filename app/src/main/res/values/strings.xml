@@ -15,6 +15,7 @@
     <string name="action_open">Open</string>
     <string name="action_help_project">Help project (view video)</string>
     <string name="action_quick_edit">Quick edit</string>
+    <string name="action_help">Help</string>
 
     <string name="ringtone_tempo_label">Tempo</string>
     <string name="ringtones_label">Ringtones</string>
@@ -32,6 +33,19 @@
     <string name="msg_modify_system_settings">You need to allow modify system settings for this app. Then try again.</string>
     <string name="msg_need_permissions">You need to allow read/write external storage. Then try again.</string>
     <string name="msg_thank_you">Thank you very much</string>
+    <string name="msg_help">0 - a musical space.\n
+1 - Do.\n
+2 - Re.\n
+3 - Mi.\n
+4 - Fa.\n
+5 - Sol.\n
+6 - La.\n
+7 - Si.\n
+8 - to increase the duration of a particular tone or musical space.\n
+9 - to decrease the duration of a particular tone or musical space.\n
+* - to change the octave for a particular tone (composer actually supports up to 3 octaves).\n
+# - to make the current tone sharp (applicable for Do, Re, Fa, Sol, La only).\n
+    </string>
 
     <string name="ads_banner" translatable="false">ca-app-pub-6052365977112487/8857818250</string>
     <string name="ads_interstitial" translatable="false">ca-app-pub-6052365977112487/9920309054</string>

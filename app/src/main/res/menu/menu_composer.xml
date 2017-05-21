@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".ComposerActivity">
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/help_circle"
+        android:title="@string/action_help"
+        app:showAsAction="ifRoom" />
     <item android:id="@+id/action_tempo" android:title="@string/ringtone_tempo_label"
         android:orderInCategory="50" app:showAsAction="never"/>
     <item android:id="@+id/action_quick_edit" android:title="@string/action_quick_edit"
