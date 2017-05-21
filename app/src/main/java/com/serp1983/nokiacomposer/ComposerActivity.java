@@ -207,14 +207,28 @@ public class ComposerActivity extends AppCompatActivity {
         DialogHelper.inputDialog(this, "", hint, name, new DialogHelper.Callback<String>() {
             @Override
             public void onComplete(String input) {
-                if (!input.isEmpty()) {
-                    vm.IsMy = true;
-                    vm.setName(input);
-                    if (DataService.getInstance().addMyRingtone(ComposerActivity.this, vm)) {
-                        String msg = input + " " + ComposerActivity.this.getString(R.string.msg_saved);
-                        Toast.makeText(ComposerActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        FirebaseDatabaseService.add(vm.getRingtoneDTO());
+                if (input.isEmpty()) {
+                    Toast.makeText(ComposerActivity.this, R.string.err_empty_name, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // checking unique name
+                String name = input.replaceAll("\\s", "").toUpperCase();
+                for(RingtoneVM myRingtone : DataService.getInstance().getMyRingtones()) {
+                    String myRingtoneName = myRingtone.getName().replaceAll("\\s", "").toUpperCase();
+                    if (myRingtoneName.equals(name)) {
+                        Toast.makeText(ComposerActivity.this, R.string.err_double_name, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                }
+
+                vm.IsMy = true;
+                vm.setName(input.trim());
+
+                if (DataService.getInstance().addMyRingtone(ComposerActivity.this, vm)) {
+                    String msg = input + " " + ComposerActivity.this.getString(R.string.msg_saved);
+                    Toast.makeText(ComposerActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    FirebaseDatabaseService.add(vm.getRingtoneDTO());
                 }
             }
         });
