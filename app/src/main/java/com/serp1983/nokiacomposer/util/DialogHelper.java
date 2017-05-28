@@ -120,6 +120,16 @@ public class DialogHelper {
             int checkedItem,
             DialogInterface.OnClickListener choiceOnClickListener,
             DialogInterface.OnClickListener cancelOnClickListener) {
+        showSingleChoice(context, title, itemsId, checkedItem, choiceOnClickListener, cancelOnClickListener, null);
+    }
+    public static void showSingleChoice(
+            Context context,
+            String title,
+            @ArrayRes int itemsId,
+            int checkedItem,
+            DialogInterface.OnClickListener choiceOnClickListener,
+            DialogInterface.OnClickListener cancelOnClickListener,
+            DialogInterface.OnClickListener okOnClickListener) {
 
         if (choiceOnClickListener == null) choiceOnClickListener = nullOnClickListener;
         if (cancelOnClickListener == null) cancelOnClickListener = nullOnClickListener;
@@ -128,6 +138,9 @@ public class DialogHelper {
                 .setTitle(title)
                 .setSingleChoiceItems(itemsId, checkedItem, choiceOnClickListener)
                 .setNegativeButton(android.R.string.cancel, cancelOnClickListener);
+
+        if (okOnClickListener != null)
+            builder.setPositiveButton(android.R.string.ok, okOnClickListener);
 
         AlertDialog alert = builder.create();
         alert.show();

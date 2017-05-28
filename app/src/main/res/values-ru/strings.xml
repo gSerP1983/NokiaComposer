@@ -25,7 +25,7 @@
     <string name="ringtone_name_label">Наименование</string>
     <string name="action_open">Открыть</string>
     <string name="key_press_label">Кнопки</string>
-    <string name="action_help_project">Помочь проекту (посмотреть видео)</string>
+    <string name="action_settings">Настройки звука</string>
     <string name="msg_thank_you">Спасибо большое</string>
     <string name="action_quick_edit">Быстрое редактирование</string>
     <string name="action_save">Сохранить</string>
@@ -45,4 +45,7 @@
     </string>
     <string name="err_empty_name">Мелодия не была сохранена. Наименование не может быть пустым.</string>
     <string name="err_double_name">Мелодия не была сохранена. Наименование должно быть уникальным.</string>
+    <string name="sampling_type_meander">Меандр</string>
+    <string name="sampling_type_saw">Пила</string>
+    <string name="sampling_type_sin">Синусойда</string>
 </resources>

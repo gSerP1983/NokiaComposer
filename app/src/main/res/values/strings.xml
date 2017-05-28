@@ -13,7 +13,7 @@
     <string name="action_rename">Rename</string>
     <string name="action_rate">Rate the app</string>
     <string name="action_open">Open</string>
-    <string name="action_help_project">Help project (view video)</string>
+    <string name="action_settings">Sound settings</string>
     <string name="action_quick_edit">Quick edit</string>
     <string name="action_help">Help</string>
 
@@ -27,6 +27,10 @@
     <string name="type_alarm">Alarm</string>
     <string name="type_notification">Notification</string>
     <string name="type_call">Call</string>
+
+    <string name="sampling_type_sin">Sinusoid</string>
+    <string name="sampling_type_meander">Meander</string>
+    <string name="sampling_type_saw">Saw</string>
 
     <string name="alert_title_success">Success</string>
     <string name="msg_saved">saved</string>

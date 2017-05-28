@@ -1,6 +1,7 @@
 package com.serp1983.nokiacomposer;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,19 +9,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
 import com.google.android.gms.ads.AdView;
+import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
+import com.serp1983.nokiacomposer.lib.PCMConverter;
+import com.serp1983.nokiacomposer.lib.SamplingType;
+import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
-import com.serp1983.nokiacomposer.util.RewardedVideoAdService;
+import com.serp1983.nokiacomposer.util.DialogHelper;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
-    RewardedVideoAdService adService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        adService = new RewardedVideoAdService(this);
-
         AdView adView = (AdView) this.findViewById(R.id.adView);
         adView.loadAd(ActivityHelper.getAdBuilder().build());
     }
@@ -73,10 +77,6 @@ public class MainActivity extends AppCompatActivity {
         if (search != null && viewPager != null)
             search.setVisible(viewPager.getCurrentItem() == 0);
 
-        MenuItem helpProject = menu.findItem(R.id.action_help_project);
-        if (helpProject != null && adService != null)
-            helpProject.setVisible(adService.isLoaded());
-
         return true;
     }
 
@@ -87,28 +87,25 @@ public class MainActivity extends AppCompatActivity {
             ActivityHelper.rate(this);
             return true;
         }
-        if (id == R.id.action_help_project) {
-            adService.tryShow();
+        if (id == R.id.action_settings) {
+            String title = getString(R.string.action_settings);
+            DialogHelper.showSingleChoice(this, title, R.array.sampling_type_array, SamplingType.getSamplingType(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ShortArrayList pcm = PCMConverter.getInstance().convert("8C1 8G1 8C1 8D1", 200, which);
+                    AsyncAudioTrack.start(PCMConverter.shorts2Bytes(pcm), null);
+                }
+            }, null, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ListView lw = ((AlertDialog)dialog).getListView();
+                    SamplingType.setSamplingType(lw.getCheckedItemPosition());
+                    dialog.dismiss();
+                }
+            });
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onResume() {
-        adService.resume();
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        adService.pause();
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        adService.destroy();
-        super.onDestroy();
     }
 
     private class PagerAdapter extends FragmentPagerAdapter {

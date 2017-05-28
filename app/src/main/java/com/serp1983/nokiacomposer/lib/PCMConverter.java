@@ -66,7 +66,7 @@ public class PCMConverter {
 		tones.put("#B", "7#");
 	}
 	
-	private void appendNote(ShortArrayList pcm, float volume, int time, String note, int octave){
+	private void appendNote(ShortArrayList pcm, float volume, int time, String note, int octave, int samplingType){
 		float freq = (float) (notes.get(note) * Math.pow(2, octave-1));
 		double val = 0;
 		short value;
@@ -76,13 +76,14 @@ public class PCMConverter {
 
 		pcm.add((short)0);
 		for(i = 1; i <= max-1; i++){
-			val = getValByTime(freq, i);
+			val = SamplingType.getValByTime(samplingType, freq, i);
 			value = (short) (32765f * volume * val);
 			pcm.add(value);
 		}
+
 		// making clear sound
         while (Math.abs(val)>0.1f){
-            val = getValByTime(freq, i);
+            val = SamplingType.getValByTime(samplingType, freq, i);
             value = (short) (32765f * volume * val);
             pcm.add(value);
             i++;
@@ -90,26 +91,18 @@ public class PCMConverter {
         pcm.add((short)0);
 	}
 
-	private static double getValByTime(float freq, int i){
-        return Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY);
-			/*kFreq = 2 * (
-					Math.sin(2 * Math.PI * freq * i / SAMPLING_FREQUENCY)
-				+ Math.sin(3 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 3f
-							+ Math.sin(5 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 5f
-							+ Math.sin(7 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 7f
-							+ Math.sin(9 *2 * Math.PI * freq * i / SAMPLING_FREQUENCY) / 9f
-			) / Math.PI
-			;*/
-    }
-
 	public ShortArrayList convert(String nokiaCodes, float tempo /*120*/){
-		return convert(nokiaCodes, tempo, 1f);
+		return convert(nokiaCodes, tempo, 1f, SamplingType.Default);
 	}
-	
+
+	public ShortArrayList convert(String nokiaCodes, float tempo /*120*/, int samplingType){
+		return convert(nokiaCodes, tempo, 1f, samplingType);
+	}
+
 	@SuppressLint("DefaultLocale")
-	private ShortArrayList convert(String nokiaCodes, float tempo /*120*/, float volume /*1*/){
+	private ShortArrayList convert(String nokiaCodes, float tempo /*120*/, float volume /*1*/, int samplingType){
 		ShortArrayList pcm = new ShortArrayList();
-		appendNote(pcm, 0, 100, "-", 1);
+		appendNote(pcm, 0, 100, "-", 1, samplingType);
 		for(String token : Note.getTokens(nokiaCodes)){
 			Note noteObj = new Note(token);
 			int duration = noteObj.getDuration();
@@ -122,9 +115,9 @@ public class PCMConverter {
 				duration = duration * 2 / 3;
 			
 			float time = 32f / duration; 			
-			appendNote(pcm, volume, (int) (time * 1000f * 7.5f / tempo), note, octave);
+			appendNote(pcm, volume, (int) (time * 1000f * 7.5f / tempo), note, octave, samplingType);
 		}
-		appendNote(pcm, 0, 100, "-", 1);
+		appendNote(pcm, 0, 100, "-", 1, samplingType);
 
 		return pcm;
 	}
