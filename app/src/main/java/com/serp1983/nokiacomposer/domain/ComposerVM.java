@@ -1,6 +1,8 @@
 package com.serp1983.nokiacomposer.domain;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.Bindable;
@@ -16,6 +18,8 @@ import com.serp1983.nokiacomposer.util.DialogHelper;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 public class ComposerVM extends RingtoneVM {
     public ObservableList<Note> Notes;
@@ -66,6 +70,14 @@ public class ComposerVM extends RingtoneVM {
             CurrentNote = Notes.get(Notes.size() - 1);
 
         super.setCode(getCode());
+    }
+
+    public void setCodeFromClipboard(View v){
+        ClipboardManager clipboard = (ClipboardManager) v.getContext().getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = clipboard.getPrimaryClip();
+        if (clip != null && clip.getItemCount() > 0) {
+            setCode(clip.getItemAt(0).coerceToText(v.getContext()).toString());
+        }
     }
 
     public ComposerVM(String name, int tempo) {
