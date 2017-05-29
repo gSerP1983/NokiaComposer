@@ -51,6 +51,9 @@ public class ComposerVM extends RingtoneVM {
 
     @Override
     public void setCode(String code) {
+        if ("".equals(code))
+            return;
+
         Notes.clear();
         for(String token : Note.getTokens(code)){
             if ("".equals(token))
@@ -58,7 +61,10 @@ public class ComposerVM extends RingtoneVM {
             Note note = new Note(token);
             Notes.add(note);
         }
-        CurrentNote = Notes.get(Notes.size() - 1);
+
+        if (Notes.size() > 0)
+            CurrentNote = Notes.get(Notes.size() - 1);
+
         super.setCode(getCode());
     }
 
