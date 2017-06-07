@@ -120,6 +120,10 @@ public class ComposerActivity extends AppCompatActivity {
         if (share != null)
             share.setVisible(vm.Notes.size() > 0);
 
+        MenuItem saveInMusic = menu.findItem(R.id.action_save_in_music);
+        if (saveInMusic != null)
+            saveInMusic.setVisible(vm.Notes.size() > 0);
+
         return true;
     }
 
@@ -182,6 +186,12 @@ public class ComposerActivity extends AppCompatActivity {
             DialogHelper.showShareDialog(this, vm);
             return true;
         }
+
+        if (id == R.id.action_save_in_music) {
+            SetAsRingtoneService.saveInMusic(this, vm);
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

@@ -48,4 +48,5 @@
     <string name="sampling_type_meander">Меандр</string>
     <string name="sampling_type_saw">Пила</string>
     <string name="sampling_type_sin">Синусойда</string>
+    <string name="action_save_in_music">Сохранить в музыку</string>
 </resources>

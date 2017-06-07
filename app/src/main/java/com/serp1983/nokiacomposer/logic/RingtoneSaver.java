@@ -1,24 +1,34 @@
 package com.serp1983.nokiacomposer.logic;
 
+import android.os.Environment;
+
 import java.io.File;
 import java.io.RandomAccessFile;
 
 class RingtoneSaver {
 
     static String makeRingtoneFilename(CharSequence title, String extension, int fileKind) {
-        String parentDir;
+        String subDir;
+        String externalRootDir = Environment.getExternalStorageDirectory().getPath();
+        if (!externalRootDir.endsWith("/")) {
+            externalRootDir += "/";
+        }
         switch(fileKind) {
             default:
             case SetAsRingtoneService.FILE_KIND_ALARM:
-                parentDir = "/sdcard/media/audio/alarms";
+                subDir = "/media/audio/alarms/";
                 break;
             case SetAsRingtoneService.FILE_KIND_NOTIFICATION:
-                parentDir = "/sdcard/media/audio/notifications";
+                subDir = "/media/audio/notifications/";
                 break;
             case SetAsRingtoneService.FILE_KIND_RINGTONE:
-                parentDir = "/sdcard/media/audio/ringtones";
+                subDir = "/media/audio/ringtones/";
+                break;
+            case SetAsRingtoneService.FILE_KIND_MUSIC:
+                subDir = "/media/audio/music/";
                 break;
         }
+        String parentDir = externalRootDir + subDir;
 
         // Create the parent directory
         File parentDirFile = new File(parentDir);
@@ -27,7 +37,7 @@ class RingtoneSaver {
         // If we can't write to that special path, try just writing
         // directly to the sdcard
         if (!parentDirFile.isDirectory()) {
-            parentDir = "/sdcard";
+            parentDir = externalRootDir;
         }
 
         // Turn the title into a filename

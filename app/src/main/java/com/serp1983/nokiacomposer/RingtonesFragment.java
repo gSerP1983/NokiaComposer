@@ -121,6 +121,8 @@ public class RingtonesFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 final Context context = view.getContext();
+                Activity activity = ActivityHelper.getActivity(context);
+
                 switch (item.getItemId()) {
                     case R.id.action_rename:
                         String hint = context.getString(R.string.ringtone_name_label);
@@ -138,12 +140,15 @@ public class RingtonesFragment extends Fragment {
                         DataService.getInstance().deleteMyRingtone(context, ringtone);
                         break;
                     case R.id.action_set_as_ringtone:
-                        Activity activity = ActivityHelper.getActivity(context);
                         if (activity != null)
                             SetAsRingtoneService.setAsRingtone(activity, ringtone);
                         break;
                     case R.id.action_share:
                         DialogHelper.showShareDialog(context, ringtone);
+                        break;
+                    case R.id.action_save_in_music:
+                        if (activity != null)
+                            SetAsRingtoneService.saveInMusic(activity, ringtone);
                         break;
                     case R.id.action_open:
                         context.startActivity(ComposerActivity.getIntent(context, ringtone));

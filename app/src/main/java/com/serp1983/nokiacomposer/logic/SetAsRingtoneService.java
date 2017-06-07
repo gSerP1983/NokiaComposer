@@ -38,11 +38,36 @@ public class SetAsRingtoneService {
     static final int FILE_KIND_ALARM = 0;
     static final int FILE_KIND_NOTIFICATION = 1;
     static final int FILE_KIND_RINGTONE = 2;
+    static final int FILE_KIND_MUSIC = 3;
+
+    public static void saveInMusic(final Activity activity, final RingtoneVM ringtone){
+        if (ringtone == null)
+            return;
+
+        if (!requirePermission(activity))
+            return;
+
+        saveRingtone(activity, ringtone, FILE_KIND_MUSIC);
+    }
 
     public static void setAsRingtone(final Activity activity, final RingtoneVM ringtone){
         if (ringtone == null)
             return;
 
+        if (!requirePermission(activity))
+            return;
+
+        String title = activity.getString(R.string.title_set_as_ringtone);
+        DialogHelper.showSingleChoice(activity, title, R.array.ringtone_type_array, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                saveRingtone(activity, ringtone, item);
+                dialog.dismiss();
+            }
+        }, null);
+    }
+
+    private static boolean requirePermission(final Activity activity){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             //requires android.permission.READ_EXTERNAL_STORAGE
@@ -56,7 +81,7 @@ public class SetAsRingtoneService {
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_EXTERNAL_STORAGE);
-                return;
+                return false;
             }
 
             // was not granted this permission: android.permission.WRITE_SETTINGS
@@ -75,18 +100,11 @@ public class SetAsRingtoneService {
                     }
                 });
 
-                return;
+                return false;
             }
         }
 
-        String title = activity.getString(R.string.title_set_as_ringtone);
-        DialogHelper.showSingleChoice(activity, title, R.array.ringtone_type_array, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                saveRingtone(activity, ringtone, item);
-                dialog.dismiss();
-            }
-        }, null);
+        return true;
     }
 
     private static void saveRingtone(final Context context, final RingtoneVM ringtone, int fileKind) {
@@ -104,6 +122,8 @@ public class SetAsRingtoneService {
                 break;
             case SetAsRingtoneService.FILE_KIND_RINGTONE:
                 title += " ringtone";
+                break;
+            case SetAsRingtoneService.FILE_KIND_MUSIC:
                 break;
         }
 
@@ -196,6 +216,7 @@ public class SetAsRingtoneService {
         values.put(MediaStore.Audio.Media.IS_RINGTONE, fileKind == FILE_KIND_RINGTONE);
         values.put(MediaStore.Audio.Media.IS_NOTIFICATION, fileKind == FILE_KIND_NOTIFICATION);
         values.put(MediaStore.Audio.Media.IS_ALARM, fileKind == FILE_KIND_ALARM);
+        values.put(MediaStore.Audio.Media.IS_MUSIC, fileKind == FILE_KIND_MUSIC);
 
         // Insert it into the database
         Uri uri = MediaStore.Audio.Media.getContentUriForPath(outFile.getAbsolutePath());
@@ -217,6 +238,11 @@ public class SetAsRingtoneService {
         // ringtone.
         if (fileKind == FILE_KIND_RINGTONE) {
             setAsDefaultRingtone(context, RingtoneManager.TYPE_RINGTONE, newUri);
+        }
+
+        // music.
+        if (fileKind == FILE_KIND_MUSIC) {
+            Toast.makeText(context, R.string.alert_title_success, Toast.LENGTH_SHORT).show();
         }
     }
 
