@@ -247,6 +247,15 @@ public class SetAsRingtoneService {
     }
 
     private static void setAsDefaultRingtone(final Context context, final int type, final Uri newUri) {
+        // reset default ringtone
+        try {
+            RingtoneManager.setActualDefaultRingtoneUri(context, type, null);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            FirebaseCrash.report(e);
+        }
+
         RingtoneManager.setActualDefaultRingtoneUri(context, type, newUri);
         Toast.makeText(context, R.string.alert_title_success, Toast.LENGTH_SHORT).show();
     }
