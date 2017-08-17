@@ -36,12 +36,13 @@
             />
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <android.support.v7.widget.AppCompatImageButton
             android:layout_width="@dimen/button_options_menu_width"
             android:layout_height="wrap_content"
-            android:text="&#8942;"
+            android:src="@drawable/three_dots"
             android:textAppearance="?android:textAppearanceLarge"
-            android:layout_gravity="right"
+            android:layout_gravity="right|center_vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin_half"
             android:paddingRight="@{-@dimen/button_options_menu_width / 2}"
             android:onClick="@{(theView) -> view.showRingtoneMenu(theView, ringtone)}"
             android:background="@android:color/transparent"
