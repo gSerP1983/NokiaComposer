@@ -57,7 +57,7 @@ public class ComposerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityComposerBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_composer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar bar = getSupportActionBar();
@@ -65,7 +65,7 @@ public class ComposerActivity extends AppCompatActivity {
             bar.setDisplayHomeAsUpEnabled(true);
         }
 
-        flexBox = (FlexboxLayout) findViewById(R.id.flexBox);
+        flexBox = findViewById(R.id.flexBox);
 
         String name = "New" + ++countNew;
         int tempo = 120;
@@ -93,9 +93,12 @@ public class ComposerActivity extends AppCompatActivity {
         if (vm.Notes.size() > 0)
             flexBox.findViewWithTag(vm.Notes.get(0)).requestFocus();
 
+        if (bar != null) {
+            bar.setSubtitle(vm.getName());
+        }
         Toast.makeText(this, vm.getName(), Toast.LENGTH_SHORT).show();
 
-        AdView adView = (AdView) this.findViewById(R.id.adView);
+        AdView adView = this.findViewById(R.id.adView);
         adView.loadAd(ActivityHelper.getAdBuilder().build());
     }
 
@@ -276,7 +279,7 @@ public class ComposerActivity extends AppCompatActivity {
             @Override
             public void onItemRangeChanged(ObservableList<Note> notes, int index, int count) {
                 Note note = notes.get(index);
-                TextView tv = (TextView) flexBox.findViewWithTag(note);
+                TextView tv = flexBox.findViewWithTag(note);
                 tv.setText(note.toString());
             }
 
