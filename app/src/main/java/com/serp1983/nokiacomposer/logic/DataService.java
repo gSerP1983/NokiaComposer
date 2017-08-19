@@ -8,6 +8,7 @@ import android.databinding.ObservableArrayList;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
+import com.serp1983.nokiacomposer.lib.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,6 +27,19 @@ public class DataService {
     }
 
     public static void initialize(ContextWrapper context){
+        // my ringtones store in private dir now
+        try {
+            File oldFile = getMyRingtonesFileOld(context);
+            File newFile = getMyRingtonesFile(context);
+            if (oldFile != null && oldFile.exists()) {
+                FileUtils.copy(oldFile, newFile);
+                oldFile.delete();
+            }
+        }
+        catch(Exception ignore){
+            // ignore
+        }
+
         ourInstance = new DataService(context);
     }
 
@@ -132,8 +146,15 @@ public class DataService {
         outputStream.close();
     }
 
-    private static File getMyRingtonesFile(Context context) throws IOException {
+    private static File getMyRingtonesFileOld(Context context) throws IOException {
         File outputDir = context.getExternalCacheDir();
+        if (outputDir == null)
+            return null;
+        return new File(outputDir.getPath(), "ringtones.json");
+    }
+
+    private static File getMyRingtonesFile(Context context) throws IOException {
+        File outputDir = context.getDir("data", Context.MODE_PRIVATE);
         if (outputDir == null)
             return null;
         return new File(outputDir.getPath(), "ringtones.json");
