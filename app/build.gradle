@@ -8,8 +8,8 @@ android {
         applicationId "com.serp1983.nokiacomposer"
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 27
-        versionName "2.6.1"
+        versionCode 28
+        versionName "2.6.2"
         multiDexEnabled true
     }
     buildTypes {
