@@ -65,7 +65,7 @@ public class Note extends BaseObservable {
             if (str.endsWith("."))
                 str = str.substring(0, str.length() - 1);
 
-            if (isNumeric(str))
+            if (!str.isEmpty() && isNumeric(str))
                 duration = Integer.parseInt(str);
         }
         else{
