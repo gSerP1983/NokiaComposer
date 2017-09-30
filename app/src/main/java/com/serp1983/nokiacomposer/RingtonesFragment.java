@@ -3,6 +3,7 @@ package com.serp1983.nokiacomposer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.serp1983.nokiacomposer.logic.DataService;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
+import com.serp1983.nokiacomposer.logic.FirebaseDatabaseService;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
@@ -75,13 +77,36 @@ public class RingtonesFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_sort){
+            String title = getString(R.string.action_sort);
+            DialogHelper.showSingleChoice(this.getContext(), title, R.array.sort_mode, -1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    if (i == 0)
+                        adapter.sort(RingtoneVM.COMPARE_BY_NEW);
+                    if (i == 1)
+                        adapter.sort(RingtoneVM.COMPARE_BY_Name);
+                    dialog.dismiss();
+                }
+            }, null);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ringtones, container, false);
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
-        ArrayList<RingtoneVM> ringtones = position == 0
-                ? DataService.getInstance().getAssetRingtones()
-                : DataService.getInstance().getMyRingtones();
+        ArrayList<RingtoneVM> ringtones = DataService.getInstance().getAssetRingtones();
+        if (position == 1)
+            ringtones = DataService.getInstance().getMyRingtones();
+        if (position == 2)
+            ringtones = FirebaseDatabaseService.data;
+
         adapter = new RecyclerBindingAdapter<>(R.layout.list_item_ringtone, BR.ringtone, ringtones);
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -115,7 +140,9 @@ public class RingtonesFragment extends Fragment {
 
     public static void showRingtoneMenu(final View view, final RingtoneVM ringtone) {
         PopupMenu popup = new PopupMenu(view.getContext(), view);
-        popup.inflate(ringtone.IsMy ? R.menu.menu_my_ringtone : R.menu.menu_ringtone);
+
+        final Boolean isCloudModerator = ringtone.getKey() != null && !ringtone.getKey().isEmpty();
+        popup.inflate((ringtone.IsMy || isCloudModerator)? R.menu.menu_my_ringtone : R.menu.menu_ringtone);
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -132,12 +159,18 @@ public class RingtonesFragment extends Fragment {
                                 if (input == null || input.isEmpty() || input.equals(ringtone.getName()))
                                     return;
                                 ringtone.setName(input);
-                                DataService.getInstance().saveMyRingtones(context);
+                                if (ringtone.IsMy)
+                                    DataService.getInstance().saveMyRingtones(context);
+                                else if (isCloudModerator)
+                                    FirebaseDatabaseService.setName(ringtone);
                             }
                         });
                         break;
                     case R.id.action_delete:
-                        DataService.getInstance().deleteMyRingtone(context, ringtone);
+                        if (ringtone.IsMy)
+                            DataService.getInstance().deleteMyRingtone(context, ringtone);
+                        else if (isCloudModerator)
+                            FirebaseDatabaseService.delete(ringtone);
                         break;
                     case R.id.action_set_as_ringtone:
                         if (activity != null)

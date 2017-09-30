@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class RecyclerBindingAdapter<T>
         extends RecyclerView.Adapter<RecyclerBindingAdapter.BindingHolder>{
@@ -80,6 +82,10 @@ public class RecyclerBindingAdapter<T>
             }
         }
         notifyDataSetChanged();
+    }
+
+    public void sort(Comparator<T> comparator) {
+        Collections.sort(items, comparator);
     }
 
     public interface OnItemClickListener<T> {

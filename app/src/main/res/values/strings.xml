@@ -21,6 +21,7 @@
     <string name="ringtone_tempo_label">Tempo</string>
     <string name="ringtones_label">Ringtones</string>
     <string name="my_ringtones_label">My ringtones</string>
+    <string name="ringtones_cloud_label">Cloud</string>
     <string name="title_set_as_ringtone">Set as ringtone for:</string>
     <string name="ringtone_name_label">Name</string>
     <string name="key_press_label">Key press</string>
@@ -32,6 +33,10 @@
     <string name="sampling_type_sin">Sinusoid</string>
     <string name="sampling_type_meander">Meander</string>
     <string name="sampling_type_saw">Saw</string>
+
+    <string name="action_sort">Sort</string>
+    <string name="sort_mode_newest">Newest first</string>
+    <string name="sort_mode_alhpabet">By alhpabet</string>
 
     <string name="alert_title_success">Success</string>
     <string name="msg_saved">saved</string>

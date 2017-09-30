@@ -9,12 +9,15 @@ import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
 
+import java.util.Comparator;
+
 public class RingtoneVM extends BaseObservable {
     @SerializedName("Name") private String _name;
     @SerializedName("Tempo") private int _tempo = 120;
     @SerializedName("Code") private String _code;
     public boolean IsMy = false;
     private boolean _isPlaying = false;
+    private String _key  = "";
 
     @Bindable
     public String getName() {
@@ -48,10 +51,21 @@ public class RingtoneVM extends BaseObservable {
     }
     public void setCode(String code) { _code = code; }
 
+    public String getKey() {
+        return _key;
+    }
+
     public RingtoneVM(String name, int tempo, String code){
         this._name = name;
         this._code = code;
         this._tempo = tempo;
+    }
+
+    public RingtoneVM(String key, RingtoneDTO dto){
+        this._key = key;
+        this._name = dto.Name;
+        this._code = dto.Code;
+        this._tempo = dto.Tempo;
     }
 
     @Override
@@ -88,4 +102,16 @@ public class RingtoneVM extends BaseObservable {
     public RingtoneDTO getRingtoneDTO(){
         return new RingtoneDTO(this.getName(), this.getCode(), this.getTempo());
     }
+
+    public static Comparator<RingtoneVM> COMPARE_BY_NEW = new Comparator<RingtoneVM>() {
+        public int compare(RingtoneVM one, RingtoneVM other) {
+            return -(one.getKey().compareTo(other.getKey()));
+        }
+    };
+
+    public static Comparator<RingtoneVM> COMPARE_BY_Name = new Comparator<RingtoneVM>() {
+        public int compare(RingtoneVM one, RingtoneVM other) {
+            return one.getName().toUpperCase().compareTo(other.getName().toUpperCase());
+        }
+    };
 }

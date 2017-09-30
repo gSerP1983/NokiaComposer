@@ -18,4 +18,9 @@
         <item>@string/sampling_type_saw</item>
     </string-array>
 
+    <string-array name="sort_mode">
+        <item>@string/sort_mode_newest</item>
+        <item>@string/sort_mode_alhpabet</item>
+    </string-array>
+
 </resources>

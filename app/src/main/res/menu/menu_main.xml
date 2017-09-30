@@ -17,5 +17,10 @@
         android:title="@string/action_settings"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/action_sort"
+        android:title="@string/action_sort"
+        app:showAsAction="never"
+        />
 
 </menu>

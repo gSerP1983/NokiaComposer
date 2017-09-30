@@ -73,9 +73,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem search = menu.findItem(R.id.action_search);
-        if (search != null && viewPager != null)
-            search.setVisible(viewPager.getCurrentItem() == 0);
+        if (viewPager != null) {
+            MenuItem search = menu.findItem(R.id.action_search);
+            if (search != null)
+                search.setVisible(viewPager.getCurrentItem() == 0 || viewPager.getCurrentItem() == 2);
+            MenuItem sort = menu.findItem(R.id.action_sort);
+            if (sort != null)
+                sort.setVisible(viewPager.getCurrentItem() == 2);
+        }
 
         return true;
     }
@@ -122,14 +127,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return  2;
+            return  3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return position == 0
-                    ? context.getResources().getString(R.string.ringtones_label)
-                    : context.getResources().getString(R.string.my_ringtones_label) ;
+            if (position == 0)
+                return context.getResources().getString(R.string.ringtones_label);
+            if (position == 1)
+                return context.getResources().getString(R.string.my_ringtones_label);
+            if (position == 2)
+                return context.getResources().getString(R.string.ringtones_cloud_label);
+            return "";
         }
     }
 

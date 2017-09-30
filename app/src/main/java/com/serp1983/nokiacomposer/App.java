@@ -19,19 +19,5 @@ public class App extends Application {
         context = getApplicationContext();
         DataService.initialize(this);
         FirebaseDatabaseService.initialize();
-
-        /*FirebaseDatabaseService.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    RingtoneDTO ringtone = postSnapshot.getValue(RingtoneDTO.class);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                databaseError.toException().printStackTrace();
-            }
-        });*/
     }
 }

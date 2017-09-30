@@ -49,4 +49,8 @@
     <string name="sampling_type_saw">Пила</string>
     <string name="sampling_type_sin">Синусойда</string>
     <string name="action_save_in_music">Сохранить в музыку</string>
+    <string name="ringtones_cloud_label">Облако</string>
+    <string name="sort_mode_alhpabet">По алфавиту</string>
+    <string name="sort_mode_newest">Сначала новые</string>
+    <string name="action_sort">Сортировать</string>
 </resources>
