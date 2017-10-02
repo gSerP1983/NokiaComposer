@@ -1,13 +1,20 @@
 package com.serp1983.nokiacomposer.logic;
 
+import android.content.ContentResolver;
 import android.databinding.ObservableArrayList;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.serp1983.nokiacomposer.App;
 import com.serp1983.nokiacomposer.domain.RingtoneDTO;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
 
@@ -16,6 +23,7 @@ import java.util.Collections;
 
 public class FirebaseDatabaseService {
     public static ObservableArrayList<RingtoneVM> data;
+    public static boolean isModerator = false;
 
     public static void initialize(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -43,6 +51,26 @@ public class FirebaseDatabaseService {
                 e.printStackTrace();
             }
         });
+
+        final FirebaseRemoteConfig cfg = FirebaseRemoteConfig.getInstance();
+        cfg.fetch(60 * 60)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            cfg.activateFetched();
+
+                            String moderators = cfg.getString("moderators");
+                            if (moderators != null && moderators.contains(getDeviceUniqueID()))
+                                isModerator = true;
+                        }
+                    }
+                });
+    }
+
+    public static String getDeviceUniqueID(){
+        ContentResolver cr = App.getAppContext().getContentResolver();
+        return Settings.Secure.getString(cr, Settings.Secure.ANDROID_ID);
     }
 
     private static DatabaseReference getReference(){

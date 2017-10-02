@@ -28,6 +28,7 @@ import com.serp1983.nokiacomposer.domain.Note;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.logic.DataService;
+import com.serp1983.nokiacomposer.logic.FirebaseDatabaseService;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
@@ -289,8 +290,12 @@ public class ComposerActivity extends AppCompatActivity {
                 tv.requestFocus();
 
                 if (vm != null && "4E1 4C1 4F1 4C1 2G1 2D1 2A1".equals(vm.getCode())) {
-                    App.isModerator = true;
-                    Toast.makeText(ComposerActivity.this, "Moderator", Toast.LENGTH_SHORT).show();
+                    if (FirebaseDatabaseService.isModerator) {
+                        App.isModerator = true;
+                        Toast.makeText(ComposerActivity.this, "Moderator", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                        DialogHelper.inputDialog(ComposerActivity.this, "Id", "", FirebaseDatabaseService.getDeviceUniqueID(), null);
                 }
             }
 
