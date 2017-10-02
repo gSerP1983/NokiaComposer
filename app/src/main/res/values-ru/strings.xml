@@ -53,4 +53,6 @@
     <string name="sort_mode_alhpabet">По алфавиту</string>
     <string name="sort_mode_newest">Сначала новые</string>
     <string name="action_sort">Сортировать</string>
+    <string name="action_save_in_cloud">Сохранить в облако</string>
+    <string name="msg_to_moderation">Ваш рингтон отправлен на модерацию</string>
 </resources>

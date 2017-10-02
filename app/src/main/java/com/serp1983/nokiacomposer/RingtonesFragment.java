@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.serp1983.nokiacomposer.logic.DataService;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
@@ -141,8 +142,13 @@ public class RingtonesFragment extends Fragment {
     public static void showRingtoneMenu(final View view, final RingtoneVM ringtone) {
         PopupMenu popup = new PopupMenu(view.getContext(), view);
 
-        final Boolean isCloudModerator = ringtone.getKey() != null && !ringtone.getKey().isEmpty();
-        popup.inflate((ringtone.IsMy || isCloudModerator)? R.menu.menu_my_ringtone : R.menu.menu_ringtone);
+        final Boolean isCloudModerator = App.isModerator && ringtone.getKey() != null && !ringtone.getKey().isEmpty();
+        if (isCloudModerator)
+            popup.inflate(R.menu.menu_cloud_ringtone);
+        else if (ringtone.IsMy )
+            popup.inflate(R.menu.menu_my_ringtone);
+        else
+            popup.inflate(R.menu.menu_ringtone);
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -185,6 +191,10 @@ public class RingtonesFragment extends Fragment {
                         break;
                     case R.id.action_open:
                         context.startActivity(ComposerActivity.getIntent(context, ringtone));
+                        break;
+                    case R.id.action_save_in_cloud:
+                        FirebaseDatabaseService.add(ringtone.getRingtoneDTO());
+                        Toast.makeText(activity, activity.getString(R.string.msg_to_moderation), Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;

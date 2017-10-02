@@ -28,7 +28,6 @@ import com.serp1983.nokiacomposer.domain.Note;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.logic.DataService;
-import com.serp1983.nokiacomposer.logic.FirebaseDatabaseService;
 import com.serp1983.nokiacomposer.logic.SetAsRingtoneService;
 import com.serp1983.nokiacomposer.util.ActivityHelper;
 import com.serp1983.nokiacomposer.util.DialogHelper;
@@ -241,7 +240,7 @@ public class ComposerActivity extends AppCompatActivity {
                 if (DataService.getInstance().addMyRingtone(ComposerActivity.this, vm)) {
                     String msg = input + " " + ComposerActivity.this.getString(R.string.msg_saved);
                     Toast.makeText(ComposerActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    FirebaseDatabaseService.add(vm.getRingtoneDTO());
+                    // FirebaseDatabaseService.add(vm.getRingtoneDTO());
                 }
             }
         });
@@ -288,6 +287,11 @@ public class ComposerActivity extends AppCompatActivity {
                 TextView tv = ComposerActivity.this.CreateTextView(notes.get(index));
                 flexBox.addView(tv, index);
                 tv.requestFocus();
+
+                if (vm != null && "4E1 4C1 4F1 4C1 2G1 2D1 2A1".equals(vm.getCode())) {
+                    App.isModerator = true;
+                    Toast.makeText(ComposerActivity.this, "Moderator", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

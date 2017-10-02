@@ -17,6 +17,7 @@
     <string name="action_quick_edit">Quick edit</string>
     <string name="action_help">Help</string>
     <string name="action_save_in_music">Save in music</string>
+    <string name="action_save_in_cloud">Save in cloud</string>
 
     <string name="ringtone_tempo_label">Tempo</string>
     <string name="ringtones_label">Ringtones</string>
@@ -40,6 +41,7 @@
 
     <string name="alert_title_success">Success</string>
     <string name="msg_saved">saved</string>
+    <string name="msg_to_moderation">Your ringtone sent to moderation</string>
     <string name="msg_modify_system_settings">You need to allow modify system settings for this app. Then try again.</string>
     <string name="msg_need_permissions">You need to allow read/write external storage. Then try again.</string>
     <string name="msg_thank_you">Thank you very much</string>

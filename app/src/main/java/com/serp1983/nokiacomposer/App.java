@@ -13,6 +13,7 @@ public class App extends Application {
     public static Context getAppContext() {
         return context;
     }
+    public static boolean isModerator = false;
 
     public void onCreate() {
         super.onCreate();
