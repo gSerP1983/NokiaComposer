@@ -47,7 +47,7 @@ public class SamplingType {
 
     public static int getSamplingType() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
-        return prefs.getInt(SamplingTypePrefName, 0);
+        return prefs.getInt(SamplingTypePrefName, 2);
     }
 
     public static void setSamplingType(int samplingType) {

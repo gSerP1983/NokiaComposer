@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class FirebaseDatabaseService {
-    public static ObservableArrayList<RingtoneVM> data;
+    public static ObservableArrayList<RingtoneVM> data = new ObservableArrayList<>();
     public static boolean isModerator = false;
 
     public static void initialize(){
@@ -40,7 +40,6 @@ public class FirebaseDatabaseService {
                     tempData.add(new RingtoneVM(postSnapshot.getKey(), dto));
                 }
                 Collections.sort(tempData, RingtoneVM.COMPARE_BY_NEW);
-                data = new ObservableArrayList<>();
                 data.addAll(tempData);
             }
 
