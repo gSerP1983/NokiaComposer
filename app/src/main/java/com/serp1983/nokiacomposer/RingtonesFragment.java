@@ -100,7 +100,7 @@ public class RingtonesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ringtones, container, false);
-        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        final FloatingActionButton fab = getActivity().findViewById(R.id.fab);
 
         ArrayList<RingtoneVM> ringtones = DataService.getInstance().getAssetRingtones();
         if (position == 1)
@@ -124,7 +124,7 @@ public class RingtonesFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.ringtones_recycler);
+        RecyclerView recyclerView = view.findViewById(R.id.ringtones_recycler);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
