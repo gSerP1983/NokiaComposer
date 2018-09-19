@@ -3,13 +3,12 @@ package com.serp1983.nokiacomposer.logic;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
-import com.google.firebase.crash.FirebaseCrash;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
 import com.intervigil.wave.WaveWriter;
+import com.serp1983.nokiacomposer.util.AppLog;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
 
 import java.io.File;
@@ -32,8 +31,7 @@ public class ShareHelper {
             context.startActivity(intentChooser);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 
@@ -64,8 +62,7 @@ public class ShareHelper {
             context.startActivity(intentChooser);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 
@@ -102,8 +99,7 @@ public class ShareHelper {
             context.startActivity(intentChooser);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 }

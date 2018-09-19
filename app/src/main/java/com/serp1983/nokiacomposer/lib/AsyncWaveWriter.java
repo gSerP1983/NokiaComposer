@@ -3,9 +3,8 @@ package com.serp1983.nokiacomposer.lib;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import com.google.firebase.crash.FirebaseCrash;
 import com.intervigil.wave.WaveWriter;
+import com.serp1983.nokiacomposer.util.AppLog;
 
 public class AsyncWaveWriter implements Runnable {
 	
@@ -45,8 +44,7 @@ public class AsyncWaveWriter implements Runnable {
 				_callback.onComplete();
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			FirebaseCrash.report(e);
+			AppLog.Error(e);
 		}
 	}
 }

@@ -2,12 +2,12 @@ package com.serp1983.nokiacomposer.domain;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.annotations.SerializedName;
 import com.serp1983.nokiacomposer.BR;
 import com.serp1983.nokiacomposer.lib.AsyncAudioTrack;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
+import com.serp1983.nokiacomposer.util.AppLog;
 
 import java.util.Comparator;
 
@@ -89,8 +89,7 @@ public class RingtoneVM extends BaseObservable {
                 AsyncAudioTrack.stop();
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
             setPlaying(false);
         }
     }

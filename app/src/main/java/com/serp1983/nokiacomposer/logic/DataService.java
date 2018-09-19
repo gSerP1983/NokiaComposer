@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.AssetManager;
 import android.databinding.ObservableArrayList;
-
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
 import com.serp1983.nokiacomposer.lib.FileUtils;
+import com.serp1983.nokiacomposer.util.AppLog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,8 +54,7 @@ public class DataService {
             Reader reader = new InputStreamReader(ims);
             assetRingtonesArray = new Gson().fromJson(reader, RingtoneVM[].class);
         }catch(Exception e) {
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
         if (assetRingtonesArray == null)
             assetRingtonesArray = new RingtoneVM[]{};
@@ -71,8 +69,7 @@ public class DataService {
                 myRingtonesArray = new Gson().fromJson(reader, RingtoneVM[].class);
             }
         }catch(Exception e) {
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
         if (myRingtonesArray == null)
             myRingtonesArray = new RingtoneVM[]{};
@@ -95,8 +92,7 @@ public class DataService {
             saveMyRingtones(context, myRingtones);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
             return false;
         }
         return true;
@@ -111,8 +107,7 @@ public class DataService {
             saveMyRingtones(context, myRingtones);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
             return false;
         }
         return true;
@@ -123,8 +118,7 @@ public class DataService {
             saveMyRingtones(context, myRingtones);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 

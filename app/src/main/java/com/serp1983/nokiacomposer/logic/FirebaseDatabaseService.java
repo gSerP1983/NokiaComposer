@@ -1,29 +1,20 @@
 package com.serp1983.nokiacomposer.logic;
 
-import android.content.ContentResolver;
 import android.databinding.ObservableArrayList;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.serp1983.nokiacomposer.App;
 import com.serp1983.nokiacomposer.domain.RingtoneDTO;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
+import com.serp1983.nokiacomposer.util.AppLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class FirebaseDatabaseService {
     public static ObservableArrayList<RingtoneVM> data = new ObservableArrayList<>();
-    public static boolean isModerator = false;
 
     public static void initialize(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -45,31 +36,9 @@ public class FirebaseDatabaseService {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Throwable e = databaseError.toException();
-                FirebaseCrash.report(e);
-                e.printStackTrace();
+                AppLog.Error(databaseError.toException());
             }
         });
-
-        final FirebaseRemoteConfig cfg = FirebaseRemoteConfig.getInstance();
-        cfg.fetch(60 * 60)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            cfg.activateFetched();
-
-                            String moderators = cfg.getString("moderators");
-                            if (moderators != null && moderators.contains(getDeviceUniqueID()))
-                                isModerator = true;
-                        }
-                    }
-                });
-    }
-
-    public static String getDeviceUniqueID(){
-        ContentResolver cr = App.getAppContext().getContentResolver();
-        return Settings.Secure.getString(cr, Settings.Secure.ANDROID_ID);
     }
 
     private static DatabaseReference getReference(){
@@ -101,8 +70,7 @@ public class FirebaseDatabaseService {
             FirebaseDatabaseService.getReference().push().setValue(ringtone);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 
@@ -115,8 +83,7 @@ public class FirebaseDatabaseService {
             FirebaseDatabaseService.getReference().child(ringtone.getKey()).removeValue();
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 
@@ -131,8 +98,7 @@ public class FirebaseDatabaseService {
                     .setValue(ringtone.getName());
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 }

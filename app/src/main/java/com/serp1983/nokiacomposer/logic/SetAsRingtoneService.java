@@ -16,8 +16,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
-
-import com.google.firebase.crash.FirebaseCrash;
 import com.intervigil.wave.WaveWriter;
 import com.serp1983.nokiacomposer.R;
 import com.serp1983.nokiacomposer.domain.RingtoneVM;
@@ -25,6 +23,7 @@ import com.serp1983.nokiacomposer.lib.AsyncWaveWriter;
 import com.serp1983.nokiacomposer.lib.FileUtils;
 import com.serp1983.nokiacomposer.lib.PCMConverter;
 import com.serp1983.nokiacomposer.lib.ShortArrayList;
+import com.serp1983.nokiacomposer.util.AppLog;
 import com.serp1983.nokiacomposer.util.DialogHelper;
 import com.singlecellsoftware.mp3convert.ConvertActivity;
 import android.Manifest;
@@ -138,7 +137,7 @@ public class SetAsRingtoneService {
         final String outPath = RingtoneSaver.makeRingtoneFilename(title, ".mp3", fileKind);
         if (outPath == null) {
             Toast.makeText(context, android.R.string.cancel, Toast.LENGTH_SHORT).show();
-            FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...): Unable to find unique filename!");
+            // FirebaseCrash.log("SetAsRingtoneService.saveRingtone(...): Unable to find unique filename!");
             return;
         }
 
@@ -159,8 +158,7 @@ public class SetAsRingtoneService {
                         ConvertActivity.nativeEncodeMP3(fileWav.getAbsolutePath(), PCMConverter.SAMPLING_FREQUENCY, 1);
                         FileUtils.copy(fileMp3, outFile);
                     } catch (IOException e) {
-                        e.printStackTrace();
-                        FirebaseCrash.report(e);
+                        AppLog.Error(e);
                     }
                 }
             });
@@ -169,8 +167,7 @@ public class SetAsRingtoneService {
         }
         catch(Exception e){
             Toast.makeText(context, android.R.string.cancel, Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
     }
 
@@ -192,8 +189,7 @@ public class SetAsRingtoneService {
             c.close();
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
         return false;
     }
@@ -252,8 +248,7 @@ public class SetAsRingtoneService {
             RingtoneManager.setActualDefaultRingtoneUri(context, type, null);
         }
         catch(Exception e){
-            e.printStackTrace();
-            FirebaseCrash.report(e);
+            AppLog.Error(e);
         }
 
         RingtoneManager.setActualDefaultRingtoneUri(context, type, newUri);
